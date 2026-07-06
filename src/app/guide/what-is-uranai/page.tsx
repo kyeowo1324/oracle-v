@@ -1,0 +1,63 @@
+// src/app/guide/what-is-uranai/page.tsx
+// 【下書き⑩】占いとの上手な付き合い方
+// ⚠️ 公開前に体験を1〜2段落追加。
+// これは「占い全般」への入口となる総論記事(AdSense向けの情報性が高い)。
+
+import GuideArticle from '@/components/GuideArticle';
+
+export const metadata = {
+  title: '占いとの上手な付き合い方 — 当てるより「活かす」',
+  description:
+    '占いは当たる・当たらないだけのものではありません。星座・タロット・血液型などをどう受け止め、日常のヒントとして活かすか、健やかな付き合い方を考えます。',
+};
+
+const TYPES = [
+  ['星座占い（西洋占星術）', '生まれた日の星の配置から性格や運勢の傾向を読む。日本で最も親しまれる占いの一つ。'],
+  ['タロット', '78枚のカードで、今の気持ちや近い未来のヒントを言葉にする。潜在意識を映す鏡とも言われる。'],
+  ['血液型占い', '日本独自の文化として定着した会話のきっかけ。科学的根拠はなく、傾向として楽しむもの。'],
+  ['風水・開運', '色・方位・習慣で運気を整える考え方。日常の小さな工夫として取り入れやすい。'],
+];
+
+export default function WhatIsUranaiPage() {
+  return (
+    <GuideArticle
+      category="基礎 / 総論"
+      title="占いとの上手な付き合い方 — 当てるより「活かす」"
+      description={metadata.description}
+      slug="what-is-uranai"
+    >
+      <p>
+        占いと聞くと「当たるか、当たらないか」を気にしがちです。けれど占いの本当の価値は、
+        <strong>自分や相手を見つめ直し、次の一歩のヒントを得ること</strong>にあります。
+        この記事では、代表的な占いの種類と、健やかな付き合い方を整理します。
+      </p>
+
+      <h2>代表的な占いの種類</h2>
+      <ul className="space-y-2 !mt-2">
+        {TYPES.map(([name, desc]) => (
+          <li key={name} className="rounded-lg border border-white/10 bg-white/[0.03] p-3">
+            <span className="font-semibold text-white">{name}</span>
+            <p className="mt-1 text-sm text-slate-300">{desc}</p>
+          </li>
+        ))}
+      </ul>
+
+      <h2>「活かす」ための3つの視点</h2>
+      <p>
+        一つ目は、<strong>結果を決めつけに使わない</strong>こと。「A型だから」「この星座だから」と
+        レッテルを貼るのではなく、理解のきっかけにします。二つ目は、<strong>行動に翻訳する</strong>こと。
+        運勢を今日の小さな選択のあと押しにします。三つ目は、<strong>依存しすぎない</strong>こと。
+        占いはあくまで参考。最終的に決めるのは、いつでもあなた自身です。
+      </p>
+
+      {/* ↓↓↓ ここにあなたの体験を1〜2段落 ↓↓↓ */}
+
+      <h2>まとめ</h2>
+      <p>
+        占いは、背中をそっと押してくれる存在です。当てることを目的にするより、
+        毎日を少し前向きにする道具として付き合うと、占いはずっと豊かなものになります。
+        当サービスの占いも、そんな「活かす占い」を目指しています。
+      </p>
+    </GuideArticle>
+  );
+}

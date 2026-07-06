@@ -1,0 +1,67 @@
+// ============================================================
+// src/app/page.tsx  패치 안내 (2곳만 교체)
+// ============================================================
+//
+// 문제:
+//   (1) 광고 자리가 점선 박스 하드코딩 → 승인돼도 홈에 광고 안 나옴
+//   (2) 가이드 링크 3개가 존재하지 않는 URL(/guide/astrology 등) → 전부 404
+//
+// 해결: 아래 두 블록을 각각 찾아 교체하세요.
+
+
+// ── [파일 상단] import에 AdBanner 추가 ─────────────────────
+// 기존:
+//   import { useState } from 'react';
+//   import Link from 'next/link';
+// 아래 한 줄 추가:
+import AdBanner from '@/components/AdBanner';
+
+
+// ── [교체 1] 광고 배너 자리 ────────────────────────────────
+// 기존 블록 ▼ 을 삭제하고
+/*
+        <div className="mt-12 flex h-24 w-full items-center justify-center rounded-lg border border-dashed border-[#4A4C86] text-xs text-[#6B6D9E]">
+          {t.adLabel} · 320×100
+        </div>
+*/
+// 아래로 교체 ▼  (승인 전엔 자동으로 빈 공간, 승인 후 광고 점등)
+//   slot 값은 승인 후 AdSense에서 발급받은 홈 배너 슬롯 ID로 교체
+        <div className="mt-12">
+          <AdBanner slot="0000000000" />
+        </div>
+
+
+// ── [교체 2] 가이드 링크 (죽은 링크 → 목록 페이지로 통합) ──
+// 기존 <ul> 내부의 개별 3링크(/guide/astrology, /guide/tarot, /guide/blood-type)를
+// 아래처럼 "실제 존재하는 목록 페이지 /guide"로 안내하는 구조로 교체.
+// (개별 글은 /guide 목록에서 들어가므로 죽은 링크가 재발하지 않음)
+/*
+  기존:
+          <ul className="mt-3 space-y-2 font-sans text-sm text-[#D8D5EE]">
+            <li><Link href="/guide/astrology" ...>{t.guideA}</Link></li>
+            <li><Link href="/guide/tarot" ...>{t.guideB}</Link></li>
+            <li><Link href="/guide/blood-type" ...>{t.guideC}</Link></li>
+          </ul>
+*/
+// 교체 ▼
+          <ul className="mt-3 space-y-2 font-sans text-sm text-[#D8D5EE]">
+            <li>
+              <Link href="/guide/astrology-basics" className="hover:text-[#F6F1E4] hover:underline underline-offset-4">
+                {t.guideA}
+              </Link>
+            </li>
+            <li>
+              <Link href="/guide" className="hover:text-[#F6F1E4] hover:underline underline-offset-4">
+                {t.guideTitle} →
+              </Link>
+            </li>
+          </ul>
+//
+// ※ guideB/guideC 텍스트는 이제 안 쓰이지만 지워도 되고 둬도 됩니다.
+//   나중에 tarot / blood-type 글을 실제로 만들면 그때 개별 링크를 되살리면 됩니다.
+
+
+// ── [선택] 헤더 폰트 인라인 스타일 정리 ────────────────────
+// page.tsx 곳곳의  style={{ fontFamily: "'Shippori Mincho', serif" }}  는
+// 이제 layout에서 폰트를 로드하므로  className="font-mincho"  로 바꾸면 더 깔끔합니다.
+// (필수는 아님. 인라인 스타일도 폰트가 로드돼 있으면 정상 동작)

@@ -1,16 +1,13 @@
 // src/app/guide/astrology-basics/page.tsx
-// 【完成サンプル記事】星座占いの基本
+// 【サンプル記事①】星座占いの基本 — GuideArticle 공통 레이아웃 사용판
 //
-// これは「そのまま出せる下書き」ではなく「あなたが手を入れる土台」です。
-// 審査では AI 丸写しが不利になります。必ず一度読み、あなたの言葉・体験・具体例を
-// 1〜2段落足してから公開してください。それだけで「人が編集した独自コンテンツ」になります。
-//
-// 本文中に <AdBanner> を1つ挿入済み(記事が十分な文量を持ってから有効化されます)。
+// ⚠️ 公開前に: 一度読んで、あなたの言葉・体験を1〜2段落足してください。
+//    AI丸写しは審査で不利。人の編集が入ると「独自コンテンツ」になります。
 
-import AdBanner from '@/components/AdBanner';
+import GuideArticle from '@/components/GuideArticle';
 
 export const metadata = {
-  title: '星座占いの基本 — 12星座の性格と運勢の読み方 | Oracle V',
+  title: '星座占いの基本 — 12星座の性格と運勢の読み方',
   description:
     '12星座それぞれの性格傾向と、日々の運勢の読み解き方をやさしく解説。星座占いを初めて楽しむ方に向けた入門ガイドです。',
 };
@@ -32,83 +29,52 @@ const SIGNS = [
 
 export default function AstrologyBasicsPage() {
   return (
-    <main className="mx-auto max-w-2xl px-5 py-12">
-      <article className="prose-invert">
-        <p className="mb-2 text-sm tracking-widest text-indigo-300">星座 / 入門</p>
-        <h1 className="mb-6 text-2xl font-bold leading-snug text-white">
-          星座占いの基本 — 12星座の性格と運勢の読み方
-        </h1>
+    <GuideArticle
+      category="星座 / 入門"
+      title="星座占いの基本 — 12星座の性格と運勢の読み方"
+      description={metadata.description}
+      slug="astrology-basics"
+    >
+      <p>
+        星座占い（西洋占星術）は、生まれた日の太陽がどの星座に位置していたかをもとに、
+        その人の性格の傾向や運勢の流れを読み解く占いです。日本でも雑誌やテレビ、
+        ニュースアプリの「今日の運勢」でおなじみで、もっとも親しまれている占いのひとつです。
+      </p>
+      <p>
+        まず押さえたいのは、星座は<strong>生年月日から自動的に決まる</strong>という点です。
+        誕生日が下の期間のどこに入るかで、あなたの星座（太陽星座）が決まります。
+      </p>
 
-        <div className="space-y-5 text-[15px] leading-relaxed text-slate-200">
-          <p>
-            星座占い（西洋占星術）は、生まれた日の太陽がどの星座に位置していたかをもとに、
-            その人の性格の傾向や運勢の流れを読み解く占いです。日本でも雑誌やテレビ、
-            ニュースアプリの「今日の運勢」でおなじみで、もっとも親しまれている占いのひとつと言えます。
-          </p>
-          <p>
-            まず押さえたいのは、星座は<strong className="text-white">生年月日から自動的に決まる</strong>という点です。
-            誕生日が下の期間のどこに入るかで、あなたの星座（太陽星座）が決まります。
-            星座占いを楽しむ第一歩は、自分の星座を正しく知ることです。
-          </p>
+      <h2>12星座の性格傾向</h2>
+      <p>
+        それぞれの星座には、昔から語り継がれてきた性格のイメージがあります。
+        あくまで傾向であり、当てはまる・当てはまらないを楽しむのが醍醐味です。
+      </p>
+      <ul className="space-y-2 !mt-2">
+        {SIGNS.map(([name, range, desc]) => (
+          <li key={name} className="rounded-lg border border-white/10 bg-white/[0.03] p-3">
+            <span className="font-semibold text-white">{name}</span>
+            <span className="ml-2 text-xs text-indigo-300">{range}</span>
+            <p className="mt-1 text-sm text-slate-300">{desc}</p>
+          </li>
+        ))}
+      </ul>
 
-          <h2 className="pt-4 text-lg font-semibold text-white">12星座の性格傾向</h2>
-          <p className="text-slate-300">
-            それぞれの星座には、昔から語り継がれてきた性格のイメージがあります。
-            あくまで傾向であり、当てはまる・当てはまらないを楽しむのが星座占いの醍醐味です。
-          </p>
+      <h2>運勢はどう読む？</h2>
+      <p>
+        日々の運勢は、その日の星の配置とあなたの星座との関係から導かれます。
+        当サービスでは総合運・恋愛運・金運・仕事運の4つに分けて表示しています。
+        大切なのは「良い・悪い」で一喜一憂するのではなく、
+        <strong>その日の過ごし方のヒント</strong>として受け取ることです。
+      </p>
 
-          <ul className="space-y-2">
-            {SIGNS.map(([name, range, desc]) => (
-              <li
-                key={name}
-                className="rounded-lg border border-white/10 bg-white/[0.03] p-3"
-              >
-                <span className="font-semibold text-white">{name}</span>
-                <span className="ml-2 text-xs text-indigo-300">{range}</span>
-                <p className="mt-1 text-sm text-slate-300">{desc}</p>
-              </li>
-            ))}
-          </ul>
+      {/* ↓↓↓ ここにあなたの体験を1〜2段落。独自性が大きく高まります ↓↓↓ */}
 
-          {/* 記事中盤に広告(十分な本文の後に配置) */}
-          <AdBanner slot="0000000000" />
-
-          <h2 className="pt-4 text-lg font-semibold text-white">運勢はどう読む？</h2>
-          <p>
-            日々の運勢は、その日の星の配置と、あなたの星座との関係から導かれます。
-            当サービスでは総合運・恋愛運・金運・仕事運の4つに分けて表示しています。
-            大切なのは「良い・悪い」で一喜一憂するのではなく、
-            <strong className="text-white">その日の過ごし方のヒント</strong>として受け取ることです。
-          </p>
-          <p>
-            たとえば恋愛運が高い日は思いきって連絡してみる、
-            金運に注意とある日は衝動買いを一呼吸おいて見直す——
-            そんなふうに、日常のちょっとした判断のあと押しに使うと、
-            占いはぐっと身近で役立つものになります。
-          </p>
-
-          {/* ↓↓↓ ここにあなたの言葉・体験を1〜2段落足してから公開してください ↓↓↓ */}
-          {/*
-          <p>
-            （例：私自身、朝に星座占いを見て「今日は聞き役に回るといい」とあった日は、
-            会議で無理に主張せず相手の話を最後まで聞くようにしたら、
-            結果的に打ち合わせがスムーズに進んだ経験があります。……のように、
-            具体的なエピソードを1つ入れるだけで独自性が大きく高まります。）
-          </p>
-          */}
-
-          <h2 className="pt-4 text-lg font-semibold text-white">まとめ</h2>
-          <p>
-            星座占いは、自分や身近な人を理解するきっかけをくれる、
-            気軽で奥深い楽しみです。まずは自分の星座を知り、
-            今日の運勢を「行動のヒント」として受け取ることから始めてみましょう。
-          </p>
-
-          <p className="pt-2 text-sm text-slate-400">
-            ※ 本記事はエンターテインメントを目的とした内容です。
-          </p>
-        </div>
-      </article>
-    </main>
+      <h2>まとめ</h2>
+      <p>
+        星座占いは、自分や身近な人を理解するきっかけをくれる、気軽で奥深い楽しみです。
+        まずは自分の星座を知り、今日の運勢を「行動のヒント」として受け取ることから始めましょう。
+      </p>
+    </GuideArticle>
   );
 }

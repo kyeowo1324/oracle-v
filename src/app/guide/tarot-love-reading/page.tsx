@@ -1,0 +1,64 @@
+// src/app/guide/tarot-love-reading/page.tsx
+// 【下書き⑨】タロットで占う恋愛
+// ⚠️ 公開前に体験を1〜2段落追加。
+// 根拠: 恋愛タロットでよく参照される大アルカナの象意。
+
+import GuideArticle from '@/components/GuideArticle';
+
+export const metadata = {
+  title: 'タロットで占う恋愛 — 相手の気持ちを読み解くヒント',
+  description:
+    '恋愛タロットで気になる相手の気持ちや関係の行方を読み解くコツを解説。恋愛でよく登場するカードの意味と、結果との向き合い方を紹介します。',
+};
+
+const LOVE_CARDS = [
+  ['恋人', '正: 相思相愛・良い選択　逆: 迷い・すれ違い', '恋愛タロットの象徴。二人の心が通う可能性や、選択のときを示します。'],
+  ['カップのエース', '正: 愛の芽生え・満たされる　逆: 愛の渇望', '新しい恋や感情の始まりを表す、恋愛で嬉しいカードのひとつ。'],
+  ['女帝', '正: 豊かな愛情・包容　逆: 過保護・依存', '愛され、育む関係を示します。母性的なやさしさの象徴。'],
+  ['月', '正: 不安・曖昧さ　逆: 霧が晴れる', 'はっきりしない気持ちや隠れた本音。読み手の直感が試されるカード。'],
+];
+
+export default function TarotLovePage() {
+  return (
+    <GuideArticle
+      category="タロット / 恋愛"
+      title="タロットで占う恋愛 — 相手の気持ちを読み解くヒント"
+      description={metadata.description}
+      slug="tarot-love-reading"
+    >
+      <p>
+        タロット占いの中でも、とりわけ人気が高いのが<strong>恋愛</strong>です。
+        「相手は今どう思っている？」「この関係はどうなる？」——
+        言葉にしづらい気持ちを、カードは象徴で映し出してくれます。
+      </p>
+
+      <h2>恋愛でよく登場するカード</h2>
+      <ul className="space-y-2 !mt-2">
+        {LOVE_CARDS.map(([name, mean, desc]) => (
+          <li key={name} className="rounded-lg border border-white/10 bg-white/[0.03] p-3">
+            <span className="font-semibold text-white">{name}</span>
+            <span className="ml-2 text-xs text-indigo-300">{mean}</span>
+            <p className="mt-1 text-sm text-slate-300">{desc}</p>
+          </li>
+        ))}
+      </ul>
+
+      <h2>結果との上手な向き合い方</h2>
+      <p>
+        恋愛タロットで大切なのは、結果に一喜一憂しすぎないことです。
+        タロットは<strong>「今この瞬間の傾向」</strong>を映す鏡であって、確定した未来ではありません。
+        望まない結果が出ても、それは「今の流れ」への気づき。
+        <strong>同じ質問を何度も繰り返さない</strong>のも、タロットと付き合う基本のマナーです。
+      </p>
+
+      {/* ↓↓↓ ここにあなたの体験を1〜2段落 ↓↓↓ */}
+
+      <h2>まとめ</h2>
+      <p>
+        恋愛タロットは、相手の気持ちを決めつける道具ではなく、
+        自分の心を整理し、次の一歩を考えるためのヒントです。
+        カードが指し示す方向を参考に、あなたらしい選択をしてみてください。
+      </p>
+    </GuideArticle>
+  );
+}

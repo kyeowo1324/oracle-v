@@ -1,0 +1,65 @@
+// src/app/guide/zodiac-compatibility/page.tsx
+// 【下書き⑦】12星座の相性
+// ⚠️ 公開前に体験を1〜2段落追加。
+// 根拠: 西洋占星術のエレメント(火・地・風・水)による相性の基本理論。
+
+import GuideArticle from '@/components/GuideArticle';
+
+export const metadata = {
+  title: '12星座の相性 — エレメントで見る恋愛・友情の傾向',
+  description:
+    '星座の相性を「火・地・風・水」の4エレメントからやさしく解説。同じエレメント同士や相性の良い組み合わせ、うまく付き合うコツを紹介します。',
+};
+
+const ELEMENTS = [
+  ['火のグループ', '牡羊座・獅子座・射手座', '情熱的で行動的。同じ火同士は勢いで意気投合。風のグループと好相性で、火を大きくする関係。'],
+  ['地のグループ', '牡牛座・乙女座・山羊座', '現実的で堅実。安定を好み、水のグループと相性が良く、じっくり信頼を育てる関係。'],
+  ['風のグループ', '双子座・天秤座・水瓶座', '知的でコミュニケーション上手。火のグループと刺激し合い、軽やかに関係を広げる。'],
+  ['水のグループ', '蟹座・蠍座・魚座', '感受性豊かで共感力が高い。地のグループに安心を感じ、深く情緒的な絆を結ぶ。'],
+];
+
+export default function ZodiacCompatPage() {
+  return (
+    <GuideArticle
+      category="星座 / 相性"
+      title="12星座の相性 — エレメントで見る恋愛・友情の傾向"
+      description={metadata.description}
+      slug="zodiac-compatibility"
+    >
+      <p>
+        星座占いで相性を見るとき、鍵になるのが<strong>4つのエレメント（火・地・風・水）</strong>です。
+        12星座は3つずつこの4グループに分かれ、同じグループや相性の良いグループ同士で、
+        自然と波長が合いやすいとされています。
+      </p>
+
+      <h2>4つのエレメント</h2>
+      <ul className="space-y-2 !mt-2">
+        {ELEMENTS.map(([name, signs, desc]) => (
+          <li key={name} className="rounded-lg border border-white/10 bg-white/[0.03] p-3">
+            <span className="font-semibold text-white">{name}</span>
+            <span className="ml-2 text-xs text-indigo-300">{signs}</span>
+            <p className="mt-1 text-sm text-slate-300">{desc}</p>
+          </li>
+        ))}
+      </ul>
+
+      <h2>相性の基本パターン</h2>
+      <p>
+        一般に、<strong>同じエレメント同士</strong>は価値観が似て居心地が良く、
+        <strong>火と風／地と水</strong>は互いを高め合う好相性とされます。
+        逆にエレメントが遠い組み合わせは、違いが大きいぶん刺激的でもあり、
+        理解し合えれば成長できる関係になります。相性は「良い・悪い」ではなく、
+        付き合い方のヒントとして捉えるのがおすすめです。
+      </p>
+
+      {/* ↓↓↓ ここにあなたの体験を1〜2段落 ↓↓↓ */}
+
+      <h2>まとめ</h2>
+      <p>
+        エレメントを知ると、相手との違いの理由が見えてきます。
+        「このエレメントだからこう感じるのか」と分かるだけで、人間関係はぐっと楽になります。
+        まずは自分と身近な人のエレメントを調べてみましょう。
+      </p>
+    </GuideArticle>
+  );
+}

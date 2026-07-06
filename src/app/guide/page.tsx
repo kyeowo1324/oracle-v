@@ -1,62 +1,26 @@
 // src/app/guide/page.tsx
-// 占いガイド一覧（AdSense 審査用の情報性コンテンツのハブ）
-//
-// 記事は data 配列を増やすだけで一覧に追加されます。
-// 実際の記事本文は src/app/guide/[slug]/page.tsx またはコロケーションで用意します。
+// 占いガイド一覧 — 全10本
+// 記事追加手順: guide/<slug>/page.tsx を GuideArticle で作成 → 下に1行追加
 
 import Link from 'next/link';
 
 export const metadata = {
-  title: '占いガイド | Oracle V',
+  title: '占いガイド',
   description:
-    '星座占い・タロット・血液型占いの意味と読み解き方をわかりやすく解説。今日の運勢をもっと楽しむための読み物です。',
+    '星座占い・タロット・血液型占い・開運の意味と読み解き方をわかりやすく解説。今日の運勢をもっと楽しむための読み物です。',
 };
 
-// ⚠️ 審査目安: 各記事 1,500〜2,000字以上・独自の視点で 10〜15本。
-//    下記は骨組み。published:false は一覧に出ません(執筆中の下書き扱い)。
 export const GUIDE_ARTICLES = [
-  {
-    slug: 'astrology-basics',
-    title: '星座占いの基本 — 12星座の性格と運勢の読み方',
-    excerpt: '12星座それぞれの性格傾向と、日々の運勢をどう読み解くかを丁寧に解説します。',
-    category: '星座',
-    published: true,
-  },
-  {
-    slug: 'tarot-major-arcana',
-    title: 'タロット大アルカナ22枚の意味一覧',
-    excerpt: '愚者から世界まで、大アルカナ22枚が象徴するテーマを正位置・逆位置で整理。',
-    category: 'タロット',
-    published: false,
-  },
-  {
-    slug: 'tarot-three-card-spread',
-    title: '3枚引き（過去・現在・未来）の読み方',
-    excerpt: '初心者でも扱いやすい3枚スプレッドの手順と、カードのつなげ方のコツ。',
-    category: 'タロット',
-    published: false,
-  },
-  {
-    slug: 'blood-type-personality',
-    title: '血液型でわかる性格の傾向（日本の通説）',
-    excerpt: 'A・B・O・AB それぞれに語られる性格イメージを、文化的背景とともに紹介。',
-    category: '血液型',
-    published: false,
-  },
-  {
-    slug: 'how-to-read-daily-fortune',
-    title: '今日の運勢の見方 — 総合・恋愛・金運・仕事',
-    excerpt: '4カテゴリの運勢をどう受け止め、日常にどう活かすかの考え方をまとめました。',
-    category: '基礎',
-    published: false,
-  },
-  {
-    slug: 'lucky-color-number',
-    title: 'ラッキーカラー・ラッキーナンバーの活用法',
-    excerpt: '毎日の運勢に添えられる幸運の色と数字を、無理なく取り入れる方法。',
-    category: '基礎',
-    published: false,
-  },
+  { slug: 'what-is-uranai', title: '占いとの上手な付き合い方 — 当てるより「活かす」', excerpt: '星座・タロット・血液型などをどう受け止め、日常のヒントとして活かすかを考えます。', category: '基礎', published: true },
+  { slug: 'astrology-basics', title: '星座占いの基本 — 12星座の性格と運勢の読み方', excerpt: '12星座それぞれの性格傾向と、日々の運勢をどう読み解くかを丁寧に解説します。', category: '星座', published: true },
+  { slug: 'zodiac-compatibility', title: '12星座の相性 — エレメントで見る恋愛・友情の傾向', excerpt: '火・地・風・水の4エレメントから、星座の相性の傾向をやさしく解説します。', category: '星座', published: true },
+  { slug: 'tarot-basics', title: 'タロット占いの基本 — 大アルカナと正位置・逆位置の読み方', excerpt: '大アルカナ22枚の意味と、初心者向けの1枚引き（ワンオラクル）のやり方を解説。', category: 'タロット', published: true },
+  { slug: 'tarot-three-card-spread', title: 'タロット3枚引きの読み方 — 過去・現在・未来スプレッド', excerpt: '初心者でも扱いやすい3枚スプレッドの手順と、カードをつなげて読むコツ。', category: 'タロット', published: true },
+  { slug: 'tarot-love-reading', title: 'タロットで占う恋愛 — 相手の気持ちを読み解くヒント', excerpt: '恋愛でよく登場するカードの意味と、結果との向き合い方を紹介します。', category: 'タロット', published: true },
+  { slug: 'blood-type-personality', title: '血液型でわかる性格の傾向 — A・B・O・AB型の特徴', excerpt: '各血液型に語られる性格イメージと相性を、文化的背景とともに紹介します。', category: '血液型', published: true },
+  { slug: 'how-to-read-daily-fortune', title: '今日の運勢の見方 — 総合運・恋愛運・金運・仕事運', excerpt: '4カテゴリの運勢をどう受け止め、日常にどう活かすかをまとめました。', category: '基礎', published: true },
+  { slug: 'lucky-color-number', title: 'ラッキーカラー・ラッキーナンバーの活用法【2026年】', excerpt: '2026年のラッキーカラーと、日常への無理のない取り入れ方を紹介します。', category: '基礎', published: true },
+  { slug: 'kaiun-habits', title: '毎日できる開運習慣 — 今日から始める運気アップの小さな工夫', excerpt: '玄関の掃除、朝のひと工夫など、無理なく続けられる開運アクション。', category: '基礎', published: true },
 ] as const;
 
 export default function GuideIndexPage() {
@@ -66,9 +30,9 @@ export default function GuideIndexPage() {
     <main className="mx-auto max-w-2xl px-5 py-12">
       <header className="mb-10">
         <p className="mb-2 text-sm tracking-widest text-indigo-300">GUIDE</p>
-        <h1 className="text-2xl font-bold text-white">占いガイド</h1>
+        <h1 className="text-2xl font-bold text-white font-mincho">占いガイド</h1>
         <p className="mt-3 text-[15px] leading-relaxed text-slate-300">
-          星座・タロット・血液型の意味や読み解き方を、やさしくまとめた読み物です。
+          星座・タロット・血液型・開運の意味や読み解き方を、やさしくまとめた読み物です。
           今日の運勢をもっと深く楽しむための手引きとしてご活用ください。
         </p>
       </header>
@@ -87,13 +51,6 @@ export default function GuideIndexPage() {
           </li>
         ))}
       </ul>
-
-      {articles.length < 10 && (
-        <p className="mt-10 text-xs text-slate-500">
-          ※ 現在公開中：{articles.length}本。AdSense 審査には10本以上を推奨します。
-          記事を書き終えたら該当記事の <code>published</code> を <code>true</code> にしてください。
-        </p>
-      )}
     </main>
   );
 }

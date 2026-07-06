@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import AdBanner from '@/components/AdBanner';
 
 export default function HomePage() {
   const [lang, setLang] = useState<'ja' | 'ko'>('ja');
@@ -105,9 +106,7 @@ export default function HomePage() {
         </main>
 
         {/* 광고 배너 자리 (AdSense) */}
-        <div className="mt-12 flex h-24 w-full items-center justify-center rounded-lg border border-dashed border-[#4A4C86] text-xs text-[#6B6D9E]">
-          {t.adLabel} · 320×100
-        </div>
+        <AdBanner slot="0000000000" />
 
         {/* SEO 텍스트 콘텐츠 (AdSense 승인 대비) */}
         <section className="mt-8 rounded-xl bg-[#1A1B3A]/60 p-5">

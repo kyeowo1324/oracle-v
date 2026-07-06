@@ -1,0 +1,63 @@
+// src/app/guide/tarot-three-card-spread/page.tsx
+// 【下書き⑤】3枚引き（過去・現在・未来）の読み方
+// ⚠️ 公開前に体験を1〜2段落追加。
+
+import GuideArticle from '@/components/GuideArticle';
+
+export const metadata = {
+  title: 'タロット3枚引きの読み方 — 過去・現在・未来スプレッド',
+  description:
+    '初心者でも扱いやすいタロットの3枚引き（過去・現在・未来）。カードの並べ方から、3枚をひとつの物語としてつなげて読むコツまでやさしく解説します。',
+};
+
+const POS = [
+  ['① 過去', '左のカード', '今の状況の背景・原因。ここまでの流れや、あなたが抱えてきたテーマを表します。'],
+  ['② 現在', '中央のカード', '今まさに置かれている状況・気持ち。相談の核心にあたる最も重要な1枚です。'],
+  ['③ 未来', '右のカード', 'このまま進んだ場合の見通し・可能性。決定した結末ではなく「傾向」として読みます。'],
+];
+
+export default function ThreeCardPage() {
+  return (
+    <GuideArticle
+      category="タロット / 実践"
+      title="タロット3枚引きの読み方 — 過去・現在・未来スプレッド"
+      description={metadata.description}
+      slug="tarot-three-card-spread"
+    >
+      <p>
+        1枚引き（ワンオラクル）に慣れたら、次におすすめなのが
+        <strong>3枚引き（スリーカード）</strong>です。3枚を「過去・現在・未来」の順に並べ、
+        時間の流れとして読み解きます。シンプルながら物語性があり、初心者にも扱いやすい定番スプレッドです。
+      </p>
+
+      <h2>並べ方と各位置の意味</h2>
+      <ul className="space-y-2 !mt-2">
+        {POS.map(([name, place, desc]) => (
+          <li key={name} className="rounded-lg border border-white/10 bg-white/[0.03] p-3">
+            <span className="font-semibold text-white">{name}</span>
+            <span className="ml-2 text-xs text-indigo-300">{place}</span>
+            <p className="mt-1 text-sm text-slate-300">{desc}</p>
+          </li>
+        ))}
+      </ul>
+
+      <h2>3枚を「つなげて」読むコツ</h2>
+      <p>
+        3枚引きの醍醐味は、カードを1枚ずつバラバラに見るのではなく、
+        <strong>ひとつの物語としてつなげる</strong>ことです。
+        「過去にこういう流れがあり、今この状況で、このまま進むとこうなりそう」と、
+        左から右へ一本のストーリーを描くように読みます。逆位置が混じったら、
+        その部分に停滞や課題があると受け取ると自然です。
+      </p>
+
+      {/* ↓↓↓ ここにあなたの体験を1〜2段落 ↓↓↓ */}
+
+      <h2>まとめ</h2>
+      <p>
+        3枚引きは、状況を時間軸で整理したいときに最適です。
+        当サービスの「今日の運勢」でもこの過去・現在・未来の3枚を採用しています。
+        まずは気軽に3枚を引いて、物語を紡ぐ感覚を楽しんでみてください。
+      </p>
+    </GuideArticle>
+  );
+}
