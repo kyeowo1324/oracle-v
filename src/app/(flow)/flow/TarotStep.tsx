@@ -1,5 +1,6 @@
 // src/app/(flow)/flow/TarotStep.tsx
-// 셔플 횟수 지정 → 서버가 156풀에서 6장 추출 → 3장 선택(과거·현재·미래)
+// 셔플 횟수 지정 → 서버가 156풀에서 6장 추출 → cardCount만큼 선택
+//   fortune : 3장(과거·현재·미래)  /  decision : 1장(ワンオラクル)
 // 카드 뒷면: /public/tarot-images/back.jpg 있으면 사용, 없으면 CSS 폴백. 카드 비율 3:5.
 'use client';
 
@@ -16,7 +17,6 @@ interface DrawnCard {
 
 const POSITIONS = ['過去', '現在', '未来'];
 
-// 카드 뒷면: back.jpg 있으면 이미지, 없으면 CSS 별문양
 function CardBack({ picked, label }: { picked: boolean; label?: string }) {
   const [imgOk, setImgOk] = useState(true);
   if (picked) {
@@ -36,13 +36,23 @@ function CardBack({ picked, label }: { picked: boolean; label?: string }) {
   return <span className="text-2xl text-[#C9A227]/40">✦</span>;
 }
 
-export function TarotStep({ onDone, onBack }: { onDone: () => void; onBack: () => void }) {
+export function TarotStep({
+  onDone,
+  onBack,
+  cardCount = 3,
+}: {
+  onDone: () => void;
+  onBack: () => void;
+  cardCount?: number;
+}) {
   const f = useFortune();
   const [phase, setPhase] = useState<'shuffle' | 'pick'>('shuffle');
   const [shuffleCount, setShuffleCount] = useState(3);
   const [loading, setLoading] = useState(false);
   const [six, setSix] = useState<DrawnCard[]>([]);
   const [picked, setPicked] = useState<number[]>([]);
+
+  const single = cardCount === 1;
 
   const doShuffle = async () => {
     setLoading(true);
@@ -62,7 +72,7 @@ export function TarotStep({ onDone, onBack }: { onDone: () => void; onBack: () =
   };
 
   const pick = (i: number) => {
-    if (picked.includes(i) || picked.length >= 3) return;
+    if (picked.includes(i) || picked.length >= cardCount) return;
     setPicked([...picked, i]);
   };
 
@@ -101,26 +111,30 @@ export function TarotStep({ onDone, onBack }: { onDone: () => void; onBack: () =
 
       {phase === 'pick' && (
         <>
-          <h2 className="text-center text-2xl" style={{ fontFamily: "'Shippori Mincho', serif" }}>3枚を選ぶ</h2>
-          <p className="mt-2 text-center text-sm text-[#B8B4D9]">過去・現在・未来（{picked.length}/3）</p>
+          <h2 className="text-center text-2xl" style={{ fontFamily: "'Shippori Mincho', serif" }}>
+            {single ? '1枚を選ぶ' : '3枚を選ぶ'}
+          </h2>
+          <p className="mt-2 text-center text-sm text-[#B8B4D9]">
+            {single ? `直感で1枚（${picked.length}/1）` : `過去・現在・未来（${picked.length}/3）`}
+          </p>
 
-          {/* 6장 뒷면 (3:5 비율) */}
           <div className="mt-8 grid grid-cols-3 gap-3">
             {six.map((_, i) => {
               const order = picked.indexOf(i);
               const isPicked = order !== -1;
+              const label = single ? '✓' : POSITIONS[order];
               return (
                 <button
                   key={i}
                   onClick={() => pick(i)}
-                  disabled={picked.length >= 3 && !isPicked}
+                  disabled={picked.length >= cardCount && !isPicked}
                   className={`relative flex items-center justify-center overflow-hidden rounded-md border transition-all duration-300 aspect-[3/5] ${
                     isPicked
                       ? '-translate-y-2 border-[#C9A227] bg-[#C9A227]'
                       : 'border-[#4A4C86] bg-gradient-to-b from-[#2A2D6B] to-[#1A1B3A] hover:-translate-y-1 hover:border-[#C9A227] disabled:opacity-40'
                   }`}
                 >
-                  <CardBack picked={isPicked} label={POSITIONS[order]} />
+                  <CardBack picked={isPicked} label={label} />
                 </button>
               );
             })}
@@ -130,7 +144,7 @@ export function TarotStep({ onDone, onBack }: { onDone: () => void; onBack: () =
             <button onClick={() => setPhase('shuffle')} className="flex-1 rounded-lg border border-[#3A3C6B] py-3 text-sm text-[#B8B4D9] hover:border-[#C9A227]">
               もう一度シャッフル
             </button>
-            <button onClick={confirm} disabled={picked.length < 3} className="flex-[2] rounded-lg bg-[#C9A227] py-3 font-medium text-[#14152B] transition-opacity disabled:opacity-30">
+            <button onClick={confirm} disabled={picked.length < cardCount} className="flex-[2] rounded-lg bg-[#C9A227] py-3 font-medium text-[#14152B] transition-opacity disabled:opacity-30">
               結果を見る
             </button>
           </div>

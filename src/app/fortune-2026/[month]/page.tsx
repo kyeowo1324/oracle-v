@@ -1,6 +1,5 @@
 // src/app/fortune-2026/[month]/page.tsx
-// 2026年 月別運勢の個別ページ(動的ルート)。1ファイルで全月をカバー。
-// URL例: /fortune-2026/1 , /fortune-2026/2 ...
+// ★ Next.js 15/16: params가 Promise → await 필요. (동기 접근이 404의 원인이었음)
 
 import { notFound } from 'next/navigation';
 import MonthlyFortune from '@/components/MonthlyFortune';
@@ -10,14 +9,16 @@ export function generateStaticParams() {
   return MONTHLY_2026.map((m) => ({ month: String(m.month) }));
 }
 
-export function generateMetadata({ params }: { params: { month: string } }) {
-  const data = MONTHLY_2026.find((m) => String(m.month) === params.month);
+export async function generateMetadata({ params }: { params: Promise<{ month: string }> }) {
+  const { month } = await params;
+  const data = MONTHLY_2026.find((m) => String(m.month) === month);
   if (!data) return {};
   return { title: data.title, description: data.description };
 }
 
-export default function MonthlyPage({ params }: { params: { month: string } }) {
-  const data = MONTHLY_2026.find((m) => String(m.month) === params.month);
+export default async function MonthlyPage({ params }: { params: Promise<{ month: string }> }) {
+  const { month } = await params;
+  const data = MONTHLY_2026.find((m) => String(m.month) === month);
   if (!data) notFound();
   return <MonthlyFortune data={data} />;
 }
