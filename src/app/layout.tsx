@@ -7,6 +7,7 @@ import type { Metadata, Viewport } from 'next';
 import { Shippori_Mincho, Noto_Sans_JP } from 'next/font/google';
 import AdSenseScript from '@/components/AdSenseScript';
 import SiteFooter from '@/components/SiteFooter';
+import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 
 // 見出し用の明朝 + 本文用のゴシック。CSS変数として全ページで利用可能に。
@@ -76,6 +77,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="flex-1">{children}</div>
         <SiteFooter />
         <AdSenseScript />
+        <Analytics />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
