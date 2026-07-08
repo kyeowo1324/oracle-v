@@ -1,11 +1,11 @@
 // src/app/(flow)/flow/TarotStep.tsx
-// 셔플 횟수 지정 → 서버가 156풀에서 6장 추출 → cardCount만큼 선택
-//   fortune : 3장(과거·현재·미래)  /  decision : 1장(ワンオラクル)
-// 카드 뒷면: /public/tarot-images/back.jpg 있으면 사용, 없으면 CSS 폴백. 카드 비율 3:5.
+// 셔플 버튼 → 셔플 애니메이션(최소 1.4초) + API 병렬 → pick 단계
+// cardCount: fortune=3, decision=1
 'use client';
 
 import { useState } from 'react';
 import { useFortune } from '@/lib/fortune-context';
+import ShuffleAnimation from '@/components/ShuffleAnimation';
 
 interface DrawnCard {
   card_key: string;
@@ -19,56 +19,43 @@ const POSITIONS = ['過去', '現在', '未来'];
 
 function CardBack({ picked, label }: { picked: boolean; label?: string }) {
   const [imgOk, setImgOk] = useState(true);
-  if (picked) {
-    return <span className="text-sm font-medium text-[#14152B]">{label}</span>;
-  }
+  if (picked) return <span className="text-sm font-medium text-[#14152B]">{label}</span>;
   if (imgOk) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src="/tarot-images/back.jpg"
-        alt=""
-        onError={() => setImgOk(false)}
-        className="h-full w-full rounded-md object-cover"
-      />
+      <img src="/tarot-images/back.jpg" alt="" onError={() => setImgOk(false)} className="h-full w-full rounded-md object-cover" />
     );
   }
   return <span className="text-2xl text-[#C9A227]/40">✦</span>;
 }
 
 export function TarotStep({
-  onDone,
-  onBack,
-  cardCount = 3,
+  onDone, onBack, cardCount = 3,
 }: {
-  onDone: () => void;
-  onBack: () => void;
-  cardCount?: number;
+  onDone: () => void; onBack: () => void; cardCount?: number;
 }) {
   const f = useFortune();
-  const [phase, setPhase] = useState<'shuffle' | 'pick'>('shuffle');
+  const [phase, setPhase] = useState<'shuffle' | 'shuffling' | 'pick'>('shuffle');
   const [shuffleCount, setShuffleCount] = useState(3);
-  const [loading, setLoading] = useState(false);
   const [six, setSix] = useState<DrawnCard[]>([]);
   const [picked, setPicked] = useState<number[]>([]);
 
   const single = cardCount === 1;
 
   const doShuffle = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch('/api/tarot/draw', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ shuffleCount, lang: 'ja' }),
-      });
-      const data = await res.json();
-      setSix(data.cards ?? []);
-      setPicked([]);
-      setPhase('pick');
-    } finally {
-      setLoading(false);
-    }
+    setPhase('shuffling');
+    // 애니메이션 최소 노출 시간과 API 호출을 병렬로 → 둘 다 끝나야 pick으로
+    const minDelay = new Promise((r) => setTimeout(r, 1400));
+    const fetchCards = fetch('/api/tarot/draw', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ shuffleCount, lang: 'ja' }),
+    }).then((res) => res.json()).catch(() => ({ cards: [] }));
+
+    const [, data] = await Promise.all([minDelay, fetchCards]);
+    setSix(data.cards ?? []);
+    setPicked([]);
+    setPhase('pick');
   };
 
   const pick = (i: number) => {
@@ -83,11 +70,14 @@ export function TarotStep({
     onDone();
   };
 
+  // 셔플 애니메이션 중
+  if (phase === 'shuffling') {
+    return <ShuffleAnimation label={`${shuffleCount}回シャッフル中…`} />;
+  }
+
   return (
     <div className="flex flex-1 flex-col justify-center">
-      <button onClick={onBack} className="mb-4 self-start text-xs text-[#8B8DBC] hover:text-[#F6F1E4]">
-        ← 戻る
-      </button>
+      <button onClick={onBack} className="mb-4 self-start text-xs text-[#8B8DBC] hover:text-[#F6F1E4]">← 戻る</button>
 
       {phase === 'shuffle' && (
         <>
@@ -103,8 +93,8 @@ export function TarotStep({
             <button onClick={() => setShuffleCount((n) => Math.min(20, n + 1))} className="h-10 w-10 rounded-full border border-[#3A3C6B] text-xl text-[#F6F1E4] hover:border-[#C9A227]" aria-label="増やす">＋</button>
           </div>
 
-          <button onClick={doShuffle} disabled={loading} className="mt-10 w-full rounded-lg bg-[#C9A227] py-3 font-medium text-[#14152B] transition-opacity disabled:opacity-40">
-            {loading ? 'シャッフル中…' : `${shuffleCount}回シャッフルして引く`}
+          <button onClick={doShuffle} className="mt-10 w-full rounded-lg bg-[#C9A227] py-3 font-medium text-[#14152B]">
+            {shuffleCount}回シャッフルして引く
           </button>
         </>
       )}

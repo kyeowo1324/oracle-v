@@ -1,13 +1,12 @@
 // src/app/fortune-2026/page.tsx
-// 2026年 月別運勢の一覧(ランディング)。SEOの入口ページ。
-
+// 2026年 月別運勢の一覧 — 목록 중간에 광고 1개
 import Link from 'next/link';
+import AdBanner from '@/components/AdBanner';
 import { MONTHLY_2026 } from '@/data/monthly-2026';
 
 export const metadata = {
   title: '2026年 月別運勢 — 星座×タロットで読む1年',
-  description:
-    '2026年の月別運勢を、12星座とタロットの組み合わせで解説。各月の輝く星座・注意したい星座、ラッキーカラーやアイテムをまとめてお届けします。',
+  description: '2026年の月別運勢を、12星座とタロットの組み合わせで解説。各月の輝く星座・注意したい星座、ラッキーカラーやアイテムをまとめてお届けします。',
 };
 
 export default function Fortune2026IndexPage() {
@@ -24,7 +23,7 @@ export default function Fortune2026IndexPage() {
       </header>
 
       <ul className="space-y-4">
-        {MONTHLY_2026.map((m) => (
+        {MONTHLY_2026.map((m, i) => (
           <li key={m.slug}>
             <Link
               href={`/fortune-2026/${m.month}`}
@@ -35,10 +34,10 @@ export default function Fortune2026IndexPage() {
                 <span className="text-xs text-indigo-300">今月のカード: {m.tarot.name}</span>
               </div>
               <h2 className="mt-2 text-lg font-semibold text-white">{m.title}</h2>
-              <p className="mt-1 text-sm text-slate-400">
-                輝く星座: {m.best.map((b) => b.sign).join('・')}
-              </p>
+              <p className="mt-1 text-sm text-slate-400">輝く星座: {m.best.map((b) => b.sign).join('・')}</p>
             </Link>
+            {/* 목록 중간(3번째 뒤)에 광고 1개 */}
+            {i === 2 && <AdBanner slot="0000000000" />}
           </li>
         ))}
       </ul>

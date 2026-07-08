@@ -1,45 +1,25 @@
 // src/app/page.tsx
+// 일본 전용: JA/KO 토글 제거. 텍스트는 ja 고정(구조는 유지 → 나중에 다국어 복구 쉬움).
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import AdBanner from '@/components/AdBanner';
 
 export default function HomePage() {
-  const [lang, setLang] = useState<'ja' | 'ko'>('ja');
-
   const t = {
-    ja: {
-      eyebrow: 'AI占いサービス',
-      title: 'Oracle V',
-      subtitle: '星座とタロットで、今日のあなたを占う',
-      cardA: { label: '今日の運勢', desc: '星座・タロットから選んで占う', cta: '占ってみる' },
-      cardB: { label: 'する・しない', desc: 'Yes/No、迷いに答えを', cta: '決める' },
-      adLabel: '広告',
-      guideTitle: '占いガイド',
-      guideA: '星座占いの基本',
-      guideB: 'タロットカードの意味',
-      guideC: '血液型でわかる性格',
-      guideMore: 'ガイドをもっと見る',
-      monthly: '2026年 月別運勢',
-      footer: '本サービスはエンターテインメント目的です',
-    },
-    ko: {
-      eyebrow: 'AI 운세 서비스',
-      title: 'Oracle V',
-      subtitle: '별자리와 타로로 오늘의 나를 점친다',
-      cardA: { label: '오늘의 운세', desc: '별자리·타로 중 골라서 보기', cta: '운세 보기' },
-      cardB: { label: '한다·안한다', desc: 'Yes/No, 망설임에 답을', cta: '결정하기' },
-      adLabel: '광고',
-      guideTitle: '운세 가이드',
-      guideA: '별자리 운세의 기본',
-      guideB: '타로카드의 의미',
-      guideC: '혈액형으로 보는 성격',
-      guideMore: '가이드 더 보기',
-      monthly: '2026년 월별 운세',
-      footer: '본 서비스는 엔터테인먼트 목적입니다',
-    },
-  }[lang];
+    eyebrow: 'AI占いサービス',
+    title: 'Oracle V',
+    subtitle: '星座とタロットで、今日のあなたを占う',
+    cardA: { label: '今日の運勢', desc: '星座・タロットから選んで占う', cta: '占ってみる' },
+    cardB: { label: 'する・しない', desc: 'Yes/No、迷いに答えを', cta: '決める' },
+    guideTitle: '占いガイド',
+    guideA: '星座占いの基本',
+    guideB: 'タロットカードの意味',
+    guideC: '血液型でわかる性格',
+    guideMore: 'ガイドをもっと見る',
+    monthly: '2026年 月別運勢',
+    footer: '本サービスはエンターテインメント目的です',
+  };
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#14152B] text-[#F6F1E4]">
@@ -49,23 +29,7 @@ export default function HomePage() {
       />
       <div className="pointer-events-none absolute inset-0 opacity-70 [background-image:radial-gradient(1px_1px_at_20%_30%,#F5E6A8_100%,transparent),radial-gradient(1px_1px_at_75%_15%,#F5E6A8_100%,transparent),radial-gradient(1.5px_1.5px_at_60%_45%,#F5E6A8_100%,transparent),radial-gradient(1px_1px_at_85%_60%,#F5E6A8_100%,transparent),radial-gradient(1px_1px_at_10%_65%,#F5E6A8_100%,transparent),radial-gradient(1.5px_1.5px_at_40%_10%,#F5E6A8_100%,transparent)]" />
 
-      <div className="relative mx-auto flex min-h-screen max-w-md flex-col px-6 pb-10 pt-8 sm:max-w-2xl">
-        {/* 언어 토글 */}
-        <div className="flex justify-end gap-1 text-xs">
-          {(['ja', 'ko'] as const).map((l) => (
-            <button
-              key={l}
-              onClick={() => setLang(l)}
-              aria-pressed={lang === l}
-              className={`rounded-full px-3 py-1 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#C9A227] ${
-                lang === l ? 'bg-[#C9A227] text-[#14152B]' : 'text-[#B8B4D9] hover:text-[#F6F1E4]'
-              }`}
-            >
-              {l.toUpperCase()}
-            </button>
-          ))}
-        </div>
-
+      <div className="relative mx-auto flex min-h-screen max-w-md flex-col px-6 pb-10 pt-10 sm:max-w-2xl">
         {/* 브랜드 헤더 */}
         <header className="mt-6 text-center">
           <p className="font-sans text-[11px] tracking-[0.3em] text-[#C9A227]">{t.eyebrow}</p>
@@ -88,7 +52,7 @@ export default function HomePage() {
         {/* 광고 배너 자리 */}
         <AdBanner slot="0000000000" />
 
-        {/* SEO 텍스트 콘텐츠 — 실제 존재하는 slug로 링크 */}
+        {/* SEO 텍스트 콘텐츠 */}
         <section className="mt-8 rounded-xl bg-[#1A1B3A]/60 p-5">
           <h2 className="font-sans text-xs font-medium tracking-wide text-[#C9A227]">{t.guideTitle}</h2>
           <ul className="mt-3 space-y-2 font-sans text-sm text-[#D8D5EE]">
@@ -116,7 +80,7 @@ export default function HomePage() {
   );
 }
 
-// 오미쿠지 카드
+// 오미쿠지 카드 (흔들림 애니메이션 포함 — 2-B에서 강화 예정, 지금도 동작)
 function OmikujiCard({
   href, icon, label, desc, cta, rotate, swayDelay,
 }: {
@@ -134,7 +98,7 @@ function OmikujiCard({
       <span className="mt-5 rounded-full bg-[#C9A227] px-5 py-1.5 font-sans text-sm font-medium text-[#14152B] transition-opacity group-hover:opacity-90">
         {cta}
       </span>
-      <style>{`@keyframes sway { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-4px) } }`}</style>
+      <style>{`@keyframes sway { 0%,100% { transform: translateY(0) ${rotate === '-rotate-2' ? 'rotate(-2deg)' : 'rotate(2deg)'} } 50% { transform: translateY(-5px) ${rotate === '-rotate-2' ? 'rotate(-2deg)' : 'rotate(2deg)'} } }`}</style>
     </Link>
   );
 }

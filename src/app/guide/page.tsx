@@ -1,13 +1,11 @@
 // src/app/guide/page.tsx
-// 占いガイド一覧 — 全10本
-// 記事追加手順: guide/<slug>/page.tsx を GuideArticle で作成 → 下に1行追加
-
+// 占いガイド一覧 — 목록 중간에 광고 1개 삽입
 import Link from 'next/link';
+import AdBanner from '@/components/AdBanner';
 
 export const metadata = {
   title: '占いガイド',
-  description:
-    '星座占い・タロット・血液型占い・開運の意味と読み解き方をわかりやすく解説。今日の運勢をもっと楽しむための読み物です。',
+  description: '星座占い・タロット・血液型占い・開運の意味と読み解き方をわかりやすく解説。',
 };
 
 export const GUIDE_ARTICLES = [
@@ -38,7 +36,7 @@ export default function GuideIndexPage() {
       </header>
 
       <ul className="space-y-4">
-        {articles.map((a) => (
+        {articles.map((a, i) => (
           <li key={a.slug}>
             <Link
               href={`/guide/${a.slug}`}
@@ -48,6 +46,8 @@ export default function GuideIndexPage() {
               <h2 className="mt-1 text-lg font-semibold text-white">{a.title}</h2>
               <p className="mt-1 text-sm text-slate-400">{a.excerpt}</p>
             </Link>
+            {/* 목록 중간(4번째 뒤)에 광고 1개 */}
+            {i === 3 && <AdBanner slot="0000000000" />}
           </li>
         ))}
       </ul>
