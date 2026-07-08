@@ -13,6 +13,8 @@ export default function SiteFooter() {
         <nav className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
           <Link href="/" className="hover:text-slate-200">ホーム</Link>
           <Link href="/guide" className="hover:text-slate-200">占いガイド</Link>
+          <Link href="/faq" className="hover:text-slate-200">よくある質問</Link>
+          <Link href="/about" className="hover:text-slate-200">Oracle Vについて</Link>
           <Link href="/legal/privacy" className="hover:text-slate-200">プライバシーポリシー</Link>
           <Link href="/legal/disclaimer" className="hover:text-slate-200">免責事項</Link>
           <Link href="/legal/contact" className="hover:text-slate-200">お問い合わせ</Link>

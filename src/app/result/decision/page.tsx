@@ -2,38 +2,67 @@
 // する・しない 결과: 판정 → 카드 → 상세토글 → AIひとこと + AdBanner + ShareButtons
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AdBanner from '@/components/AdBanner';
 import ShareButtons from '@/components/ShareButtons';
 import FortuneTellerLoader from '@/components/FortuneTellerLoader';
 import ZoomableTarotCard from '@/components/ZoomableTarotCard';
+import AdGateScreen from '@/components/AdGateScreen';
+import { hasUsedFreeView, markFreeViewUsed } from '@/lib/dailyGate';
 
 export default function DecisionResultPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [gated, setGated] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [showDetail, setShowDetail] = useState(false);
+
+  const runFetch = async (tarotFull: any[], m: any) => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/decision/result', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: m.question, tarotShuffleResult: tarotFull, lang: 'ja' }),
+      });
+      const raw = await res.text();
+      setResult(raw ? JSON.parse(raw) : { error: 'empty' });
+    } catch {
+      setResult({ error: 'fetch' });
+    } finally {
+      setLoading(false);
+      markFreeViewUsed('decision');
+    }
+  };
 
   useEffect(() => {
     const tarotFull = JSON.parse(sessionStorage.getItem('tarotFull') ?? '[]');
     const m = JSON.parse(sessionStorage.getItem('fortuneMeta') ?? '{}');
     if (!tarotFull.length) { router.replace('/'); return; }
-    (async () => {
-      try {
-        const res = await fetch('/api/decision/result', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ question: m.question, tarotShuffleResult: tarotFull, lang: 'ja' }),
-        });
-        const raw = await res.text();
-        setResult(raw ? JSON.parse(raw) : { error: 'empty' });
-      } catch {
-        setResult({ error: 'fetch' });
-      } finally { setLoading(false); }
-    })();
+
+    if (hasUsedFreeView('decision')) {
+      setGated(true);
+      setLoading(false);
+      return;
+    }
+    runFetch(tarotFull, m);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (gated) {
+    return (
+      <AdGateScreen
+        onContinue={() => {
+          setGated(false);
+          const tarotFull = JSON.parse(sessionStorage.getItem('tarotFull') ?? '[]');
+          const m = JSON.parse(sessionStorage.getItem('fortuneMeta') ?? '{}');
+          runFetch(tarotFull, m);
+        }}
+      />
+    );
+  }
 
   if (loading) {
     return <FortuneTellerLoader message="答えを占っています" />;
@@ -96,6 +125,15 @@ export default function DecisionResultPage() {
 
         {/* 광고 1 */}
         <AdBanner slot="0000000000" />
+
+        {/* 관련 가이드 링크 */}
+        <Link
+          href="/guide/tarot-basics"
+          className="mt-8 flex items-center justify-between rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/50 px-4 py-3 text-sm text-[#D8D5EE] transition-colors hover:border-[#C9A227]"
+        >
+          <span>📖 タロット占いの基本をもっと詳しく</span>
+          <span className="text-[#C9A227]">→</span>
+        </Link>
 
         {/* 공유 */}
         <div className="mt-8">

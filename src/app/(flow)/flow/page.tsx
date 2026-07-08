@@ -53,7 +53,7 @@ function FlowInner() {
           <TopicStep onNext={() => setStep('profile')} />
         )}
         {!isDecision && step === 'profile' && (
-          <ProfileStep onNext={() => setStep('zodiac')} />
+          <ProfileStep onNext={() => setStep('zodiac')} onBack={() => setStep('topic')} />
         )}
         {!isDecision && step === 'zodiac' && (
           <ZodiacStep

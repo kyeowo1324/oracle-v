@@ -13,7 +13,7 @@ export default function PrivacyPage() {
   return (
     <main className="mx-auto max-w-2xl px-5 py-12 text-slate-200">
       <h1 className="mb-2 text-2xl font-bold text-white">プライバシーポリシー</h1>
-      <p className="mb-8 text-sm text-slate-400">最終更新日：2026年[　]月[　]日</p>
+      <p className="mb-8 text-sm text-slate-400">最終更新日：2026年7月7日</p>
 
       <section className="space-y-6 text-[15px] leading-relaxed">
         <div>

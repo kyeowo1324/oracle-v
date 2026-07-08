@@ -2,6 +2,7 @@
 // 오늘의 운세 첫 단계: 6주제 중 하나 선택. 선택 즉시 다음 단계로.
 'use client';
 
+import { useState } from 'react';
 import { useFortune, Topic } from '@/lib/fortune-context';
 
 const TOPICS: { code: Topic; ja: string; icon: string; desc: string }[] = [
@@ -15,8 +16,12 @@ const TOPICS: { code: Topic; ja: string; icon: string; desc: string }[] = [
 
 export function TopicStep({ onNext }: { onNext: () => void }) {
   const f = useFortune();
+  // 화면 표시용 로컬 선택 상태. f.topic은 context 기본값이 'general'이라
+  // 그대로 쓰면 아직 아무것도 안 골랐는데 総合運이 선택된 것처럼 보이는 문제가 있었음.
+  const [picked, setPicked] = useState<Topic | null>(null);
 
   const select = (t: Topic) => {
+    setPicked(t);
     f.setTopic(t);
     onNext();
   };
@@ -33,16 +38,16 @@ export function TopicStep({ onNext }: { onNext: () => void }) {
           <button
             key={t.code}
             onClick={() => select(t.code)}
-            aria-pressed={f.topic === t.code}
+            aria-pressed={picked === t.code}
             className={`flex flex-col items-center rounded-xl border py-5 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#C9A227] ${
-              f.topic === t.code
+              picked === t.code
                 ? 'border-[#C9A227] bg-[#C9A227] text-[#14152B]'
                 : 'border-[#3A3C6B] bg-[#1E2050] text-[#F6F1E4] hover:border-[#C9A227]'
             }`}
           >
             <span className="text-3xl">{t.icon}</span>
             <span className="mt-2 text-base" style={{ fontFamily: "'Shippori Mincho', serif" }}>{t.ja}</span>
-            <span className={`mt-1 text-[11px] ${f.topic === t.code ? 'text-[#14152B]/70' : 'text-[#8B8DBC]'}`}>
+            <span className={`mt-1 text-[11px] ${picked === t.code ? 'text-[#14152B]/70' : 'text-[#8B8DBC]'}`}>
               {t.desc}
             </span>
           </button>
@@ -51,3 +56,4 @@ export function TopicStep({ onNext }: { onNext: () => void }) {
     </div>
   );
 }
+

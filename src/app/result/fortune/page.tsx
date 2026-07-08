@@ -2,52 +2,92 @@
 // A+B+F 결과 + 실제 AdBanner + ShareButtons(LINE·X·Threads·복사·네이티브)
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AdBanner from '@/components/AdBanner';
 import ShareButtons from '@/components/ShareButtons';
 import FortuneTellerLoader from '@/components/FortuneTellerLoader';
 import ZoomableTarotCard from '@/components/ZoomableTarotCard';
+import AdGateScreen from '@/components/AdGateScreen';
+import { hasUsedFreeView, markFreeViewUsed } from '@/lib/dailyGate';
 
 const ZODIAC_JA: Record<string, string> = {
   aries: '牡羊座', taurus: '牡牛座', gemini: '双子座', cancer: '蟹座', leo: '獅子座', virgo: '乙女座',
   libra: '天秤座', scorpio: '蠍座', sagittarius: '射手座', capricorn: '山羊座', aquarius: '水瓶座', pisces: '魚座',
 };
 
+// 選んだテーマに合わせて関連ガイド記事へ誘導(내부링크 + 체류시간)
+const RELATED_GUIDE: Record<string, { slug: string; title: string }> = {
+  general: { slug: 'how-to-read-daily-fortune', title: '今日の運勢の見方をもっと詳しく' },
+  love: { slug: 'tarot-love-reading', title: 'タロットで占う恋愛のヒントをもっと見る' },
+  money: { slug: 'lucky-color-number', title: 'ラッキーカラー・ナンバーの活用法を見る' },
+  work: { slug: 'tarot-three-card-spread', title: 'タロット3枚引きの読み方を詳しく知る' },
+  health: { slug: 'kaiun-habits', title: '毎日できる開運習慣をチェックする' },
+  relationship: { slug: 'zodiac-compatibility', title: '星座の相性についてもっと知る' },
+};
+
 export default function FortuneResultPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [gated, setGated] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState(false);
   const [meta, setMeta] = useState<any>({});
+
+  const runFetch = async (tarotFull: any[], m: any) => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/fortune/result', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          topic: m.topic ?? 'general',
+          zodiacSign: m.zodiacSign, bloodType: m.bloodType, gender: m.gender,
+          tarotShuffleResult: tarotFull, lang: 'ja',
+        }),
+      });
+      const raw = await res.text();
+      const data = raw ? JSON.parse(raw) : null;
+      if (!data || data.error) setError(true);
+      else setResult(data);
+    } catch (e) {
+      console.error('fortune fetch failed:', e);
+      setError(true);
+    } finally {
+      setLoading(false);
+      markFreeViewUsed('fortune'); // 오늘 조회 처리(무료분이든 광고 시청 후든 동일하게 기록)
+    }
+  };
 
   useEffect(() => {
     const tarotFull = JSON.parse(sessionStorage.getItem('tarotFull') ?? '[]');
     const m = JSON.parse(sessionStorage.getItem('fortuneMeta') ?? '{}');
     setMeta(m);
     if (!tarotFull.length) { router.replace('/'); return; }
-    (async () => {
-      try {
-        const res = await fetch('/api/fortune/result', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            topic: m.topic ?? 'general',
-            zodiacSign: m.zodiacSign, bloodType: m.bloodType, gender: m.gender,
-            tarotShuffleResult: tarotFull, lang: 'ja',
-          }),
-        });
-        const raw = await res.text();
-        const data = raw ? JSON.parse(raw) : null;
-        if (!data || data.error) setError(true);
-        else setResult(data);
-      } catch (e) {
-        console.error('fortune fetch failed:', e);
-        setError(true);
-      } finally { setLoading(false); }
-    })();
+
+    if (hasUsedFreeView('fortune')) {
+      // 오늘의 무료 조회는 이미 사용 → 광고 화면부터 보여주고, 그 안에서 fetch 시작
+      setGated(true);
+      setLoading(false);
+      return;
+    }
+    runFetch(tarotFull, m);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (gated) {
+    return (
+      <AdGateScreen
+        onContinue={() => {
+          setGated(false);
+          const tarotFull = JSON.parse(sessionStorage.getItem('tarotFull') ?? '[]');
+          const m = JSON.parse(sessionStorage.getItem('fortuneMeta') ?? '{}');
+          runFetch(tarotFull, m);
+        }}
+      />
+    );
+  }
 
   if (loading) {
     return <FortuneTellerLoader message="占っています" />;
@@ -147,6 +187,20 @@ export default function FortuneResultPage() {
             <p className="mt-2 text-sm leading-relaxed text-[#D8D5EE]">{result.blood.text}</p>
           </div>
         )}
+
+        {/* 관련 가이드 링크 (내부링크 + 체류시간) */}
+        {(() => {
+          const rg = RELATED_GUIDE[meta.topic ?? 'general'] ?? RELATED_GUIDE.general;
+          return (
+            <Link
+              href={`/guide/${rg.slug}`}
+              className="mt-8 flex items-center justify-between rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/50 px-4 py-3 text-sm text-[#D8D5EE] transition-colors hover:border-[#C9A227]"
+            >
+              <span>📖 {rg.title}</span>
+              <span className="text-[#C9A227]">→</span>
+            </Link>
+          );
+        })()}
 
         {/* 공유 */}
         <div className="mt-10">

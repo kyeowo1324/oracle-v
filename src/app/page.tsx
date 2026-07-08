@@ -11,7 +11,7 @@ export default function HomePage() {
     title: 'Oracle V',
     subtitle: '星座とタロットで、今日のあなたを占う',
     cardA: { label: '今日の運勢', desc: '星座・タロットから選んで占う', cta: '占ってみる' },
-    cardB: { label: 'する・しない', desc: 'Yes/No、迷いに答えを', cta: '決める' },
+    cardB: { label: 'する・しない', desc: 'Yes/No、迷いに答えを', cta: '聞いてみる' },
     guideTitle: '占いガイド',
     guideA: '星座占いの基本',
     guideB: 'タロットカードの意味',

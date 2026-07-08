@@ -11,11 +11,14 @@ const GENDERS: { code: Gender; ja: string; icon: string }[] = [
   { code: 'na', ja: '答えない', icon: '◌' },
 ];
 
-export function ProfileStep({ onNext }: { onNext: () => void }) {
+export function ProfileStep({ onNext, onBack }: { onNext: () => void; onBack: () => void }) {
   const f = useFortune();
 
   return (
     <div className="flex flex-1 flex-col justify-center">
+      <button onClick={onBack} className="mb-4 self-start text-xs text-[#8B8DBC] hover:text-[#F6F1E4]">
+        ← 戻る
+      </button>
       <h2 className="text-center text-2xl" style={{ fontFamily: "'Shippori Mincho', serif" }}>
         あなたについて
       </h2>
