@@ -6,26 +6,13 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AdBanner from '@/components/AdBanner';
 import ShareButtons from '@/components/ShareButtons';
+import FortuneTellerLoader from '@/components/FortuneTellerLoader';
+import ZoomableTarotCard from '@/components/ZoomableTarotCard';
 
 const ZODIAC_JA: Record<string, string> = {
   aries: '牡羊座', taurus: '牡牛座', gemini: '双子座', cancer: '蟹座', leo: '獅子座', virgo: '乙女座',
   libra: '天秤座', scorpio: '蠍座', sagittarius: '射手座', capricorn: '山羊座', aquarius: '水瓶座', pisces: '魚座',
 };
-
-function TarotImage({ card }: { card: any }) {
-  const [imgOk, setImgOk] = useState(true);
-  const flip = card.orientation === 'reversed' ? 'rotate-180' : '';
-  return (
-    <div className="relative mx-auto aspect-[3/5] w-36 overflow-hidden rounded-lg bg-[#2A2D6B] ring-1 ring-[#C9A227]/30">
-      {imgOk ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={card.image_url} alt={card.name} onError={() => setImgOk(false)} className={`h-full w-full object-cover ${flip}`} />
-      ) : (
-        <div className={`flex h-full w-full items-center justify-center text-sm text-[#C9A227] ${flip}`}>{card.name}</div>
-      )}
-    </div>
-  );
-}
 
 export default function FortuneResultPage() {
   const router = useRouter();
@@ -63,14 +50,7 @@ export default function FortuneResultPage() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-[#14152B] text-[#C9A227]">
-        <div className="text-center">
-          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-[#C9A227] border-t-transparent" />
-          <p className="mt-4 text-sm text-[#B8B4D9]">占っています…</p>
-        </div>
-      </div>
-    );
+    return <FortuneTellerLoader message="占っています" />;
   }
   if (error || !result) {
     return (
@@ -149,7 +129,7 @@ export default function FortuneResultPage() {
               <div key={i}>
                 <div className="rounded-xl bg-[#1A1B3A]/70 p-4">
                   <p className="mb-3 text-center text-xs tracking-widest text-[#C9A227]">{c.position}</p>
-                  <TarotImage card={c} />
+                  <ZoomableTarotCard card={c} widthClass="w-36" />
                   <p className="mt-3 text-center text-xs text-[#C9A227]">{c.name}（{c.orientation === 'upright' ? '正位置' : '逆位置'}）</p>
                   <p className="mt-2 text-sm leading-relaxed text-[#D8D5EE]">{c.text}</p>
                 </div>

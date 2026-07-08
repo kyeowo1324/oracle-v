@@ -45,8 +45,8 @@ export default function HomePage() {
 
         {/* 오미쿠지 선택 카드 2장 */}
         <main className="relative mt-2 flex flex-1 flex-col items-center justify-center gap-8 sm:flex-row sm:items-start sm:gap-10">
-          <OmikujiCard href="/flow?mode=fortune" icon="⭐" label={t.cardA.label} desc={t.cardA.desc} cta={t.cardA.cta} rotate="-rotate-2" swayDelay="0s" />
-          <OmikujiCard href="/flow?mode=decision" icon="🎋" label={t.cardB.label} desc={t.cardB.desc} cta={t.cardB.cta} rotate="rotate-2" swayDelay="0.6s" />
+          <OmikujiCard href="/flow?mode=fortune" icon="star" label={t.cardA.label} desc={t.cardA.desc} cta={t.cardA.cta} rotate="-rotate-2" />
+          <OmikujiCard href="/flow?mode=decision" icon="tanzaku" label={t.cardB.label} desc={t.cardB.desc} cta={t.cardB.cta} rotate="rotate-2" />
         </main>
 
         {/* 광고 배너 자리 */}
@@ -80,25 +80,100 @@ export default function HomePage() {
   );
 }
 
-// 오미쿠지 카드 (흔들림 애니메이션 포함 — 2-B에서 강화 예정, 지금도 동작)
+// 오미쿠지 카드 — 카드 자체는 정적(기울기만 유지), 아이콘이 움직이는 마이크로 애니메이션.
+// star: 별이 숨쉬듯 빛나고 작은 스파클 2개가 교차로 반짝임
+// tanzaku: 대나무에 매달린 골드 단자쿠가 바람에 살랑임 + 잎 흔들림
 function OmikujiCard({
-  href, icon, label, desc, cta, rotate, swayDelay,
+  href, icon, label, desc, cta, rotate,
 }: {
-  href: string; icon: string; label: string; desc: string; cta: string; rotate: string; swayDelay: string;
+  href: string; icon: 'star' | 'tanzaku'; label: string; desc: string; cta: string; rotate: string;
 }) {
   return (
     <Link
       href={href}
-      className={`group relative flex w-56 flex-col items-center rounded-2xl border border-[#C9A227]/30 bg-gradient-to-b from-[#26284F] to-[#1A1B3A] px-6 py-8 text-center shadow-lg transition-transform hover:-translate-y-1 ${rotate}`}
-      style={{ animation: `sway 4s ease-in-out ${swayDelay} infinite` }}
+      className={`group relative flex w-56 flex-col items-center rounded-2xl border border-[#C9A227]/30 bg-gradient-to-b from-[#26284F] to-[#1A1B3A] px-6 py-8 text-center shadow-lg transition-transform duration-300 hover:-translate-y-1.5 hover:border-[#C9A227]/60 ${rotate}`}
     >
-      <span className="text-4xl">{icon}</span>
-      <h3 className="mt-4 text-xl text-[#F6F1E4]" style={{ fontFamily: "'Shippori Mincho', serif" }}>{label}</h3>
+      <span className="flex h-12 w-12 items-center justify-center">
+        {icon === 'star' ? <StarIcon /> : <TanzakuIcon />}
+      </span>
+      <h3 className="mt-3 text-xl text-[#F6F1E4]" style={{ fontFamily: "'Shippori Mincho', serif" }}>{label}</h3>
       <p className="mt-2 font-sans text-xs leading-relaxed text-[#B8B4D9]">{desc}</p>
       <span className="mt-5 rounded-full bg-[#C9A227] px-5 py-1.5 font-sans text-sm font-medium text-[#14152B] transition-opacity group-hover:opacity-90">
         {cta}
       </span>
-      <style>{`@keyframes sway { 0%,100% { transform: translateY(0) ${rotate === '-rotate-2' ? 'rotate(-2deg)' : 'rotate(2deg)'} } 50% { transform: translateY(-5px) ${rotate === '-rotate-2' ? 'rotate(-2deg)' : 'rotate(2deg)'} } }`}</style>
     </Link>
+  );
+}
+
+// ⭐ 반짝이는 별: 본체는 숨쉬듯 스케일+글로우, 스파클 2개가 반 박자씩 어긋나게 점멸
+function StarIcon() {
+  return (
+    <svg viewBox="0 0 48 48" className="h-11 w-11" aria-hidden="true">
+      <g className="oc-star" style={{ transformOrigin: '24px 26px' }}>
+        <path
+          d="M24 10 l3.4 9.2 9.2 3.4 -9.2 3.4 -3.4 9.2 -3.4 -9.2 -9.2 -3.4 9.2 -3.4 Z"
+          fill="#C9A227"
+        />
+        <path
+          d="M24 14.5 l2.4 6.6 6.6 2.4 -6.6 2.4 -2.4 6.6 -2.4 -6.6 -6.6 -2.4 6.6 -2.4 Z"
+          fill="#F5E6A8"
+        />
+      </g>
+      <path className="oc-sp1" d="M39 9 l1.1 3 3 1.1 -3 1.1 -1.1 3 -1.1 -3 -3 -1.1 3 -1.1 Z" fill="#F5E6A8" style={{ transformOrigin: '39px 13px' }} />
+      <path className="oc-sp2" d="M9 32 l0.9 2.4 2.4 0.9 -2.4 0.9 -0.9 2.4 -0.9 -2.4 -2.4 -0.9 2.4 -0.9 Z" fill="#F5E6A8" style={{ transformOrigin: '9px 36px' }} />
+      <style>{`
+        .oc-star { animation: ocBreath 2.8s ease-in-out infinite; }
+        .oc-sp1 { animation: ocTwinkle 2.8s ease-in-out infinite; }
+        .oc-sp2 { animation: ocTwinkle 2.8s ease-in-out 1.4s infinite; }
+        @keyframes ocBreath {
+          0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(201,162,39,0.4)); }
+          50% { transform: scale(1.12); filter: drop-shadow(0 0 8px rgba(245,230,168,0.8)); }
+        }
+        @keyframes ocTwinkle {
+          0%, 100% { opacity: 0.15; transform: scale(0.6); }
+          50% { opacity: 1; transform: scale(1.15); }
+        }
+      `}</style>
+    </svg>
+  );
+}
+
+// 🎋 단자쿠: 대나무는 고정, 골드 단자쿠가 매단 지점을 축으로 살랑살랑, 잎이 잔잔히 흔들림
+function TanzakuIcon() {
+  return (
+    <svg viewBox="0 0 48 48" className="h-11 w-11" aria-hidden="true">
+      {/* 대나무 줄기 */}
+      <rect x="21.5" y="6" width="4" height="36" rx="2" fill="#3E7A4E" />
+      <rect x="21.5" y="15" width="4" height="1.4" fill="#2C5A38" />
+      <rect x="21.5" y="26" width="4" height="1.4" fill="#2C5A38" />
+      {/* 잎 (잔잔히 흔들림) */}
+      <g className="oc-leaf" style={{ transformOrigin: '25px 12px' }}>
+        <path d="M25 12 q9 -5 15 -2 q-8 6 -15 2 Z" fill="#4E9660" />
+      </g>
+      <g className="oc-leaf2" style={{ transformOrigin: '22px 22px' }}>
+        <path d="M22 22 q-9 -4 -14 0 q7 5 14 0 Z" fill="#4E9660" />
+      </g>
+      {/* 실 + 단자쿠 (매단 지점을 축으로 스윙) */}
+      <g className="oc-tz" style={{ transformOrigin: '31px 17px' }}>
+        <line x1="31" y1="17" x2="33" y2="23" stroke="#F5E6A8" strokeWidth="0.8" />
+        <rect x="29.5" y="23" width="8" height="15" rx="1" fill="#C9A227" />
+        <rect x="31" y="25.5" width="5" height="1.2" rx="0.6" fill="#14152B" opacity="0.55" />
+        <rect x="31" y="28.5" width="5" height="1.2" rx="0.6" fill="#14152B" opacity="0.55" />
+        <rect x="31" y="31.5" width="3.5" height="1.2" rx="0.6" fill="#14152B" opacity="0.55" />
+      </g>
+      <style>{`
+        .oc-tz { animation: ocSwing 3.2s ease-in-out infinite; }
+        .oc-leaf { animation: ocLeaf 3.2s ease-in-out infinite; }
+        .oc-leaf2 { animation: ocLeaf 3.2s ease-in-out 1.6s infinite; }
+        @keyframes ocSwing {
+          0%, 100% { transform: rotate(-7deg); }
+          50% { transform: rotate(7deg); }
+        }
+        @keyframes ocLeaf {
+          0%, 100% { transform: rotate(0deg); }
+          50% { transform: rotate(-4deg); }
+        }
+      `}</style>
+    </svg>
   );
 }

@@ -6,21 +6,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AdBanner from '@/components/AdBanner';
 import ShareButtons from '@/components/ShareButtons';
-
-function TarotCardView({ card }: { card: any }) {
-  const [imgOk, setImgOk] = useState(true);
-  const flip = card.orientation === 'reversed' ? 'rotate-180' : '';
-  return (
-    <div className="relative mx-auto aspect-[3/5] w-32 overflow-hidden rounded-lg bg-[#2A2D6B] ring-1 ring-[#C9A227]/30">
-      {imgOk && card.image_url ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={card.image_url} alt={card.name} onError={() => setImgOk(false)} className={`h-full w-full object-cover ${flip}`} />
-      ) : (
-        <div className={`flex h-full w-full items-center justify-center p-2 text-center text-xs text-[#C9A227] ${flip}`}>{card.name}</div>
-      )}
-    </div>
-  );
-}
+import FortuneTellerLoader from '@/components/FortuneTellerLoader';
+import ZoomableTarotCard from '@/components/ZoomableTarotCard';
 
 export default function DecisionResultPage() {
   const router = useRouter();
@@ -49,14 +36,7 @@ export default function DecisionResultPage() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-[#14152B] text-[#C9A227]">
-        <div className="text-center">
-          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-[#C9A227] border-t-transparent" />
-          <p className="mt-4 text-sm text-[#B8B4D9]">答えを占っています…</p>
-        </div>
-      </div>
-    );
+    return <FortuneTellerLoader message="答えを占っています" />;
   }
   if (!result || result.error) {
     return (
@@ -93,7 +73,7 @@ export default function DecisionResultPage() {
         </div>
 
         <div className="mt-8">
-          <TarotCardView card={card} />
+          <ZoomableTarotCard card={card} widthClass="w-32" />
           <p className="mt-3 text-center text-xs text-[#C9A227]">{card.name}（{card.orientation === 'upright' ? '正位置' : '逆位置'}）</p>
         </div>
 
