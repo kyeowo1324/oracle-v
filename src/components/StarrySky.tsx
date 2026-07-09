@@ -14,11 +14,16 @@ const TWINKLE: [number, number, number, number][] = [
   [4, 44, 2, 1.6], [18, 20, 2, 3.5], [35, 60, 2, 0.8], [48, 8, 2, 2.9],
   [64, 58, 3, 0.1], [72, 26, 2, 1.4], [80, 60, 2, 3.1], [95, 10, 2, 0.5],
   [47, 92, 2, 2.6], [70, 90, 2, 1.9], [3, 70, 2, 2.3],
+  [10, 30, 2, 0.2], [28, 68, 2, 1.3], [41, 44, 2, 2.8], [55, 22, 2, 3.7],
+  [66, 74, 2, 0.7], [74, 8, 2, 2.2], [89, 34, 3, 1.0], [96, 66, 2, 3.4],
+  [20, 78, 2, 0.45], [33, 24, 2, 1.75], [50, 68, 2, 3.2], [78, 46, 2, 0.95],
+  [93, 88, 2, 2.5],
 ];
 
 // [left%, delay(s)] — 떠오르는 별(드물게: 사이클 자체를 길게)
 const RISING: [number, number][] = [
-  [24, 1], [40, 6], [58, 11], [70, 15], [82, 19],
+  [8, 0], [24, 2.4], [33, 4.8], [40, 7.2], [50, 9.6],
+  [58, 12], [65, 14.4], [70, 16.8], [82, 19.2], [92, 21.6],
 ];
 
 export default function StarrySky() {
@@ -33,10 +38,13 @@ export default function StarrySky() {
         />
       ))}
 
-      {/* 가끔 흐르는 유성 3개 (서로 다른 주기·경로) */}
+      {/* 가끔 흐르는 유성 6개 (서로 다른 주기·경로) */}
       <span className="ss-shoot absolute" style={{ left: '68%', top: '10%', animationDelay: '2s' }} />
       <span className="ss-shoot absolute" style={{ left: '22%', top: '6%', animationDelay: '7.5s', animationDuration: '13s' }} />
       <span className="ss-shoot absolute" style={{ left: '45%', top: '16%', animationDelay: '4.5s', animationDuration: '11s' }} />
+      <span className="ss-shoot absolute" style={{ left: '85%', top: '22%', animationDelay: '0.8s', animationDuration: '10s' }} />
+      <span className="ss-shoot absolute" style={{ left: '12%', top: '30%', animationDelay: '6.2s', animationDuration: '12s' }} />
+      <span className="ss-shoot absolute" style={{ left: '55%', top: '4%', animationDelay: '3.3s', animationDuration: '14s' }} />
 
       {/* 드물게 떠오르는 별 (B 요소) */}
       {RISING.map(([l, d], i) => (

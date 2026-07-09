@@ -1,5 +1,6 @@
 // src/app/result/fortune/page.tsx
 // A+B+F 결과 + 실제 AdBanner + ShareButtons(LINE·X·Threads·복사·네이티브)
+// + 이미지 공유(ShareResultImage) + 링크 미리보기(/share URL)
 'use client';
 
 import Link from 'next/link';
@@ -7,10 +8,12 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AdBanner from '@/components/AdBanner';
 import ShareButtons from '@/components/ShareButtons';
+import ShareResultImage from '@/components/ShareResultImage';
 import FortuneTellerLoader from '@/components/FortuneTellerLoader';
 import ZoomableTarotCard from '@/components/ZoomableTarotCard';
 import StarrySky from '@/components/StarrySky';
 import { markFreeViewUsed } from '@/lib/dailyGate';
+import { buildShareUrl } from '@/lib/shareLink';
 
 const ZODIAC_JA: Record<string, string> = {
   aries: '牡羊座', taurus: '牡牛座', gemini: '双子座', cancer: '蟹座', leo: '獅子座', virgo: '乙女座',
@@ -84,7 +87,21 @@ export default function FortuneResultPage() {
   }
 
   const lucky = result.lucky ?? {};
-  const shareText = `私の今日の${result.topicJa}は「${result.conclusion || '運勢チェック'}」🔮 #OracleV #今日の運勢`;
+  const shareText = `私の今日の${result.topicJa}は「${result.conclusion || '運勢チェック'}」🔮 #ホシドタロ #今日の運勢`;
+
+  // 공유용: AI 생성 텍스트만 사용 (DB 고정 해설 c.text는 절대 사용 금지)
+  const shareAiText: string = result.summary || result.conclusion || '';
+  const firstCard = result.tarot?.[0];
+  // 링크 미리보기(/share)용 URL — ShareButtons(LINE·X·복사 등)가 이 링크를 공유
+  const shareUrl = firstCard
+    ? buildShareUrl({
+        type: 'fortune',
+        cardName: firstCard.name,
+        orientation: firstCard.orientation,
+        imageUrl: firstCard.image_url,
+        aiText: shareAiText,
+      })
+    : undefined;
 
   return (
     <div className="relative min-h-screen bg-[#14152B] text-[#F6F1E4]">
@@ -201,9 +218,18 @@ export default function FortuneResultPage() {
           );
         })()}
 
-        {/* 공유 */}
-        <div className="mt-10">
-          <ShareButtons text={shareText} />
+        {/* 공유 — ① 이미지 공유 + ② 링크 공유(미리보기 포함) */}
+        <div className="mt-10 space-y-4">
+          {firstCard && shareAiText && (
+            <ShareResultImage
+              type="fortune"
+              cardImageUrl={firstCard.image_url}
+              cardName={firstCard.name}
+              orientation={firstCard.orientation}
+              aiText={shareAiText}
+            />
+          )}
+          <ShareButtons text={shareText} url={shareUrl} />
         </div>
 
         {/* 이동 */}

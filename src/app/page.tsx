@@ -1,10 +1,12 @@
 // src/app/page.tsx
 // 일본 전용: JA/KO 토글 제거. 텍스트는 ja 고정(구조는 유지 → 나중에 다국어 복구 쉬움).
+// + 앱 설치 카드(AppInstallCard)를 광고와 占いガイド 사이에 배치
 'use client';
 
 import Link from 'next/link';
 import AdBanner from '@/components/AdBanner';
 import StarrySky from '@/components/StarrySky';
+import AppInstallCard from '@/components/AppInstallCard';
 
 export default function HomePage() {
   const t = {
@@ -85,6 +87,9 @@ export default function HomePage() {
 
         {/* 광고 배너 자리 */}
         <AdBanner slot="0000000000" />
+
+        {/* 앱 설치 카드 — 광고와 占いガイド 사이 */}
+        <AppInstallCard />
 
         {/* SEO 텍스트 콘텐츠 */}
         <section className="mt-8 rounded-xl bg-[#1A1B3A]/60 p-5">

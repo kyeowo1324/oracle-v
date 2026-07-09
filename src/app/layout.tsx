@@ -7,6 +7,7 @@ import type { Metadata, Viewport } from 'next';
 import { Shippori_Mincho, Noto_Sans_JP } from 'next/font/google';
 import AdSenseScript from '@/components/AdSenseScript';
 import SiteFooter from '@/components/SiteFooter';
+import InstallPrompt from '@/components/InstallPrompt';
 import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 
@@ -83,6 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ja" className={`${shippori.variable} ${notoSansJP.variable}`}>
       <body className="flex min-h-screen flex-col bg-[#14152B] text-slate-100 antialiased">
         <div className="flex-1">{children}</div>
+        <InstallPrompt />
         <SiteFooter />
         <AdSenseScript />
         <Analytics />

@@ -7,10 +7,12 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AdBanner from '@/components/AdBanner';
 import ShareButtons from '@/components/ShareButtons';
+import ShareResultImage from '@/components/ShareResultImage';
 import FortuneTellerLoader from '@/components/FortuneTellerLoader';
 import ZoomableTarotCard from '@/components/ZoomableTarotCard';
 import StarrySky from '@/components/StarrySky';
 import { markFreeViewUsed } from '@/lib/dailyGate';
+import { buildShareUrl } from '@/lib/shareLink';
 
 export default function DecisionResultPage() {
   const router = useRouter();
@@ -61,7 +63,21 @@ export default function DecisionResultPage() {
     result.verdict === 'する' ? '前へ進んでよさそう' :
     result.verdict === 'しない' ? '今は控えるのが吉' : 'どちらとも言えません';
   const card = result.card;
-  const shareText = `「${result.question || '今日の決断'}」の答えは… ${result.verdict}🔮 #するしない #OracleV`;
+  const shareText = `「${result.question || '今日の決断'}」の答えは… ${result.verdict}🔮 #するしない #ホシドタロ`;
+
+  // 공유용: AI 생성 텍스트만 사용 (DB 고정 해설 card.text 절대 금지)
+  const shareAiText: string = result.advice || '';
+  // 링크 미리보기(/share)용 URL — ShareButtons가 이 링크를 공유
+  const shareUrl = card
+    ? buildShareUrl({
+        type: 'decision',
+        cardName: card.name,
+        orientation: card.orientation,
+        imageUrl: card.image_url,
+        verdict: result.verdict,
+        aiText: shareAiText,
+      })
+    : undefined;
 
   return (
     <div className="relative min-h-screen bg-[#14152B] text-[#F6F1E4]">
@@ -114,9 +130,19 @@ export default function DecisionResultPage() {
           <span className="text-[#C9A227]">→</span>
         </Link>
 
-        {/* 공유 */}
-        <div className="mt-8">
-          <ShareButtons text={shareText} />
+        {/* 공유 — ① 이미지 공유 + ② 링크 공유(미리보기 포함) */}
+        <div className="mt-8 space-y-4">
+          {card && (
+            <ShareResultImage
+              type="decision"
+              cardImageUrl={card.image_url}
+              cardName={card.name}
+              orientation={card.orientation}
+              verdict={result.verdict}
+              aiText={shareAiText}
+            />
+          )}
+          <ShareButtons text={shareText} url={shareUrl} />
         </div>
 
         {/* 이동 */}
