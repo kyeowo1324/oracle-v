@@ -135,9 +135,7 @@ export default function DecisionResultPage() {
           {card && (
             <ShareResultImage
               type="decision"
-              cardImageUrl={card.image_url}
-              cardName={card.name}
-              orientation={card.orientation}
+              card={{ imageUrl: card.image_url, name: card.name, orientation: card.orientation }}
               verdict={result.verdict}
               aiText={shareAiText}
             />

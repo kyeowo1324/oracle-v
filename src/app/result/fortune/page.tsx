@@ -91,6 +91,12 @@ export default function FortuneResultPage() {
 
   // 공유용: AI 생성 텍스트만 사용 (DB 고정 해설 c.text는 절대 사용 금지)
   const shareAiText: string = result.summary || result.conclusion || '';
+  const shareCards = (result.tarot ?? []).slice(0, 3).map((c: any, i: number) => ({
+    imageUrl: c.image_url,
+    name: c.name,
+    orientation: c.orientation,
+    position: c.position ?? ['過去', '現在', '未来'][i],
+  }));
   const firstCard = result.tarot?.[0];
   // 링크 미리보기(/share)용 URL — ShareButtons(LINE·X·복사 등)가 이 링크를 공유
   const shareUrl = firstCard
@@ -220,13 +226,12 @@ export default function FortuneResultPage() {
 
         {/* 공유 — ① 이미지 공유 + ② 링크 공유(미리보기 포함) */}
         <div className="mt-10 space-y-4">
-          {firstCard && shareAiText && (
+          {shareCards.length > 0 && (
             <ShareResultImage
               type="fortune"
-              cardImageUrl={firstCard.image_url}
-              cardName={firstCard.name}
-              orientation={firstCard.orientation}
-              aiText={shareAiText}
+              cards={shareCards}
+              conclusion={result.conclusion}
+              summary={result.summary}
             />
           )}
           <ShareButtons text={shareText} url={shareUrl} />
