@@ -10,6 +10,8 @@ import SiteFooter from '@/components/SiteFooter';
 import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 
+
+
 // 見出し用の明朝 + 本文用のゴシック。CSS変数として全ページで利用可能に。
 const shippori = Shippori_Mincho({
   subsets: ['latin'],
@@ -51,6 +53,10 @@ export const metadata: Metadata = {
     images: ['/og.png'],
   },
   icons: { icon: '/icons/icon-192.png', apple: '/icons/icon-192.png' },
+  verification: {
+    google: '<meta name="google-site-verification" content="yiwCjx_B6Uy1zsmXhVlDLQrNgm8Tok-wFjFQ1Relov4" />',
+  },
+};
 };
 
 export const viewport: Viewport = {
