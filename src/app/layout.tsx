@@ -55,6 +55,9 @@ export const metadata: Metadata = {
   icons: { icon: '/icons/icon-192.png', apple: '/icons/icon-192.png' },
   verification: {
     google: 'yiwCjx_B6Uy1zsmXhVlDLQrNgm8Tok-wFjFQ1Relov4',
+    other: {
+      'google-adsense-account': 'ca-pub-3526070606686847',
+    },
   },
 };
 
