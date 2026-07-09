@@ -12,6 +12,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useFortune, FortuneMode } from '@/lib/fortune-context';
 import { hasUsedFreeView } from '@/lib/dailyGate';
 import AdGateModal from '@/components/AdGateModal';
+import StarrySky from '@/components/StarrySky';
 import { TopicStep } from './TopicStep';
 import { ProfileStep } from './ProfileStep';
 import { ZodiacStep } from './ZodiacStep';
@@ -61,6 +62,7 @@ function FlowInner() {
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#14152B] text-[#F6F1E4]">
       <div className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(ellipse 80% 50% at 50% -10%, #2A2D6B 0%, #1E2050 45%, #14152B 100%)' }} />
+      <StarrySky />
       <div className="relative mx-auto flex min-h-screen max-w-md flex-col px-6 pb-10 pt-10">
         <HomeLink />
         <StepIndicator step={step} isDecision={isDecision} />

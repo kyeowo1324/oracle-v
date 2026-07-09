@@ -4,6 +4,7 @@
 
 import Link from 'next/link';
 import AdBanner from '@/components/AdBanner';
+import StarrySky from '@/components/StarrySky';
 
 export default function HomePage() {
   const t = {
@@ -27,14 +28,47 @@ export default function HomePage() {
         className="pointer-events-none absolute inset-0"
         style={{ background: 'radial-gradient(ellipse 80% 50% at 50% -10%, #2A2D6B 0%, #1E2050 45%, #14152B 100%)' }}
       />
-      <div className="pointer-events-none absolute inset-0 opacity-70 [background-image:radial-gradient(1px_1px_at_20%_30%,#F5E6A8_100%,transparent),radial-gradient(1px_1px_at_75%_15%,#F5E6A8_100%,transparent),radial-gradient(1.5px_1.5px_at_60%_45%,#F5E6A8_100%,transparent),radial-gradient(1px_1px_at_85%_60%,#F5E6A8_100%,transparent),radial-gradient(1px_1px_at_10%_65%,#F5E6A8_100%,transparent),radial-gradient(1.5px_1.5px_at_40%_10%,#F5E6A8_100%,transparent)]" />
+      <StarrySky />
 
       <div className="relative mx-auto flex min-h-screen max-w-md flex-col px-6 pb-10 pt-10 sm:max-w-2xl">
-        {/* 브랜드 헤더 */}
+        {/* 브랜드 헤더 — ホシ(별) · ド(잇다) · タロ(타로카드) 의미를 담은 워드마크 */}
         <header className="mt-6 text-center">
           <p className="font-sans text-[11px] tracking-[0.3em] text-[#C9A227]">{t.eyebrow}</p>
-          <h1 className="mt-3 text-5xl tracking-wide text-[#F6F1E4] sm:text-6xl" style={{ fontFamily: "'Shippori Mincho', serif" }}>
-            {t.title}
+
+          {/* 엠블럼: 별 —(실)— 타로카드. ド가 둘을 잇는다는 의미를 가는 금색 실로 표현 */}
+          <svg className="mx-auto mt-4 h-12 w-44" viewBox="0 0 176 48" fill="none" aria-hidden="true">
+            {/* 잇는 실 (완만한 곡선) */}
+            <path d="M34 24 C 62 12, 114 12, 142 26" stroke="#C9A227" strokeWidth="1" opacity="0.55" strokeDasharray="1 3" />
+            {/* ホシ: 4포인트 별 (은은하게 숨쉬는 트윙클) */}
+            <g className="bl-star" style={{ transformOrigin: '24px 24px' }}>
+              <path d="M24 12 l3 9 9 3 -9 3 -3 9 -3 -9 -9 -3 9 -3 Z" fill="#C9A227" />
+              <path d="M24 17 l1.9 5.1 5.1 1.9 -5.1 1.9 -1.9 5.1 -1.9 -5.1 -5.1 -1.9 5.1 -1.9 Z" fill="#F5E6A8" />
+            </g>
+            {/* 실 위 작은 매듭 별 */}
+            <path className="bl-knot" d="M88 15 l1 2.6 2.6 1 -2.6 1 -1 2.6 -1 -2.6 -2.6 -1 2.6 -1 Z" fill="#F5E6A8" style={{ transformOrigin: '88px 19px' }} />
+            {/* タロ: 타로카드 (살짝 기울어진 카드 + 카드 속 작은 별) */}
+            <g transform="rotate(8 152 26)">
+              <rect x="143" y="10" width="18" height="30" rx="2.5" fill="#1E2050" stroke="#C9A227" strokeWidth="1.2" />
+              <rect x="146" y="13" width="12" height="24" rx="1.5" fill="none" stroke="#C9A227" strokeWidth="0.6" opacity="0.5" />
+              <path d="M152 21 l1.6 4.4 4.4 1.6 -4.4 1.6 -1.6 4.4 -1.6 -4.4 -4.4 -1.6 4.4 -1.6 Z" fill="#C9A227" />
+            </g>
+            <style>{`
+              .bl-star { animation: blBreath 3.2s ease-in-out infinite; }
+              .bl-knot { animation: blTwinkle 3.2s ease-in-out 1.1s infinite; }
+              @keyframes blBreath {
+                0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(201,162,39,0.35)); }
+                50% { transform: scale(1.1); filter: drop-shadow(0 0 7px rgba(245,230,168,0.7)); }
+              }
+              @keyframes blTwinkle {
+                0%, 100% { opacity: 0.25; transform: scale(0.7); }
+                50% { opacity: 1; transform: scale(1.1); }
+              }
+            `}</style>
+          </svg>
+
+          {/* 워드마크: 잇는 글자 ド만 금색으로 — "별과 타로를 잇는다" */}
+          <h1 className="mt-2 text-5xl tracking-wide text-[#F6F1E4] sm:text-6xl" style={{ fontFamily: "'Shippori Mincho', serif" }}>
+            ホシ<span className="text-[#C9A227]">ド</span>タロ
           </h1>
           <p className="mt-3 font-sans text-sm text-[#B8B4D9]">{t.subtitle}</p>
         </header>

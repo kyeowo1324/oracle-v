@@ -9,6 +9,7 @@ import AdBanner from '@/components/AdBanner';
 import ShareButtons from '@/components/ShareButtons';
 import FortuneTellerLoader from '@/components/FortuneTellerLoader';
 import ZoomableTarotCard from '@/components/ZoomableTarotCard';
+import StarrySky from '@/components/StarrySky';
 import { markFreeViewUsed } from '@/lib/dailyGate';
 
 export default function DecisionResultPage() {
@@ -65,6 +66,7 @@ export default function DecisionResultPage() {
   return (
     <div className="relative min-h-screen bg-[#14152B] text-[#F6F1E4]">
       <div className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(ellipse 80% 40% at 50% -10%, #2A2D6B 0%, #1E2050 45%, #14152B 100%)' }} />
+      <StarrySky />
       <div className="relative mx-auto max-w-md px-6 pb-16 pt-6">
         <button onClick={() => router.push('/')} className="mb-2 text-xs text-[#8B8DBC] transition-colors hover:text-[#C9A227]">
           ✦ ホームに戻る

@@ -9,6 +9,7 @@ import AdBanner from '@/components/AdBanner';
 import ShareButtons from '@/components/ShareButtons';
 import FortuneTellerLoader from '@/components/FortuneTellerLoader';
 import ZoomableTarotCard from '@/components/ZoomableTarotCard';
+import StarrySky from '@/components/StarrySky';
 import { markFreeViewUsed } from '@/lib/dailyGate';
 
 const ZODIAC_JA: Record<string, string> = {
@@ -88,6 +89,7 @@ export default function FortuneResultPage() {
   return (
     <div className="relative min-h-screen bg-[#14152B] text-[#F6F1E4]">
       <div className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(ellipse 80% 40% at 50% -10%, #2A2D6B 0%, #1E2050 45%, #14152B 100%)' }} />
+      <StarrySky />
       <div className="relative mx-auto max-w-md px-6 pb-16 pt-6">
         <button onClick={() => router.push('/')} className="mb-2 text-xs text-[#8B8DBC] transition-colors hover:text-[#C9A227]">
           ✦ ホームに戻る
@@ -99,15 +101,36 @@ export default function FortuneResultPage() {
           {new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}
         </p>
 
-        {/* ① 결론 먼저 */}
+        {/* ① 결론 먼저 — 장식 프레임 + 라벨 + 별 구분선 */}
         {(result.conclusion || result.summary) && (
-          <section className="mt-6 rounded-xl bg-gradient-to-b from-[#26284F] to-[#1A1B3A] p-5 ring-1 ring-[#C9A227]/30">
+          <section className="relative mt-8 rounded-xl bg-gradient-to-b from-[#26284F] to-[#1A1B3A] px-5 pb-6 pt-8 ring-1 ring-[#C9A227]/30">
+            {/* 모서리 장식 (좌상/우하) */}
+            <span className="pointer-events-none absolute left-2 top-2 h-4 w-4 rounded-tl-lg border-l border-t border-[#C9A227]/60" />
+            <span className="pointer-events-none absolute bottom-2 right-2 h-4 w-4 rounded-br-lg border-b border-r border-[#C9A227]/60" />
+
+            {/* 라벨 칩 (프레임 상단 중앙에 걸침) */}
+            <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full border border-[#C9A227]/50 bg-[#14152B] px-4 py-1 text-[10px] tracking-[0.25em] text-[#C9A227]">
+              ✦ 本日の結論 ✦
+            </span>
+
             {result.conclusion && (
-              <p className="text-center text-lg font-medium text-[#F6F1E4]" style={{ fontFamily: "'Shippori Mincho', serif" }}>
+              <p className="text-center text-xl font-medium leading-relaxed text-[#F6F1E4]" style={{ fontFamily: "'Shippori Mincho', serif" }}>
                 {result.conclusion}
               </p>
             )}
-            {result.summary && <p className="mt-3 text-sm leading-relaxed text-[#F0EDDD]">{result.summary}</p>}
+
+            {result.conclusion && result.summary && (
+              /* 별 구분선 */
+              <div className="my-4 flex items-center gap-3" aria-hidden="true">
+                <span className="h-px flex-1 bg-gradient-to-r from-transparent to-[#C9A227]/50" />
+                <span className="text-xs text-[#C9A227]">✦</span>
+                <span className="h-px flex-1 bg-gradient-to-l from-transparent to-[#C9A227]/50" />
+              </div>
+            )}
+
+            {result.summary && (
+              <p className="text-sm leading-[1.9] text-[#F0EDDD]">{result.summary}</p>
+            )}
           </section>
         )}
 
