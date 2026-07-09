@@ -2,8 +2,8 @@
 // 免責事項（エンターテインメント目的の明示）
 
 export const metadata = {
-  title: '免責事項 | Oracle V',
-  description: 'Oracle V の占い結果の位置づけおよび免責事項について。',
+  title: '免責事項 | ホシドタロ',
+  description: 'ホシドタロ の占い結果の位置づけおよび免責事項について。',
 };
 
 export default function DisclaimerPage() {
@@ -16,7 +16,7 @@ export default function DisclaimerPage() {
         <div>
           <h2 className="mb-2 text-lg font-semibold text-white">占い結果の位置づけ</h2>
           <p>
-            当サービス（Oracle V）が提供する星座占い・タロット・血液型などの結果は、
+            当サービス（ホシドタロ）が提供する星座占い・タロット・血液型などの結果は、
             すべて<strong className="text-white">エンターテインメントを目的</strong>としたものです。
             科学的・医学的な根拠を保証するものではありません。
           </p>

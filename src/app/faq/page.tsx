@@ -6,13 +6,13 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'よくある質問',
-  description: 'Oracle Vの使い方、無料範囲、占いの当たり方についてよくある質問にお答えします。',
+  description: 'ホシドタロの使い方、無料範囲、占いの当たり方についてよくある質問にお答えします。',
 };
 
 const FAQS: { q: string; a: string }[] = [
   {
     q: 'この占いは当たりますか？',
-    a: 'Oracle Vは星座・タロット・血液型といった伝統的な占いの考え方をもとに、楽しみながら今日一日のヒントを得ていただくエンターテインメントサービスです。結果は医学的・科学的な根拠に基づくものではなく、当たり外れを保証するものではありません。気分転換や行動の後押しとして気軽にお楽しみください。',
+    a: 'ホシドタロは星座・タロット・血液型といった伝統的な占いの考え方をもとに、楽しみながら今日一日のヒントを得ていただくエンターテインメントサービスです。結果は医学的・科学的な根拠に基づくものではなく、当たり外れを保証するものではありません。気分転換や行動の後押しとして気軽にお楽しみください。',
   },
   {
     q: '毎日結果は変わりますか？',
@@ -65,7 +65,7 @@ export default function FaqPage() {
       <p className="mb-2 text-sm tracking-widest text-indigo-300">FAQ</p>
       <h1 className="mb-3 text-2xl font-bold text-white font-mincho">よくある質問</h1>
       <p className="mb-10 text-[15px] leading-relaxed text-slate-300">
-        Oracle Vの使い方や占いの考え方について、よくいただくご質問にお答えします。
+        ホシドタロの使い方や占いの考え方について、よくいただくご質問にお答えします。
       </p>
 
       <div className="space-y-4">

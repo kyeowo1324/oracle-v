@@ -24,7 +24,7 @@ const TOPIC_JA: Record<Topic, string> = {
 };
 const GENDER_JA: Record<string, string | null> = { male: '男性', female: '女性', na: null };
 
-const CONCLUSION_SYSTEM = `あなたは「Oracle V」の温かい占いガイドです。
+const CONCLUSION_SYSTEM = `あなたは「ホシドタロ」の温かい占いガイドです。
 指定された日付とテーマについて、星座・タロット(過去/現在/未来)・血液型の結果をふまえ、
 今日の「結論」を最初に一言で示し、続けて2〜3文で理由を添えてください。
 日付ごとに切り口を変え、前向きなトーンで。JSON形式のみ:{"conclusion_ja":"","summary_ja":""}`;

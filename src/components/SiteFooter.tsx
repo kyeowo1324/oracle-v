@@ -14,16 +14,16 @@ export default function SiteFooter() {
           <Link href="/" className="hover:text-slate-200">ホーム</Link>
           <Link href="/guide" className="hover:text-slate-200">占いガイド</Link>
           <Link href="/faq" className="hover:text-slate-200">よくある質問</Link>
-          <Link href="/about" className="hover:text-slate-200">Oracle Vについて</Link>
+          <Link href="/about" className="hover:text-slate-200">ホシドタロについて</Link>
           <Link href="/legal/privacy" className="hover:text-slate-200">プライバシーポリシー</Link>
           <Link href="/legal/disclaimer" className="hover:text-slate-200">免責事項</Link>
           <Link href="/legal/contact" className="hover:text-slate-200">お問い合わせ</Link>
         </nav>
         <p className="mt-5 text-xs leading-relaxed text-slate-500">
-          Oracle V が提供する占い結果はエンターテインメントを目的としたものです。
+          ホシドタロ が提供する占い結果はエンターテインメントを目的としたものです。
           医学・法律・財務等の専門的助言に代わるものではありません。
         </p>
-        <p className="mt-3 text-xs text-slate-600">© {YEAR} Oracle V</p>
+        <p className="mt-3 text-xs text-slate-600">© {YEAR} ホシドタロ</p>
       </div>
     </footer>
   );

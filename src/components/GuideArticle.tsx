@@ -47,7 +47,7 @@ export default function GuideArticle({
     description,
     inLanguage: 'ja',
     mainEntityOfPage: `${SITE_URL}/guide/${slug}`,
-    publisher: { '@type': 'Organization', name: 'Oracle V' },
+    publisher: { '@type': 'Organization', name: 'ホシドタロ' },
   };
 
   return (

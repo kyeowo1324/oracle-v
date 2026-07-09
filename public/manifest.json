@@ -1,6 +1,6 @@
 {
-  "name": "Oracle V — 今日の運勢",
-  "short_name": "Oracle V",
+  "name": "ホシドタロ — 今日の運勢",
+  "short_name": "ホシドタロ",
   "description": "星座とタロットで占う、今日のあなたの運勢",
   "start_url": "/",
   "display": "standalone",

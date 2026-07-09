@@ -5,8 +5,8 @@
 //    運営者名・連絡先・ドメインが空欄のままだと AdSense 審査で不利になります。
 
 export const metadata = {
-  title: 'プライバシーポリシー | Oracle V',
-  description: 'Oracle V における個人情報の取り扱い、Cookie・広告配信についての方針です。',
+  title: 'プライバシーポリシー | ホシドタロ',
+  description: 'ホシドタロ における個人情報の取り扱い、Cookie・広告配信についての方針です。',
 };
 
 export default function PrivacyPage() {
@@ -19,7 +19,7 @@ export default function PrivacyPage() {
         <div>
           <h2 className="mb-2 text-lg font-semibold text-white">1. 基本方針</h2>
           <p>
-            Oracle V（以下「当サービス」）は、利用者の個人情報の重要性を認識し、
+            ホシドタロ（以下「当サービス」）は、利用者の個人情報の重要性を認識し、
             個人情報の保護に関する法律（個人情報保護法）その他の関連法令を遵守し、
             適切に取り扱います。
           </p>

@@ -15,7 +15,7 @@ const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 const AMBIGUOUS = new Set(['the-moon', 'the-hanged-man', 'the-high-priestess', 'wheel-of-fortune']);
 
-const ADVICE_SYSTEM = `あなたは「Oracle V」の温かい占いガイドです。
+const ADVICE_SYSTEM = `あなたは「ホシドタロ」の温かい占いガイドです。
 ユーザーの「する・しない」の迷いに、引かれたタロット1枚をふまえ、
 背中をそっと押す一言を1〜2文の日本語で書いてください。
 その日ごとに表現を少し変え、断定しすぎず本人に委ねるトーン。JSON形式のみ:{"advice_ja":""}`;

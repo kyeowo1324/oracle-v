@@ -1,25 +1,25 @@
 // src/app/about/page.tsx
-// Oracle Vについて — 運営者の自己紹介・サービスの背景。
+// ホシドタロについて — 運営者の自己紹介・サービスの背景。
 // ⚠️ 公開前に「サービスを作った理由」の段落をご自身の言葉で書き換えてください
 //   （このページの信頼性・独自性がAdSense審査でも評価されます）。
 
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Oracle Vについて',
-  description: 'Oracle Vというサービスと、その背景にある想いについてご紹介します。',
+  title: 'ホシドタロについて',
+  description: 'ホシドタロというサービスと、その背景にある想いについてご紹介します。',
 };
 
 export default function AboutPage() {
   return (
     <main className="mx-auto max-w-2xl px-5 py-12 text-slate-200">
       <p className="mb-2 text-sm tracking-widest text-indigo-300">ABOUT</p>
-      <h1 className="mb-8 text-2xl font-bold text-white font-mincho">Oracle Vについて</h1>
+      <h1 className="mb-8 text-2xl font-bold text-white font-mincho">ホシドタロについて</h1>
 
       <section className="space-y-4 text-[15px] leading-relaxed">
         <h2 className="text-lg font-semibold text-white">このサービスについて</h2>
         <p>
-          Oracle Vは、星座・タロット・血液型という3つの視点から「今日のあなた」を占う
+          ホシドタロは、星座・タロット・血液型という3つの視点から「今日のあなた」を占う
           Webサービスです。難しい知識がなくても、数タップで気軽に占える体験を目指しています。
         </p>
         <p>
@@ -34,7 +34,7 @@ export default function AboutPage() {
           占いは「当たる・当たらない」で判断するものではなく、忙しい毎日の中で
           少し立ち止まり、自分の気持ちや行動を見つめ直すきっかけになるものだと考えています。
           その体験を、思い立ったときにすぐ・気軽に試せる形にしたいという思いから、
-          Oracle Vを一人で企画・開発しました。
+          ホシドタロを一人で企画・開発しました。
         </p>
         <p>
           タロットの解釈や星座の運勢は、伝統的な意味づけを踏まえながら、

@@ -8,10 +8,10 @@ import AdBanner from '@/components/AdBanner';
 export default function HomePage() {
   const t = {
     eyebrow: 'AI占いサービス',
-    title: 'Oracle V',
+    title: 'ホシドタロ',
     subtitle: '星座とタロットで、今日のあなたを占う',
     cardA: { label: '今日の運勢', desc: '星座・タロットから選んで占う', cta: '占ってみる' },
-    cardB: { label: 'する・しない', desc: 'Yes/No、迷いに答えを', cta: '聞いてみる' },
+    cardB: { label: 'する・しない', desc: 'Yes/No、迷いに答えを', cta: '決める' },
     guideTitle: '占いガイド',
     guideA: '星座占いの基本',
     guideB: 'タロットカードの意味',

@@ -41,7 +41,7 @@ export default function MonthlyFortune({ data }: { data: MonthlyData }) {
     description: data.description,
     inLanguage: 'ja',
     mainEntityOfPage: `${SITE_URL}/fortune-2026/${data.slug}`,
-    publisher: { '@type': 'Organization', name: 'Oracle V' },
+    publisher: { '@type': 'Organization', name: 'ホシドタロ' },
   };
 
   return (

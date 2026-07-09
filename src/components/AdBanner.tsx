@@ -1,5 +1,5 @@
 // src/components/AdBanner.tsx
-// Oracle V — AdSense 배너 (승인 전엔 자동으로 자리만, 승인 후 env만 채우면 광고 노출)
+// ホシドタロ — AdSense 배너 (승인 전엔 자동으로 자리만, 승인 후 env만 채우면 광고 노출)
 //
 // 사용 흐름:
 //   1) 승인 전: NEXT_PUBLIC_ADSENSE_CLIENT 가 비어 있음 → 아무것도 안 그림(레이아웃만 예약)
