@@ -9,8 +9,7 @@ import AdBanner from '@/components/AdBanner';
 import ShareButtons from '@/components/ShareButtons';
 import FortuneTellerLoader from '@/components/FortuneTellerLoader';
 import ZoomableTarotCard from '@/components/ZoomableTarotCard';
-import AdGateScreen from '@/components/AdGateScreen';
-import { hasUsedFreeView, markFreeViewUsed } from '@/lib/dailyGate';
+import { markFreeViewUsed } from '@/lib/dailyGate';
 
 const ZODIAC_JA: Record<string, string> = {
   aries: '牡羊座', taurus: '牡牛座', gemini: '双子座', cancer: '蟹座', leo: '獅子座', virgo: '乙女座',
@@ -30,35 +29,9 @@ const RELATED_GUIDE: Record<string, { slug: string; title: string }> = {
 export default function FortuneResultPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [gated, setGated] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState(false);
   const [meta, setMeta] = useState<any>({});
-
-  const runFetch = async (tarotFull: any[], m: any) => {
-    setLoading(true);
-    try {
-      const res = await fetch('/api/fortune/result', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          topic: m.topic ?? 'general',
-          zodiacSign: m.zodiacSign, bloodType: m.bloodType, gender: m.gender,
-          tarotShuffleResult: tarotFull, lang: 'ja',
-        }),
-      });
-      const raw = await res.text();
-      const data = raw ? JSON.parse(raw) : null;
-      if (!data || data.error) setError(true);
-      else setResult(data);
-    } catch (e) {
-      console.error('fortune fetch failed:', e);
-      setError(true);
-    } finally {
-      setLoading(false);
-      markFreeViewUsed('fortune'); // 오늘 조회 처리(무료분이든 광고 시청 후든 동일하게 기록)
-    }
-  };
 
   useEffect(() => {
     const tarotFull = JSON.parse(sessionStorage.getItem('tarotFull') ?? '[]');
@@ -66,28 +39,31 @@ export default function FortuneResultPage() {
     setMeta(m);
     if (!tarotFull.length) { router.replace('/'); return; }
 
-    if (hasUsedFreeView('fortune')) {
-      // 오늘의 무료 조회는 이미 사용 → 광고 화면부터 보여주고, 그 안에서 fetch 시작
-      setGated(true);
-      setLoading(false);
-      return;
-    }
-    runFetch(tarotFull, m);
+    (async () => {
+      try {
+        const res = await fetch('/api/fortune/result', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            topic: m.topic ?? 'general',
+            zodiacSign: m.zodiacSign, bloodType: m.bloodType, gender: m.gender,
+            tarotShuffleResult: tarotFull, lang: 'ja',
+          }),
+        });
+        const raw = await res.text();
+        const data = raw ? JSON.parse(raw) : null;
+        if (!data || data.error) setError(true);
+        else setResult(data);
+      } catch (e) {
+        console.error('fortune fetch failed:', e);
+        setError(true);
+      } finally {
+        setLoading(false);
+        markFreeViewUsed('fortune'); // 오늘의 무료 조회 사용 처리(다음 입장부터 광고 게이트 대상)
+      }
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  if (gated) {
-    return (
-      <AdGateScreen
-        onContinue={() => {
-          setGated(false);
-          const tarotFull = JSON.parse(sessionStorage.getItem('tarotFull') ?? '[]');
-          const m = JSON.parse(sessionStorage.getItem('fortuneMeta') ?? '{}');
-          runFetch(tarotFull, m);
-        }}
-      />
-    );
-  }
 
   if (loading) {
     return <FortuneTellerLoader message="占っています" />;

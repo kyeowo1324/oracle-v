@@ -9,60 +9,37 @@ import AdBanner from '@/components/AdBanner';
 import ShareButtons from '@/components/ShareButtons';
 import FortuneTellerLoader from '@/components/FortuneTellerLoader';
 import ZoomableTarotCard from '@/components/ZoomableTarotCard';
-import AdGateScreen from '@/components/AdGateScreen';
-import { hasUsedFreeView, markFreeViewUsed } from '@/lib/dailyGate';
+import { markFreeViewUsed } from '@/lib/dailyGate';
 
 export default function DecisionResultPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [gated, setGated] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [showDetail, setShowDetail] = useState(false);
-
-  const runFetch = async (tarotFull: any[], m: any) => {
-    setLoading(true);
-    try {
-      const res = await fetch('/api/decision/result', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: m.question, tarotShuffleResult: tarotFull, lang: 'ja' }),
-      });
-      const raw = await res.text();
-      setResult(raw ? JSON.parse(raw) : { error: 'empty' });
-    } catch {
-      setResult({ error: 'fetch' });
-    } finally {
-      setLoading(false);
-      markFreeViewUsed('decision');
-    }
-  };
 
   useEffect(() => {
     const tarotFull = JSON.parse(sessionStorage.getItem('tarotFull') ?? '[]');
     const m = JSON.parse(sessionStorage.getItem('fortuneMeta') ?? '{}');
     if (!tarotFull.length) { router.replace('/'); return; }
 
-    if (hasUsedFreeView('decision')) {
-      setGated(true);
-      setLoading(false);
-      return;
-    }
-    runFetch(tarotFull, m);
+    (async () => {
+      try {
+        const res = await fetch('/api/decision/result', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question: m.question, tarotShuffleResult: tarotFull, lang: 'ja' }),
+        });
+        const raw = await res.text();
+        setResult(raw ? JSON.parse(raw) : { error: 'empty' });
+      } catch {
+        setResult({ error: 'fetch' });
+      } finally {
+        setLoading(false);
+        markFreeViewUsed('decision'); // 오늘의 무료 조회 사용 처리(다음 입장부터 광고 게이트 대상)
+      }
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  if (gated) {
-    return (
-      <AdGateScreen
-        onContinue={() => {
-          setGated(false);
-          const tarotFull = JSON.parse(sessionStorage.getItem('tarotFull') ?? '[]');
-          const m = JSON.parse(sessionStorage.getItem('fortuneMeta') ?? '{}');
-          runFetch(tarotFull, m);
-        }}
-      />
-    );
-  }
 
   if (loading) {
     return <FortuneTellerLoader message="答えを占っています" />;

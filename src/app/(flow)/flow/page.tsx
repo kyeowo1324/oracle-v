@@ -1,11 +1,17 @@
 // src/app/(flow)/flow/page.tsx
 // fortune : topic(주제) → profile(血液型+性別) → 星座 → タロット3枚
 // decision: 質問 → タロット1枚
+//
+// 무료 1회 게이트: 오늘 이미 이 모드(fortune/decision)를 봤다면, 여기(진입 지점)에서
+// 팝업으로 광고를 먼저 보여준다. 홈 카드・결과 화면의 "もう一度占う"・모드 전환 버튼 등
+// 어디서 들어오든 전부 이 페이지를 거치므로, 여기 한 곳만 지키면 모든 진입 경로가 커버된다.
 'use client';
 
 import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useFortune, FortuneMode } from '@/lib/fortune-context';
+import { hasUsedFreeView } from '@/lib/dailyGate';
+import AdGateModal from '@/components/AdGateModal';
 import { TopicStep } from './TopicStep';
 import { ProfileStep } from './ProfileStep';
 import { ZodiacStep } from './ZodiacStep';
@@ -21,9 +27,14 @@ function FlowInner() {
 
   const initialMode = (params.get('mode') as FortuneMode) ?? 'fortune';
   const [step, setStep] = useState<Step>(initialMode === 'decision' ? 'question' : 'topic');
+  const [gateOpen, setGateOpen] = useState(false);
+  const [gateChecked, setGateChecked] = useState(false);
 
   useEffect(() => {
     f.setMode(initialMode);
+    // 오늘 이 모드의 무료 조회를 이미 썼다면 팝업부터 노출
+    if (hasUsedFreeView(initialMode)) setGateOpen(true);
+    setGateChecked(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -41,6 +52,11 @@ function FlowInner() {
     sessionStorage.setItem('fortuneMeta', JSON.stringify(meta));
     router.push(isDecision ? '/result/decision' : '/result/fortune');
   };
+
+  // localStorage 확인 전(첫 렌더)에는 아무것도 안 그려 깜빡임 방지
+  if (!gateChecked) {
+    return <div className="min-h-screen bg-[#14152B]" />;
+  }
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#14152B] text-[#F6F1E4]">
@@ -73,6 +89,9 @@ function FlowInner() {
           />
         )}
       </div>
+
+      {/* 오늘 무료분을 이미 썼을 때만 노출. 닫으면 위 화면(주제/질문 선택)이 그대로 드러남 */}
+      {gateOpen && <AdGateModal onClose={() => setGateOpen(false)} />}
     </div>
   );
 }
