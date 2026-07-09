@@ -24,7 +24,7 @@ function wasDismissedRecently(): boolean {
 }
 
 export default function InstallPrompt() {
-  const { platform, isStandalone, canPrompt, promptInstall } = useInstallApp();
+  const { platform, browser, isStandalone, canPrompt, promptInstall } = useInstallApp();
   const [visible, setVisible] = useState(false);
   const [showGuide, setShowGuide] = useState(false);
 
@@ -83,7 +83,7 @@ export default function InstallPrompt() {
         </div>
       </div>
 
-      {showGuide && <InstallGuideModal platform={platform} onClose={handleDismiss} />}
+      {showGuide && <InstallGuideModal browser={browser} onClose={handleDismiss} />}
 
       <style jsx>{`
         .ip-banner {

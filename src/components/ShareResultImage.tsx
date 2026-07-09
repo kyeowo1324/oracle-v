@@ -46,6 +46,28 @@ type Props = FortuneProps | DecisionProps;
 const CANVAS_W = 1080;
 const CANVAS_H = 1350; // 4:5, SNS 피드 최적
 
+// 그리지 않고 필요한 줄 수만 계산 (적응형 폰트 크기 결정용)
+function measureLines(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  maxWidth: number
+): number {
+  const chars = Array.from(text);
+  let line = '';
+  let count = 0;
+  for (const ch of chars) {
+    const test = line + ch;
+    if (ctx.measureText(test).width > maxWidth && line !== '') {
+      count++;
+      line = ch;
+    } else {
+      line = test;
+    }
+  }
+  if (line) count++;
+  return count;
+}
+
 function wrapText(
   ctx: CanvasRenderingContext2D,
   text: string,
@@ -208,13 +230,29 @@ async function composeFortune(p: FortuneProps): Promise<Blob | null> {
   }
 
   let y = cardY + cardH + 100; // ≈ 810
+  const bottomLimit = CANVAS_H - 100; // 푸터 위 여백 확보
 
-  // AI 한줄평 (conclusion) — 크게
+  // AI 한줄평 (conclusion) — 적응형: 길면 폰트를 줄여 전문 표시 (잘림 방지)
   if (p.conclusion) {
     ctx.textAlign = 'center';
     ctx.fillStyle = '#F6F1E4';
-    ctx.font = '600 40px "Shippori Mincho", "Noto Sans JP", serif';
-    const used = wrapText(ctx, p.conclusion, CANVAS_W / 2, y, CANVAS_W - 160, 54, 2);
+    const concWidth = CANVAS_W - 160;
+    const concConfigs = [
+      { size: 40, lh: 54, max: 2 },
+      { size: 34, lh: 47, max: 3 },
+      { size: 30, lh: 42, max: 3 },
+      { size: 27, lh: 38, max: 4 },
+    ];
+    let chosen = concConfigs[concConfigs.length - 1];
+    for (const cfg of concConfigs) {
+      ctx.font = `600 ${cfg.size}px "Shippori Mincho", "Noto Sans JP", serif`;
+      if (measureLines(ctx, p.conclusion, concWidth) <= cfg.max) {
+        chosen = cfg;
+        break;
+      }
+    }
+    ctx.font = `600 ${chosen.size}px "Shippori Mincho", "Noto Sans JP", serif`;
+    const used = wrapText(ctx, p.conclusion, CANVAS_W / 2, y, concWidth, chosen.lh, chosen.max);
     y += used + 18;
 
     // 별 구분선
@@ -232,12 +270,30 @@ async function composeFortune(p: FortuneProps): Promise<Blob | null> {
     y += 52;
   }
 
-  // AI 설명 (summary)
+  // AI 설명 (summary) — 적응형: 남은 세로 공간에 전문이 들어가도록 폰트 자동 축소
   if (p.summary) {
     ctx.textAlign = 'center';
     ctx.fillStyle = '#E4E1F2';
-    ctx.font = '400 27px "Noto Sans JP", sans-serif';
-    wrapText(ctx, p.summary, CANVAS_W / 2, y, CANVAS_W - 180, 42, 8);
+    const sumWidth = CANVAS_W - 180;
+    const remaining = bottomLimit - y;
+    const sumConfigs = [
+      { size: 27, lh: 42 },
+      { size: 25, lh: 38 },
+      { size: 23, lh: 35 },
+      { size: 21, lh: 32 },
+    ];
+    let picked = sumConfigs[sumConfigs.length - 1];
+    for (const cfg of sumConfigs) {
+      ctx.font = `400 ${cfg.size}px "Noto Sans JP", sans-serif`;
+      const need = measureLines(ctx, p.summary, sumWidth) * cfg.lh;
+      if (need <= remaining) {
+        picked = cfg;
+        break;
+      }
+    }
+    ctx.font = `400 ${picked.size}px "Noto Sans JP", sans-serif`;
+    const capacity = Math.max(3, Math.floor(remaining / picked.lh));
+    wrapText(ctx, p.summary, CANVAS_W / 2, y, sumWidth, picked.lh, capacity);
   }
 
   drawFooter(ctx);
@@ -277,11 +333,28 @@ async function composeDecision(p: DecisionProps): Promise<Blob | null> {
   ctx.font = '700 72px "Shippori Mincho", "Noto Sans JP", serif';
   ctx.fillText(p.verdict, CANVAS_W / 2, cardY + cardH + 146);
 
-  // AI 조언
+  // AI 조언 — 적응형 (잘림 방지)
   if (p.aiText) {
     ctx.fillStyle = '#E4E1F2';
-    ctx.font = '400 28px "Noto Sans JP", sans-serif';
-    wrapText(ctx, p.aiText, CANVAS_W / 2, cardY + cardH + 216, CANVAS_W - 180, 44, 6);
+    const advWidth = CANVAS_W - 180;
+    const advY = cardY + cardH + 216;
+    const remaining = CANVAS_H - 100 - advY;
+    const advConfigs = [
+      { size: 28, lh: 44 },
+      { size: 25, lh: 39 },
+      { size: 22, lh: 34 },
+    ];
+    let picked = advConfigs[advConfigs.length - 1];
+    for (const cfg of advConfigs) {
+      ctx.font = `400 ${cfg.size}px "Noto Sans JP", sans-serif`;
+      if (measureLines(ctx, p.aiText, advWidth) * cfg.lh <= remaining) {
+        picked = cfg;
+        break;
+      }
+    }
+    ctx.font = `400 ${picked.size}px "Noto Sans JP", sans-serif`;
+    const capacity = Math.max(3, Math.floor(remaining / picked.lh));
+    wrapText(ctx, p.aiText, CANVAS_W / 2, advY, advWidth, picked.lh, capacity);
   }
 
   drawFooter(ctx);

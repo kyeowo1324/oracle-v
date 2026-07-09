@@ -14,7 +14,7 @@ import { useInstallApp } from '@/lib/useInstallApp';
 import InstallGuideModal from '@/components/InstallGuideModal';
 
 export default function AppInstallCard() {
-  const { platform, isStandalone, canPrompt, promptInstall } = useInstallApp();
+  const { browser, isStandalone, canPrompt, promptInstall } = useInstallApp();
   const [showGuide, setShowGuide] = useState(false);
   const [installed, setInstalled] = useState(false);
 
@@ -67,7 +67,7 @@ export default function AppInstallCard() {
       </section>
 
       {showGuide && (
-        <InstallGuideModal platform={platform} onClose={() => setShowGuide(false)} />
+        <InstallGuideModal browser={browser} onClose={() => setShowGuide(false)} />
       )}
     </>
   );
