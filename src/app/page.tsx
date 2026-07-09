@@ -85,6 +85,15 @@ export default function HomePage() {
           <OmikujiCard href="/flow?mode=decision" icon="tanzaku" label={t.cardB.label} desc={t.cardB.desc} cta={t.cardB.cta} rotate="rotate-2" />
         </main>
 
+        {/* 컬렉션(도감) 링크 */}
+        <Link
+          href="/collection"
+          className="mx-auto mt-8 flex w-full max-w-sm items-center justify-between rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/50 px-4 py-3 font-sans text-sm text-[#D8D5EE] transition-colors hover:border-[#C9A227]"
+        >
+          <span>🎴 カードコレクション — 引いたカードの図鑑</span>
+          <span className="text-[#C9A227]">→</span>
+        </Link>
+
         {/* 광고 배너 자리 */}
         <AdBanner slot="0000000000" />
 

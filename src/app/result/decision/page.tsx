@@ -13,6 +13,7 @@ import ZoomableTarotCard from '@/components/ZoomableTarotCard';
 import StarrySky from '@/components/StarrySky';
 import { markFreeViewUsed } from '@/lib/dailyGate';
 import { buildShareUrl } from '@/lib/shareLink';
+import { recordCards, extractCardKey } from '@/lib/collection';
 
 export default function DecisionResultPage() {
   const router = useRouter();
@@ -33,7 +34,19 @@ export default function DecisionResultPage() {
           body: JSON.stringify({ question: m.question, tarotShuffleResult: tarotFull, lang: 'ja' }),
         });
         const raw = await res.text();
-        setResult(raw ? JSON.parse(raw) : { error: 'empty' });
+        const data = raw ? JSON.parse(raw) : { error: 'empty' };
+        setResult(data);
+        // 컬렉션(도감)에 기록 — 실패해도 본기능에 영향 없음
+        if (data?.card && !data.error) {
+          try {
+            recordCards('original', [{
+              key: extractCardKey(data.card),
+              name: data.card.name,
+              orientation: data.card.orientation,
+              imageUrl: data.card.image_url,
+            }]);
+          } catch { /* noop */ }
+        }
       } catch {
         setResult({ error: 'fetch' });
       } finally {
