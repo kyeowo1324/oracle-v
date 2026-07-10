@@ -1,9 +1,35 @@
 // src/components/ShareButtons.tsx
 // 결과 공유. 일본 실정 반영: LINE(도달) · X(확산) · Threads · 링크복사 + その他(네이티브 공유).
 // Instagram/KakaoTalk은 웹 URL 공유가 막혀있어, 모바일 네이티브 공유 시트(navigator.share)로 커버.
+//
+// ── 점검판 (v2) ──
+// 링크복사가 LINE·Instagram 인앱 브라우저에서 실패하던 문제 수정:
+// navigator.clipboard.writeText는 인앱 브라우저·구형 WebView에서 미지원/권한거부가
+// 잦으므로, 실패 시 textarea + document.execCommand('copy') 레거시 폴백을 시도한다.
 'use client';
 
 import { useState } from 'react';
+
+// 레거시 복사 폴백 (Clipboard API가 없거나 거부된 환경용)
+function legacyCopy(payload: string): boolean {
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = payload;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.top = '0';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    ta.setSelectionRange(0, payload.length); // iOS 필수
+    const ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    return ok;
+  } catch {
+    return false;
+  }
+}
 
 export default function ShareButtons({ text, url }: { text: string; url?: string }) {
   const [copied, setCopied] = useState(false);
@@ -17,13 +43,16 @@ export default function ShareButtons({ text, url }: { text: string; url?: string
   const onThreads = () => openPopup(`https://www.threads.net/intent/post?text=${enc(text + ' ' + shareUrl)}`);
 
   const onCopy = async () => {
+    const payload = `${text}\n${shareUrl}`;
+    let ok = false;
     try {
-      await navigator.clipboard.writeText(`${text}\n${shareUrl}`);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
+      await navigator.clipboard.writeText(payload);
+      ok = true;
     } catch {
-      setCopied(false);
+      ok = legacyCopy(payload); // 인앱 브라우저 등 → 레거시 폴백
     }
+    setCopied(ok);
+    if (ok) setTimeout(() => setCopied(false), 1800);
   };
 
   // 네이티브 공유(모바일): 인스타·카톡 등 설치된 앱 목록이 뜸. 데스크톱은 미지원 시 숨김.

@@ -3,11 +3,12 @@
 // 기존 ShareButtons의 LINE/X/링크복사에서 이 함수로 만든 URL을 쓰면
 // 카톡·라인·X 미리보기에 카드 이미지+AI텍스트가 자동으로 뜬다.
 //
-// 수정: encodeURIComponent를 직접 호출하지 않는다.
+// 수정 1: encodeURIComponent를 직접 호출하지 않는다.
 // URLSearchParams.set()이 이미 인코딩을 수행하므로, 직접 호출하면
 // 이중 인코딩되어 OG 이미지에 "%E3%81%82…" 같은 깨진 문자가 그대로 표시된다.
+// 수정 2 (S-4 마무리): 파일별 SITE_URL 정의를 없애고 @/lib/site 단일 출처로 통일.
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://hoshidotaro.vercel.app';
+import { SITE_URL } from '@/lib/site';
 
 type FortuneShareInput = {
   type: 'fortune';
