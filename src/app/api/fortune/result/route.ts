@@ -17,6 +17,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import crypto from 'crypto';
 import { getJstDateString, pickVariant } from '@/lib/daily';
 import { enforceDailyAiLimit } from '@/lib/rateLimit';
+import { deckImageUrl, resolveDeckKey } from '@/lib/decks';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -59,14 +60,21 @@ async function pickAstroRow(sign: string, category: string, dateStr: string) {
   return data[idx] ?? data[0];
 }
 
-// S-3: 클라이언트가 보낸 배열에서 card_key/orientation만 추출·검증
-function sanitizeTarotInput(raw: unknown): { card_key: string; orientation: 'upright' | 'reversed' }[] {
+// S-3: 클라이언트가 보낸 배열에서 card_key/orientation/deck_key만 추출·검증
+// deck_key는 매니페스트에 실존 + 해당 카드 이미지가 실제로 있을 때만 인정 (아니면 original)
+function sanitizeTarotInput(
+  raw: unknown
+): { card_key: string; orientation: 'upright' | 'reversed'; deck_key: string }[] {
   if (!Array.isArray(raw)) return [];
-  const out: { card_key: string; orientation: 'upright' | 'reversed' }[] = [];
+  const out: { card_key: string; orientation: 'upright' | 'reversed'; deck_key: string }[] = [];
   for (const c of raw.slice(0, 3)) {
     const key = typeof c?.card_key === 'string' ? c.card_key : '';
     if (!CARD_KEY_RE.test(key)) continue;
-    out.push({ card_key: key, orientation: c?.orientation === 'reversed' ? 'reversed' : 'upright' });
+    out.push({
+      card_key: key,
+      orientation: c?.orientation === 'reversed' ? 'reversed' : 'upright',
+      deck_key: resolveDeckKey(c?.deck_key, key),
+    });
   }
   return out;
 }
@@ -169,16 +177,17 @@ export async function POST(req: Request) {
         );
         tarotWithPos = requested.map((c, i) => ({
           card_key: c.card_key,
+          deck_key: c.deck_key, // 레어 덱 스킨 — 이름·해석은 오리지널 공유
           orientation: c.orientation,
           name: nameMap.get(c.card_key) ?? c.card_key,
           text: interpMap.get(`${c.card_key}_${c.orientation}`) ?? '',
-          image_url: `/tarot-images/${c.card_key}.jpg`,
+          image_url: deckImageUrl(c.deck_key, c.card_key),
           position: positions[i],
         }));
       } catch {
         tarotWithPos = requested.map((c, i) => ({
-          card_key: c.card_key, orientation: c.orientation, name: c.card_key,
-          text: '', image_url: `/tarot-images/${c.card_key}.jpg`, position: positions[i],
+          card_key: c.card_key, deck_key: c.deck_key, orientation: c.orientation, name: c.card_key,
+          text: '', image_url: deckImageUrl(c.deck_key, c.card_key), position: positions[i],
         }));
       }
     }
@@ -187,6 +196,7 @@ export async function POST(req: Request) {
     let conclusion = '', summary = '';
     const hasAnyInput = !!zodiacSign || !!bloodType || tarotWithPos.length > 0;
     // A단계: 캐시 HIT면 Claude 호출 0 (같은 날·같은 조합은 결과 재사용)
+    // ※ deck_key는 캐시키에 넣지 않는다 — 레어 덱은 스킨이라 AI 텍스트가 동일함
     const cacheKey = makeFortuneCacheKey({
       date: dateStr, topic: t, zodiacSign, bloodType, gender, tarot: requested,
     });

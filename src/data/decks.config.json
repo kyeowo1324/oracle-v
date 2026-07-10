@@ -1,0 +1,10 @@
+{
+  "_설명": "덱 설정 파일. 새 덱 추가 시: public/tarot-images/<덱키>/ 폴더에 이미지를 넣고, 원하면 names에 표시명 한 줄만 추가. 코드 수정 불필요.",
+  "rareChance": 0.05,
+  "minCards": 22,
+  "names": {
+    "kappa": "河童",
+    "zashiki": "座敷童子",
+    "bakeneko": "化け猫"
+  }
+}

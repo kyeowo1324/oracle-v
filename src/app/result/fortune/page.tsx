@@ -65,7 +65,7 @@ export default function FortuneResultPage() {
           setResult(data);
           // 컬렉션(도감)에 기록 — 실패해도 본기능에 영향 없음
           try {
-            recordCards('original', (data.tarot ?? []).map((c: any) => ({
+            recordCards((data.tarot?.[0]?.deck_key ?? 'original') as any, (data.tarot ?? []).map((c: any) => ({
               key: extractCardKey(c),
               name: c.name,
               orientation: c.orientation,

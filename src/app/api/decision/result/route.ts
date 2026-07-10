@@ -13,6 +13,7 @@ import { createClient } from '@supabase/supabase-js';
 import Anthropic from '@anthropic-ai/sdk';
 import { getJstDateString } from '@/lib/daily';
 import { enforceDailyAiLimit } from '@/lib/rateLimit';
+import { deckImageUrl, resolveDeckKey } from '@/lib/decks';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -66,6 +67,8 @@ export async function POST(req: Request) {
   const orientation: 'upright' | 'reversed' =
     first?.orientation === 'reversed' ? 'reversed' : 'upright';
   const isUpright = orientation === 'upright';
+  // 레어 덱 스킨: 매니페스트에 실존할 때만 인정, 아니면 original 폴백
+  const deckKey = resolveDeckKey(first?.deck_key, cardKey);
 
   // S-3: 이름·해석은 서버가 DB에서 재조회
   let cardName = cardKey;
@@ -85,9 +88,10 @@ export async function POST(req: Request) {
 
   const card = {
     card_key: cardKey,
+    deck_key: deckKey,
     name: cardName,
     orientation,
-    image_url: `/tarot-images/${cardKey}.jpg`,
+    image_url: deckImageUrl(deckKey, cardKey),
     text: cardText,
   };
 

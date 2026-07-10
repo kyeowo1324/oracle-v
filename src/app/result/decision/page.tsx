@@ -42,7 +42,7 @@ export default function DecisionResultPage() {
         // 컬렉션(도감)에 기록 — 실패해도 본기능에 영향 없음
         if (data?.card && !data.error) {
           try {
-            recordCards('original', [{
+            recordCards((data.card.deck_key ?? 'original') as any, [{
               key: extractCardKey(data.card),
               name: data.card.name,
               orientation: data.card.orientation,

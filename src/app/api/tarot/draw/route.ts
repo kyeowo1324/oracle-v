@@ -7,8 +7,14 @@
 //   S-5b) 카드 마스터+해석은 정적 데이터이므로 모듈 스코프에 10분 캐시
 //         → 웜 인스턴스에서 요청마다 78+156행 전체 조회하던 DB 부하 제거
 //   S-3 연장) req.json() 실패 시에도 기본값으로 진행(이 라우트는 body 없이도 동작 가능)
+// ── 레어 덱(v3) ──
+//   스프레드 단위로 확률 추첨: 오리지널 95% / 출시된 레어 덱(河童 등) 합산 5%.
+//   확률·오픈 여부는 decks.config.json + deck-manifest.json이 결정 (코드 수정 불필요).
+//   레어 덱은 "스킨"이라 이름·해석은 오리지널 공유, 이미지 경로만 바뀐다.
+//   레어 덱 선택 시 풀은 그 덱에 이미지가 있는 카드로 한정(메이저 22장 선행 출시 대응).
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { getRareDecks, RARE_CHANCE, deckCardSet, deckImageUrl, type DeckKey } from '@/lib/decks';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -49,22 +55,39 @@ export async function POST(req: Request) {
   // 1) 카드 마스터 + 해석 로드 (모듈 캐시)
   const loaded = await loadDeck();
   if (!loaded) return NextResponse.json({ error: 'DB_ERROR' }, { status: 500 });
-  const { cards, interps } = loaded;
+  const { cards: rawCards, interps } = loaded;
+  // card_key 기준 중복 제거 — 04 마이그레이션 후 다른 deck_key의 DB행이 추가돼도
+  // (레어 덱은 스킨 모델이라 DB행이 필요 없지만) 풀이 오염되지 않게 방어
+  const cardMap = new Map<string, CardRow>();
+  for (const c of rawCards) if (!cardMap.has(c.card_key)) cardMap.set(c.card_key, c);
+  const cards = [...cardMap.values()];
 
-  // 2) 156개 풀 구성 (각 카드 × 정/역)
-  const deck: { card_key: string; orientation: Orientation }[] = [];
-  for (const c of cards) {
-    deck.push({ card_key: c.card_key, orientation: 'upright' });
-    deck.push({ card_key: c.card_key, orientation: 'reversed' });
-  }
-
-  // 3) 셔플 횟수만큼 Fisher-Yates 반복 (crypto 기반 난수)
-  //    S-5a: 2**32로 나눠 [0, 1) 보장 (기존 /0xffffffff는 1.0 가능 → 범위 밖 스왑 버그)
+  // 난수 (crypto 기반) — S-5a: 2**32로 나눠 [0, 1) 보장
   const rand = () => {
     const buf = new Uint32Array(1);
     crypto.getRandomValues(buf);
     return buf[0] / 2 ** 32;
   };
+
+  // 2) 레어 덱 롤 — 스프레드(6장) 단위로 1회. 당첨 시 전 카드가 같은 덱(시각 일관성).
+  let deckKey: DeckKey = 'original';
+  const rareDecks = getRareDecks();
+  if (rareDecks.length > 0 && rand() < RARE_CHANCE) {
+    deckKey = rareDecks[Math.floor(rand() * rareDecks.length)].key;
+  }
+  let poolCards = cards;
+  if (deckKey !== 'original') {
+    const avail = deckCardSet(deckKey);
+    poolCards = cards.filter((c) => avail.has(c.card_key));
+    if (poolCards.length < 6) { deckKey = 'original'; poolCards = cards; } // 안전 폴백
+  }
+
+  // 3) 풀 구성 (각 카드 × 정/역) 후 셔플 횟수만큼 Fisher-Yates 반복
+  const deck: { card_key: string; orientation: Orientation }[] = [];
+  for (const c of poolCards) {
+    deck.push({ card_key: c.card_key, orientation: 'upright' });
+    deck.push({ card_key: c.card_key, orientation: 'reversed' });
+  }
   for (let t = 0; t < times; t++) {
     for (let i = deck.length - 1; i > 0; i--) {
       const j = Math.floor(rand() * (i + 1));
@@ -90,11 +113,12 @@ export async function POST(req: Request) {
 
   const result = drawn.map((card) => ({
     card_key: card.card_key,
+    deck_key: deckKey, // 레어 덱이면 결과·컬렉션이 그 덱으로 기록되도록 전달
     orientation: card.orientation,
     name: nameMap.get(card.card_key) ?? card.card_key,
     text: interpMap.get(`${card.card_key}_${card.orientation}`) ?? '',
-    image_url: `/tarot-images/${card.card_key}.jpg`,
+    image_url: deckImageUrl(deckKey, card.card_key),
   }));
 
-  return NextResponse.json({ cards: result, shuffleCount: times });
+  return NextResponse.json({ deck: deckKey, cards: result, shuffleCount: times });
 }
