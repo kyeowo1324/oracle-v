@@ -36,7 +36,7 @@ const GUIDE_PICKS: { slug: string; title: string }[] = [
 
 export default function AdGateModal({
   onClose,
-  seconds = 15,
+  seconds = 7,
 }: {
   onClose: () => void;
   seconds?: number;
