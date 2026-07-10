@@ -14,6 +14,7 @@ import StarrySky from '@/components/StarrySky';
 import { markFreeViewUsed } from '@/lib/dailyGate';
 import { buildShareUrl } from '@/lib/shareLink';
 import { recordCards, extractCardKey } from '@/lib/collection';
+import DailyLimitScreen from '@/components/DailyLimitScreen';
 
 export default function DecisionResultPage() {
   const router = useRouter();
@@ -34,7 +35,9 @@ export default function DecisionResultPage() {
           body: JSON.stringify({ question: m.question, tarotShuffleResult: tarotFull, lang: 'ja' }),
         });
         const raw = await res.text();
-        const data = raw ? JSON.parse(raw) : { error: 'empty' };
+        const data = res.status === 429
+            ? { error: 'rate_limited' }
+            : (raw ? JSON.parse(raw) : { error: 'empty' });
         setResult(data);
         // 컬렉션(도감)에 기록 — 실패해도 본기능에 영향 없음
         if (data?.card && !data.error) {
@@ -59,6 +62,9 @@ export default function DecisionResultPage() {
 
   if (loading) {
     return <FortuneTellerLoader message="答えを占っています" />;
+  }
+  if (result?.error === 'rate_limited') {
+    return <DailyLimitScreen />;
   }
   if (!result || result.error) {
     return (

@@ -15,6 +15,7 @@ import StarrySky from '@/components/StarrySky';
 import { markFreeViewUsed } from '@/lib/dailyGate';
 import { buildShareUrl } from '@/lib/shareLink';
 import { recordCards, extractCardKey } from '@/lib/collection';
+import DailyLimitScreen from '@/components/DailyLimitScreen';
 
 const ZODIAC_JA: Record<string, string> = {
   aries: '牡羊座', taurus: '牡牛座', gemini: '双子座', cancer: '蟹座', leo: '獅子座', virgo: '乙女座',
@@ -36,6 +37,7 @@ export default function FortuneResultPage() {
   const [loading, setLoading] = useState(true);
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState(false);
+  const [limited, setLimited] = useState(false);
   const [meta, setMeta] = useState<any>({});
 
   useEffect(() => {
@@ -57,7 +59,8 @@ export default function FortuneResultPage() {
         });
         const raw = await res.text();
         const data = raw ? JSON.parse(raw) : null;
-        if (!data || data.error) setError(true);
+        if (res.status === 429 || data?.error === 'rate_limited') setLimited(true);
+        else if (!data || data.error) setError(true);
         else {
           setResult(data);
           // 컬렉션(도감)에 기록 — 실패해도 본기능에 영향 없음
@@ -83,6 +86,9 @@ export default function FortuneResultPage() {
 
   if (loading) {
     return <FortuneTellerLoader message="占っています" />;
+  }
+  if (limited) {
+    return <DailyLimitScreen />;
   }
   if (error || !result) {
     return (

@@ -2,6 +2,9 @@
 // ── S패치 적용판 ──
 //   S-2) 일일 AI 호출 상한: increment_ai_call이 count를 반환 → 초과 시 429
 //        (supabase/06_migration_rate_limit.sql 선행 실행 필요)
+//   A단계) fortune_cache: 같은 날·같은 조합의 결론/요약을 재사용 → Claude 호출 절감
+//        (supabase/07_migration_fortune_cache.sql 선행 실행 필요.
+//         미실행이어도 캐시 조회가 조용히 실패하고 매번 생성 — 서비스 무중단)
 //   S-3) 입력 검증:
 //        - zodiacSign / bloodType / gender / lang / topic 화이트리스트
 //        - 타로는 클라이언트의 name/text를 신뢰하지 않고 card_key + orientation만 받아
@@ -11,6 +14,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import Anthropic from '@anthropic-ai/sdk';
+import crypto from 'crypto';
 import { getJstDateString, pickVariant } from '@/lib/daily';
 import { enforceDailyAiLimit } from '@/lib/rateLimit';
 
@@ -65,6 +69,20 @@ function sanitizeTarotInput(raw: unknown): { card_key: string; orientation: 'upr
     out.push({ card_key: key, orientation: c?.orientation === 'reversed' ? 'reversed' : 'upright' });
   }
   return out;
+}
+
+// A단계: 캐시키 — 결론/요약에 영향을 주는 입력만 정규화해 해시.
+// 날짜가 들어가므로 하루 단위로 자연 갱신. topic 추가가 구버전 참고본과의 차이.
+function makeFortuneCacheKey(input: {
+  date: string; topic: string; zodiacSign: string | null; bloodType: string | null;
+  gender: string | null; tarot: { card_key: string; orientation: string }[];
+}) {
+  const tarotKey = input.tarot.map((c) => `${c.card_key}:${c.orientation}`).join(',');
+  const raw = [
+    input.date, input.topic,
+    input.zodiacSign ?? '-', input.bloodType ?? '-', input.gender ?? '-', tarotKey,
+  ].join('|');
+  return crypto.createHash('sha256').update(raw).digest('hex');
 }
 
 export async function POST(req: Request) {
@@ -168,7 +186,27 @@ export async function POST(req: Request) {
     // 4) 결론 + 요약 (날짜 반영) — 입력이 하나도 없으면 Claude 호출 생략(비용 절약)
     let conclusion = '', summary = '';
     const hasAnyInput = !!zodiacSign || !!bloodType || tarotWithPos.length > 0;
+    // A단계: 캐시 HIT면 Claude 호출 0 (같은 날·같은 조합은 결과 재사용)
+    const cacheKey = makeFortuneCacheKey({
+      date: dateStr, topic: t, zodiacSign, bloodType, gender, tarot: requested,
+    });
+    let cacheHit = false;
     if (hasAnyInput) {
+      try {
+        const { data: cached } = await supabaseAdmin
+          .from('fortune_cache')
+          .select('conclusion_ja, summary_ja')
+          .eq('cache_key', cacheKey)
+          .single();
+        if (cached && (cached.conclusion_ja || cached.summary_ja)) {
+          conclusion = cached.conclusion_ja ?? '';
+          summary = cached.summary_ja ?? '';
+          cacheHit = true;
+          try { await supabaseAdmin.rpc('touch_fortune_cache', { p_key: cacheKey }); } catch { /* noop */ }
+        }
+      } catch { /* 캐시 미스 or 테이블 미생성 = 정상, 아래에서 생성 */ }
+    }
+    if (hasAnyInput && !cacheHit) {
       try {
         const genderJa = gender ? GENDER_JA[gender] : null;
         const context = [
@@ -194,6 +232,15 @@ export async function POST(req: Request) {
           conclusion = parsed.conclusion_ja ?? '';
           summary = parsed.summary_ja ?? '';
         }
+        // A단계: 생성 결과 저장 → 다음 같은 조합은 재사용 (실패해도 응답에는 영향 없음)
+        if (conclusion || summary) {
+          try {
+            await supabaseAdmin.from('fortune_cache').upsert(
+              { cache_key: cacheKey, conclusion_ja: conclusion, summary_ja: summary },
+              { onConflict: 'cache_key' }
+            );
+          } catch { /* noop */ }
+        }
       } catch { conclusion = ''; summary = ''; }
     }
 
@@ -213,7 +260,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       { error: 'internal', topic: 'general', topicJa: '総合運', conclusion: '', summary: '',
         zodiacText: '', lucky: {}, zodiacAdvice: '', blood: null, tarot: [], hasZodiac: false, hasBlood: false },
-      { status: 200 }
+      { status: 500 } // 클라이언트는 data.error로 판단하므로 상태코드 변경은 호환됨
     );
   }
 }
