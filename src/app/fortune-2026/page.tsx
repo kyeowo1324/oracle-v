@@ -3,11 +3,14 @@
 import Link from 'next/link';
 import AdBanner from '@/components/AdBanner';
 import { MONTHLY_2026 } from '@/data/monthly-2026';
+import { filterReleased } from '@/lib/monthlyRelease';
 
 export const metadata = {
   title: '2026年 月別運勢 — 星座×タロットで読む1年',
   description: '2026年の月別運勢を、12星座とタロットの組み合わせで解説。各月の輝く星座・注意したい星座、ラッキーカラーやアイテムをまとめてお届けします。',
 };
+
+export const revalidate = 3600;
 
 export default function Fortune2026IndexPage() {
   return (
@@ -23,7 +26,7 @@ export default function Fortune2026IndexPage() {
       </header>
 
       <ul className="space-y-4">
-        {MONTHLY_2026.map((m, i) => (
+        {filterReleased(MONTHLY_2026).map((m, i) => (
           <li key={m.slug}>
             <Link
               href={`/fortune-2026/${m.month}`}

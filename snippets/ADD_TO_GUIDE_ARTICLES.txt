@@ -1,0 +1,18 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ src/app/guide/page.tsx 의 GUIDE_ARTICLES 배열에 추가할 7줄
+ (배열의 마지막 항목 뒤, `] as const;` 앞에 붙여넣기)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  { slug: 'gyakui-no-yomikata', title: '逆位置が出たときの読み方 — 怖くない、むしろヒントが増える', excerpt: '逆位置の4つの読み方パターンと、悪い意味に引きずられないコツを初心者向けに解説。', category: 'タロット', published: true },
+  { slug: 'renai-tarot-spread', title: '恋愛タロットの引き方 — 質問の立て方とおすすめスプレッド3選', excerpt: '恋愛占いの質問づくりのコツと、目的別スプレッド3種類のやり方を解説します。', category: 'タロット', published: true },
+  { slug: 'tarot-seiza-kumiawase', title: 'タロットと星座の組み合わせ方 — 2つの占いを重ねて読むコツ', excerpt: '大アルカナと12星座の対応表と、2つの占いを統合して読む実践的な方法。', category: 'タロット', published: true },
+  { slug: 'aisho-zodiac-ranking', title: '相性のいい星座ランキング — 恋愛・友情・仕事で見る好相性ペア', excerpt: '好相性の星座ペアBEST5と、シーン別の相性の見方をランキング形式で紹介。', category: '星座', published: true },
+  { slug: 'moon-uranai', title: '満月・新月と運勢 — 月のリズムで整える開運習慣', excerpt: '新月は始まり、満月は手放し。月の満ち欠けの活かし方と2026年の日食・月食を解説。', category: '基礎', published: true },
+  { slug: 'asa-uranai-shukan', title: '朝の占い習慣のすすめ — 1日3分で気分を整えるルーティン', excerpt: '朝占いのメリットと振り回されないコツ、続けやすい3分ルーティンを紹介します。', category: '基礎', published: true },
+  { slug: 'yume-uranai-nyumon', title: '夢占い入門 — よく見る夢のシンボル15と読み解きのコツ', excerpt: '追いかけられる夢、歯が抜ける夢…よく見る夢の意味15個と夢の記録のコツ。', category: '基礎', published: true },
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ※ published: true 상태로 넣었지만, 각 글의 "체험 1~2단락" 자리를
+   채운 뒤에 공개하는 것을 권장합니다 (AI 대량생성 감점 방지).
+   아직 안 채웠으면 일단 published: false로 넣고, 채운 글부터 true로.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

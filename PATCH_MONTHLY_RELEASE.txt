@@ -1,0 +1,115 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 月別運勢 예약공개 — 패치 안내 (3개 파일, 각 2~3줄)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+동작: monthly-2026.ts에 12월까지 전부 넣어둬도, 사이트에는
+"현재 월(일본 시간 기준)까지"만 표시됨. 매월 1일에 자동으로 다음 달이 열림.
+커밋·배포는 지금 한 번만 하면 끝.
+
+────────────────────────────────────────────
+① src/app/fortune-2026/page.tsx (목록 페이지)
+────────────────────────────────────────────
+
+[1] 파일 상단 import 구역에 추가:
+
+  import { filterReleased } from '@/lib/monthlyRelease';
+
+[2] import 바로 아래(컴포넌트 밖)에 추가 — 매월 1일 자동 갱신의 핵심:
+
+  export const revalidate = 3600; // 1시간마다 재생성 → 월 바뀌면 자동 반영
+
+[3] 컴포넌트 안에서 목록을 그리는 부분 수정.
+    지금 이런 코드가 있을 텐데:
+
+      {MONTHLY_2026.map((m) => (
+
+    이렇게 교체:
+
+      {filterReleased(MONTHLY_2026).map((m) => (
+
+    ※ MONTHLY_2026.map이 여러 곳이면 "카드 목록을 그리는 곳"만 교체.
+
+[4] (선택) 하단의 「※ 8月以降は順次公開予定です」 문구는 그대로 둬도 됨 —
+    이제 실제로 순차 공개되니까 오히려 정확한 안내가 됨.
+    또는 동적으로 바꾸고 싶으면:
+
+      import { upcomingMonths } from '@/lib/monthlyRelease';
+      // ...
+      {upcomingMonths(MONTHLY_2026).length > 0 && (
+        <p className="mt-8 text-xs text-slate-500">
+          ※ {upcomingMonths(MONTHLY_2026)[0].month}月分は
+          {upcomingMonths(MONTHLY_2026)[0].month}月1日に公開予定です。
+        </p>
+      )}
+
+────────────────────────────────────────────
+② src/app/fortune-2026/[month]/page.tsx (개별 월 페이지)
+────────────────────────────────────────────
+
+[1] import 추가:
+
+  import { notFound } from 'next/navigation';   // 이미 있으면 생략
+  import { isMonthReleased } from '@/lib/monthlyRelease';
+
+[2] 컴포넌트 밖에 추가:
+
+  export const revalidate = 3600;
+
+[3] 페이지 컴포넌트 안, 해당 월 데이터를 찾은 직후에 가드 추가.
+    지금 대략 이런 형태일 텐데:
+
+      const data = MONTHLY_2026.find((m) => m.month === Number(month));
+      if (!data) notFound();
+
+    아래처럼 조건 하나 추가:
+
+      const data = MONTHLY_2026.find((m) => m.month === Number(month));
+      if (!data || !isMonthReleased(data.month)) notFound();
+
+    → 미공개 월 URL(/fortune-2026/12 등)로 직접 들어와도 404.
+      매월 1일이 지나면 1시간 내에 자동으로 열림.
+
+    ※ generateMetadata 함수에도 같은 find가 있으면 동일하게
+      `|| !isMonthReleased(...)` 조건을 추가 (미공개 월의 메타 노출 방지).
+
+[4] generateStaticParams는 그대로 둬도 됨 (전체 월을 미리 빌드해도
+    [3]의 가드 + revalidate 덕에 공개 전엔 404, 공개 후엔 자동 오픈).
+
+────────────────────────────────────────────
+③ src/app/sitemap.ts (검색엔진용 — 권장)
+────────────────────────────────────────────
+
+월별 URL을 넣는 부분이 이런 형태라면:
+
+  const monthly = MONTHLY_2026.map((m) => ({ ... }));
+
+이렇게 교체:
+
+  import { filterReleased } from '@/lib/monthlyRelease';
+  // ...
+  const monthly = filterReleased(MONTHLY_2026).map((m) => ({ ... }));
+
+→ 미공개 월이 sitemap에 올라가 404로 크롤링되는 것을 방지.
+※ sitemap은 배포 시점 기준으로 생성되므로, 새 달이 sitemap에 실리는 건
+  "그 달 이후의 첫 배포" 때임. 페이지 자체는 revalidate로 먼저 열리니
+  문제없고, 배포를 안 하는 달이 있으면 Search Console에서 해당 월 URL을
+  수동 색인 요청 1회 해주면 됨.
+
+────────────────────────────────────────────
+✅ 적용 후 확인
+────────────────────────────────────────────
+- [ ] /fortune-2026 목록에 7월분까지만 표시 (8~12월 카드 안 보임)
+- [ ] /fortune-2026/8 직접 접속 → 404
+- [ ] /fortune-2026/7 정상 표시
+- [ ] (8월 1일 이후) 목록에 8월 자동 등장 + /fortune-2026/8 열림
+      — 당일 최대 1시간의 반영 지연은 정상 (revalidate 주기)
+
+────────────────────────────────────────────
+⚙️ 왜 revalidate가 필수인가 (원리)
+────────────────────────────────────────────
+Next.js 정적 페이지는 "빌드한 순간"의 결과로 굳음. 7월에 배포하면
+날짜 판정도 7월로 고정 → 8월이 돼도 안 열림. revalidate = 3600을 넣으면
+1시간마다 서버가 페이지를 다시 만들면서 날짜를 재판정하므로,
+매월 1일(JST) 이후 첫 재생성 때 자동으로 열림. 비용은 Vercel 무료/Pro
+티어의 ISR 범위 내라 부담 없음.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

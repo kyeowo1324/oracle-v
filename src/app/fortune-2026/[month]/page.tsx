@@ -4,10 +4,13 @@
 import { notFound } from 'next/navigation';
 import MonthlyFortune from '@/components/MonthlyFortune';
 import { MONTHLY_2026 } from '@/data/monthly-2026';
+import { isMonthReleased } from '@/lib/monthlyRelease';
 
 export function generateStaticParams() {
   return MONTHLY_2026.map((m) => ({ month: String(m.month) }));
 }
+
+export const revalidate = 3600;
 
 export async function generateMetadata({ params }: { params: Promise<{ month: string }> }) {
   const { month } = await params;
@@ -19,6 +22,6 @@ export async function generateMetadata({ params }: { params: Promise<{ month: st
 export default async function MonthlyPage({ params }: { params: Promise<{ month: string }> }) {
   const { month } = await params;
   const data = MONTHLY_2026.find((m) => String(m.month) === month);
-  if (!data) notFound();
+  if (!data || !isMonthReleased(data.month)) notFound();
   return <MonthlyFortune data={data} />;
 }

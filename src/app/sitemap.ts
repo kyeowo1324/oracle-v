@@ -4,8 +4,10 @@
 
 import type { MetadataRoute } from 'next';
 import { GUIDE_ARTICLES } from './guide/page';
+import { MONTHLY_2026 } from '@/data/monthly-2026';
+import { filterReleased } from '@/lib/monthlyRelease';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://oracle-v.example.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://hoshidotaro.vercel.app';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -13,6 +15,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [
     '',
     '/guide',
+    '/fortune-2026',
+    '/collection',
     '/faq',
     '/about',
     '/legal/privacy',
@@ -32,5 +36,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  return [...staticPages, ...guidePages];
+  // 아직 공개 시점이 안 된 월은 제외 → sitemap에 404 URL이 올라가는 것 방지
+  const monthlyPages = filterReleased(MONTHLY_2026).map((m) => ({
+    url: `${SITE_URL}/fortune-2026/${m.month}`,
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
+
+  return [...staticPages, ...guidePages, ...monthlyPages];
 }
