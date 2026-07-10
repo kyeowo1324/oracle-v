@@ -13,8 +13,7 @@
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://hoshidotaro.vercel.app';
+import { SITE_URL } from '@/lib/site';
 
 type ShareParams = {
   type?: string;

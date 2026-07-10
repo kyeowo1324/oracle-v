@@ -7,8 +7,7 @@
 
 import Link from 'next/link';
 import AdBanner from '@/components/AdBanner';
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://oracle-v.example.com';
+import { SITE_URL } from '@/lib/site';
 
 export type SignLuck = {
   sign: string;          // 星座名(日本語)

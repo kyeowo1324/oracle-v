@@ -1,28 +1,11 @@
 // src/components/GuideArticle.tsx
 // 가이드 글 공통 레이아웃. 새 글을 쓸 때 이 컴포넌트로 감싸기만 하면
 // 일관된 스타일 + 구조화 데이터(Article) + 본문 광고 + 목록 복귀 링크가 자동 적용됩니다.
-//
-// 사용 예 (개별 글 page.tsx):
-//   import GuideArticle from '@/components/GuideArticle';
-//   export default function Page() {
-//     return (
-//       <GuideArticle
-//         category="星座 / 入門"
-//         title="星座占いの基本"
-//         description="..."
-//         slug="astrology-basics"
-//       >
-//         <p>本文...</p>
-//         <h2>見出し</h2>
-//         <p>本文...</p>
-//       </GuideArticle>
-//     );
-//   }
+// ── S패치: SITE_URL을 @/lib/site 단일 출처로 통일 (S-4) ──
 
 import Link from 'next/link';
 import AdBanner from '@/components/AdBanner';
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://oracle-v.example.com';
+import { SITE_URL } from '@/lib/site';
 
 export default function GuideArticle({
   category,

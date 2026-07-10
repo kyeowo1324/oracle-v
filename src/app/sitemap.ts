@@ -1,13 +1,13 @@
 // src/app/sitemap.ts
 // 検索エンジン・AdSense クローラ向けサイトマップ(App Router 自動生成)
 // /sitemap.xml として配信されます。
+// ── S패치: SITE_URL을 @/lib/site 단일 출처로 통일 (S-4) ──
 
 import type { MetadataRoute } from 'next';
 import { GUIDE_ARTICLES } from './guide/page';
 import { MONTHLY_2026 } from '@/data/monthly-2026';
 import { filterReleased } from '@/lib/monthlyRelease';
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://hoshidotaro.vercel.app';
+import { SITE_URL } from '@/lib/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

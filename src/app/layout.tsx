@@ -1,5 +1,9 @@
 // src/app/layout.tsx
 // ルートレイアウト — フォント(next/font)/メタ/manifest/OG/AdSense/共通フッター/JSON-LD
+// ── S패치 적용판 ──
+//   S-4) SITE_URL을 @/lib/site 단일 출처로 통일 (기존 폴백 oracle-v.example.com 제거)
+//   S-5) viewport의 maximumScale: 1 제거 — 사용자의 화면 확대(핀치줌)를 막아
+//        접근성 감점 요인이었음 (Lighthouse/PageSpeed에서도 지적되는 항목)
 //
 // ⚠️ NEXT_PUBLIC_SITE_URL を本番ドメインに設定してください(OG画像・sitemapの絶対URL用)。
 
@@ -9,9 +13,8 @@ import AdSenseScript from '@/components/AdSenseScript';
 import SiteFooter from '@/components/SiteFooter';
 import InstallPrompt from '@/components/InstallPrompt';
 import { Analytics } from '@vercel/analytics/next';
+import { SITE_URL } from '@/lib/site';
 import './globals.css';
-
-
 
 // 見出し用の明朝 + 本文用のゴシック。CSS変数として全ページで利用可能に。
 const shippori = Shippori_Mincho({
@@ -26,8 +29,6 @@ const notoSansJP = Noto_Sans_JP({
   variable: '--font-sans-jp',
   display: 'swap',
 });
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://oracle-v.example.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -66,7 +67,7 @@ export const viewport: Viewport = {
   themeColor: '#14152B',
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
+  // S-5: maximumScale: 1 제거 — 핀치줌 차단은 접근성 위반 (WCAG 1.4.4)
 };
 
 // 検索エンジン向け構造化データ(サイト情報)
