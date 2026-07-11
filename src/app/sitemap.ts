@@ -15,6 +15,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [
     '',
     '/guide',
+    '/aisho',
+    '/compat',
+    '/seikaku',
+    '/weekly',
+    '/lucky',
+    '/hitokoto',
+    '/aisho-ranking',
     '/fortune-2026',
     '/collection',
     '/faq',

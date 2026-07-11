@@ -15,6 +15,7 @@ import InstallPrompt from '@/components/InstallPrompt';
 import { Analytics } from '@vercel/analytics/next';
 import { SITE_URL } from '@/lib/site';
 import './globals.css';
+import SoundControl from '@/components/SoundControl';
 
 // 見出し用の明朝 + 本文用のゴシック。CSS変数として全ページで利用可能に。
 const shippori = Shippori_Mincho({
@@ -84,6 +85,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ja" className={`${shippori.variable} ${notoSansJP.variable}`}>
       <body className="flex min-h-screen flex-col bg-[#14152B] text-slate-100 antialiased">
+        <SoundControl />
         <div className="flex-1">{children}</div>
         <InstallPrompt />
         <SiteFooter />

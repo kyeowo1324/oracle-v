@@ -93,6 +93,26 @@ export default function HomePage() {
           <span>🎴 カードコレクション — 引いたカードの図鑑</span>
           <span className="text-[#C9A227]">→</span>
         </Link>
+        <Link href="/compat" className="mx-auto mt-3 flex w-full max-w-sm items-center justify-between rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/50 px-4 py-3 font-sans text-sm text-[#D8D5EE] transition-colors hover:border-[#C9A227]">
+          <span>💞 相性占い — 二人の相性を診断</span>
+          <span className="text-[#C9A227]">→</span>
+        </Link>
+        <Link href="/seikaku" className="mx-auto mt-3 flex w-full max-w-sm items-center justify-between rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/50 px-4 py-3 font-sans text-sm text-[#D8D5EE] transition-colors hover:border-[#C9A227]">
+          <span>🔮 星座×血液型 性格診断</span>
+          <span className="text-[#C9A227]">→</span>
+        </Link>
+        <Link href="/weekly" className="mx-auto mt-3 flex w-full max-w-sm items-center justify-between rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/50 px-4 py-3 font-sans text-sm text-[#D8D5EE] transition-colors hover:border-[#C9A227]">
+          <span>📅 今週の運勢</span><span className="text-[#C9A227]">→</span>
+        </Link>
+        <Link href="/lucky" className="mx-auto mt-3 flex w-full max-w-sm items-center justify-between rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/50 px-4 py-3 font-sans text-sm text-[#D8D5EE] transition-colors hover:border-[#C9A227]">
+          <span>🍀 今日のラッキーアイテム</span><span className="text-[#C9A227]">→</span>
+        </Link>
+        <Link href="/hitokoto" className="mx-auto mt-3 flex w-full max-w-sm items-center justify-between rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/50 px-4 py-3 font-sans text-sm text-[#D8D5EE] transition-colors hover:border-[#C9A227]">
+          <span>🎴 一枚引きタロット</span><span className="text-[#C9A227]">→</span>
+        </Link>
+        <Link href="/aisho-ranking" className="mx-auto mt-3 flex w-full max-w-sm items-center justify-between rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/50 px-4 py-3 font-sans text-sm text-[#D8D5EE] transition-colors hover:border-[#C9A227]">
+          <span>👑 星座相性ランキング</span><span className="text-[#C9A227]">→</span>
+        </Link>
 
         {/* 광고 배너 자리 */}
         <AdBanner slot="0000000000" />
