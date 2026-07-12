@@ -9,7 +9,7 @@ import Link from 'next/link';
 import AdBanner from '@/components/AdBanner';
 import StarrySky from '@/components/StarrySky';
 import AppInstallCard from '@/components/AppInstallCard';
-import DailyHomeWidget from '@/components/DailyHomeWidget';
+import StreakBanner from '@/components/StreakBanner';
 import ServiceTile from '@/components/home/ServiceTile';
 import { useSound } from '@/lib/useSound';
 
@@ -46,8 +46,8 @@ export default function HomePage() {
           <OmikujiCard href="/flow?mode=decision" icon="tanzaku" label={t.cardB.label} desc={t.cardB.desc} cta={t.cardB.cta} rotate="rotate-2" />
         </main>
 
-        {/* 스트릭 + 今日の一枚 */}
-        <DailyHomeWidget />
+        {/* 연속 방문 스트릭 (기존 컴포넌트) */}
+        <StreakBanner />
 
         {/* ① 占う */}
         <Section title="占う" icon="🔮">

@@ -11,6 +11,8 @@ import StarrySky from '@/components/StarrySky';
 import ShuffleAnimation from '@/components/ShuffleAnimation';
 import ShareButtons from '@/components/ShareButtons';
 import { useSound } from '@/lib/useSound';
+import { recordCardsGated } from '@/lib/collection';
+import { canRegisterNewCard, consumeNewCard, remainingNewCards, DAILY_NEW_CARD_LIMIT } from '@/lib/collectionGate';
 
 type Card = { card_key: string; name: string; orientation: 'upright' | 'reversed'; text: string; image_url: string };
 
@@ -19,6 +21,7 @@ export default function HitokotoPage() {
   const [phase, setPhase] = useState<'intro' | 'shuffle' | 'result'>('intro');
   const [card, setCard] = useState<Card | null>(null);
   const [flipped, setFlipped] = useState(false); // 결과 카드 뒤집기 연출
+  const [collectMsg, setCollectMsg] = useState<string | null>(null); // 도감 등록 안내
 
   const draw = async () => {
     setPhase('shuffle');
@@ -34,6 +37,26 @@ export default function HitokotoPage() {
       setCard(first);
       setFlipped(false);
       setPhase('result');
+
+      // 도감 등록 — 무제한 뽑기 남용 방지: 하루 신규 등록 상한 적용.
+      // 뽑기 자체는 계속 자유. 이미 가진 카드는 무제한 갱신, 신규만 상한 소비.
+      try {
+        const deckKey = (data.deck ?? first.deck_key ?? 'original');
+        const { newlyAdded, blocked } = recordCardsGated(
+          deckKey,
+          [{ key: first.card_key, name: first.name, orientation: first.orientation, imageUrl: first.image_url }],
+          canRegisterNewCard
+        );
+        if (newlyAdded.length > 0) {
+          consumeNewCard();
+          const left = remainingNewCards();
+          setCollectMsg(`✨ コレクションに登録！ 本日あと${left}枚`);
+        } else if (blocked > 0) {
+          setCollectMsg(`本日のコレクション登録は上限（${DAILY_NEW_CARD_LIMIT}枚）に達しました。明日また集められます`);
+        } else {
+          setCollectMsg('（このカードはすでにコレクション済み）');
+        }
+      } catch { /* 도감 실패는 본기능에 영향 없음 */ }
       // 카드백 → 앞면 뒤집기: 살짝 뒤에 flip + reveal 사운드
       setTimeout(() => { setFlipped(true); sound.play('flip'); }, 250);
       setTimeout(() => sound.play('reveal'), 650);
@@ -92,6 +115,9 @@ export default function HitokotoPage() {
             <h2 className="mt-4 text-xl text-[#F6F1E4]" style={{ fontFamily: "'Shippori Mincho', serif" }}>
               {card.name}<span className="ml-1 text-sm text-[#B8B4D9]">（{card.orientation === 'upright' ? '正位置' : '逆位置'}）</span>
             </h2>
+            {collectMsg && (
+              <p className="mt-2 text-center text-[11px] text-[#C9A227]">{collectMsg}</p>
+            )}
             {card.text && (
               <div className="mt-5 w-full rounded-2xl border border-[#3A3C6B] bg-[#1A1B3A]/70 p-5">
                 <p className="text-[14px] leading-relaxed text-[#E4E1F2]">{card.text}</p>
