@@ -14,6 +14,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { getJstDateString } from '@/lib/daily';
 import { enforceDailyAiLimit } from '@/lib/rateLimit';
 import { deckImageUrl, resolveDeckKey } from '@/lib/decks';
+import { personaSystemPrefix, resolvePersona } from '@/lib/personas';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -48,6 +49,7 @@ export async function POST(req: Request) {
 
   const lang: 'ja' | 'ko' = body?.lang === 'ko' ? 'ko' : 'ja';
   const question = sanitizeQuestion(body?.question);
+  const personaKey = resolvePersona(body?.persona).key;
   const dateStr = getJstDateString();
 
   // S-2: 일일 AI 호출 상한 (기록 겸 차단)
@@ -108,7 +110,7 @@ export async function POST(req: Request) {
     const msg = await anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 150,
-      system: [{ type: 'text', text: ADVICE_SYSTEM, cache_control: { type: 'ephemeral' } }],
+      system: [{ type: 'text', text: personaSystemPrefix(personaKey) + ADVICE_SYSTEM, cache_control: { type: 'ephemeral' } }],
       messages: [{ role: 'user', content: context }],
     });
     const block = msg.content[0];

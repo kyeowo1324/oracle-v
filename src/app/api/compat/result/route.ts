@@ -12,6 +12,7 @@ import {
   computeCompat, RELATION_JA, COMPAT_POSITIONS, SIGN_ELEMENT,
   type RelationKind, type Blood, type CompatCard,
 } from '@/lib/compat';
+import { personaSystemPrefix, resolvePersona } from '@/lib/personas';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -42,6 +43,7 @@ export async function POST(req: Request) {
 
   const lang: 'ja' | 'ko' = body?.lang === 'ko' ? 'ko' : 'ja';
   const relation: RelationKind = RELATIONS.has(body?.relation) ? body.relation : 'love';
+  const personaKey = resolvePersona(body?.persona).key;
 
   // 두 사람 정보 검증 (별자리는 필수, 혈액형·성별은 선택)
   const pa = body?.personA ?? {};
@@ -112,7 +114,7 @@ export async function POST(req: Request) {
   ].sort().join('|');
   const cardKey = cardsIn.map((c) => `${c.card_key}:${c.orientation}`).join(',');
   const cacheKey = crypto.createHash('sha256')
-    .update(`compat|${dateStr}|${relation}|${persons}|${cardKey}`).digest('hex');
+    .update(`compat|${dateStr}|${relation}|${personaKey}|${persons}|${cardKey}`).digest('hex');
 
   let headline = '', reading = '', advice = '';
   try {
@@ -138,7 +140,7 @@ export async function POST(req: Request) {
       const msg = await anthropic.messages.create({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 400,
-        system: [{ type: 'text', text: SYSTEM, cache_control: { type: 'ephemeral' } }],
+        system: [{ type: 'text', text: personaSystemPrefix(personaKey) + SYSTEM, cache_control: { type: 'ephemeral' } }],
         messages: [{ role: 'user', content: context }],
       });
       const block = msg.content[0];

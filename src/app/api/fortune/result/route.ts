@@ -18,6 +18,7 @@ import crypto from 'crypto';
 import { getJstDateString, pickVariant } from '@/lib/daily';
 import { enforceDailyAiLimit } from '@/lib/rateLimit';
 import { deckImageUrl, resolveDeckKey } from '@/lib/decks';
+import { personaSystemPrefix, resolvePersona } from '@/lib/personas';
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -83,12 +84,12 @@ function sanitizeTarotInput(
 // 날짜가 들어가므로 하루 단위로 자연 갱신. topic 추가가 구버전 참고본과의 차이.
 function makeFortuneCacheKey(input: {
   date: string; topic: string; zodiacSign: string | null; bloodType: string | null;
-  gender: string | null; tarot: { card_key: string; orientation: string }[];
+  gender: string | null; persona: string; tarot: { card_key: string; orientation: string }[];
 }) {
   const tarotKey = input.tarot.map((c) => `${c.card_key}:${c.orientation}`).join(',');
   const raw = [
     input.date, input.topic,
-    input.zodiacSign ?? '-', input.bloodType ?? '-', input.gender ?? '-', tarotKey,
+    input.zodiacSign ?? '-', input.bloodType ?? '-', input.gender ?? '-', input.persona, tarotKey,
   ].join('|');
   return crypto.createHash('sha256').update(raw).digest('hex');
 }
@@ -108,6 +109,7 @@ export async function POST(req: Request) {
     const zodiacSign: string | null = ZODIAC_CODES.has(body?.zodiacSign) ? body.zodiacSign : null;
     const bloodType: string | null = BLOOD_TYPES.has(body?.bloodType) ? body.bloodType : null;
     const gender: string | null = GENDERS.has(body?.gender) ? body.gender : null;
+    const personaKey = resolvePersona(body?.persona).key;
     const dateStr = getJstDateString();
 
     // S-2: 일일 AI 호출 상한 (기록 겸 차단)
@@ -198,7 +200,7 @@ export async function POST(req: Request) {
     // A단계: 캐시 HIT면 Claude 호출 0 (같은 날·같은 조합은 결과 재사용)
     // ※ deck_key는 캐시키에 넣지 않는다 — 레어 덱은 스킨이라 AI 텍스트가 동일함
     const cacheKey = makeFortuneCacheKey({
-      date: dateStr, topic: t, zodiacSign, bloodType, gender, tarot: requested,
+      date: dateStr, topic: t, zodiacSign, bloodType, gender, persona: personaKey, tarot: requested,
     });
     let cacheHit = false;
     if (hasAnyInput) {
@@ -232,7 +234,7 @@ export async function POST(req: Request) {
         const msg = await anthropic.messages.create({
           model: 'claude-haiku-4-5-20251001',
           max_tokens: 260,
-          system: [{ type: 'text', text: CONCLUSION_SYSTEM, cache_control: { type: 'ephemeral' } }],
+          system: [{ type: 'text', text: personaSystemPrefix(personaKey) + CONCLUSION_SYSTEM, cache_control: { type: 'ephemeral' } }],
           messages: [{ role: 'user', content: context }],
         });
         const block = msg.content[0];

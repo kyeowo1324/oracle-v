@@ -53,6 +53,7 @@ export default function HomePage() {
     eyebrow: 'AI占いサービス',
     subtitle: '星座とタロットで、今日のあなたを占う',
     cardA: { label: '今日の運勢', desc: '星座・タロットから占う', cta: '占ってみる' },
+    cardC: { label: '相性占い', desc: '二人の相性を占う', cta: '占ってみる' },
     cardB: { label: 'する・しない', desc: 'Yes/No、迷いに答えを', cta: '決める' },
   };
 
@@ -75,29 +76,17 @@ export default function HomePage() {
           <path d="M10 12 Q160 -4 310 12" stroke="#C9A227" strokeWidth="1.5" opacity="0.6" />
         </svg>
 
-        {/* 메인 오미쿠지 2장 (간판 기능) */}
-        <main className="relative mt-2 flex flex-col items-center justify-center gap-8 sm:flex-row sm:items-start sm:gap-10">
+        {/* 메인 오미쿠지 3장 (간판 기능) */}
+        <main className="relative mt-2 flex flex-col items-center justify-center gap-6 sm:flex-row sm:flex-wrap sm:items-start sm:gap-8">
           <OmikujiCard href="/flow?mode=fortune" icon="star" label={t.cardA.label} desc={t.cardA.desc} cta={t.cardA.cta} rotate="-rotate-2" />
+          <OmikujiCard href="/compat" icon="star" label={t.cardC.label} desc={t.cardC.desc} cta={t.cardC.cta} rotate="rotate-1" />
           <OmikujiCard href="/flow?mode=decision" icon="tanzaku" label={t.cardB.label} desc={t.cardB.desc} cta={t.cardB.cta} rotate="rotate-2" />
         </main>
 
         {/* 연속 방문 스트릭 (인라인, localStorage 직접 읽기) */}
         <StreakInline />
 
-        {/* ① 占う */}
-        <Section title="占う" icon="🔮">
-          <Tile href="/hitokoto" icon="🎴" title="一枚引きタロット" desc="今のあなたへのメッセージを1枚で" accent />
-        </Section>
-
-        {/* ② 相性・診断 */}
-        <Section title="相性・診断" icon="💞">
-          <Tile href="/compat" icon="💗" title="相性占い" desc="二人の星座・血液型・タロットで診断" accent />
-          <Tile href="/seikaku" icon="🧭" title="星座×血液型 性格診断" desc="48パターンであなたの性格を" />
-          <Tile href="/aisho" icon="⭐" title="星座相性チェッカー" desc="エレメントで見る二人の相性" />
-          <Tile href="/aisho-ranking" icon="👑" title="星座相性ランキング" desc="12星座との相性を順位で" />
-        </Section>
-
-        {/* ③ 毎日チェック */}
+        {/* ① 毎日チェック */}
         <Section title="毎日チェック" icon="📅">
           <Tile href="/weekly" icon="🗓" title="今週の運勢" desc="星座別・今週の3運を先取り" />
           <Tile href="/lucky" icon="🍀" title="今日のラッキーアイテム" desc="色・数字・方位で運気アップ" />

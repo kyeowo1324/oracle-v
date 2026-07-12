@@ -5,6 +5,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { getJstDateString, pickVariant } from '@/lib/daily';
+import { luckyReason } from '@/lib/luckyReason';
 
 export const revalidate = 1800;
 
@@ -52,8 +53,12 @@ export async function GET(req: Request) {
   const dir = DIRECTIONS[pickVariant(date, `dir_${sign}${salt}`, DIRECTIONS.length)];
   const time = TIMES[pickVariant(date, `time_${sign}${salt}`, TIMES.length)];
 
+  // 신뢰성: "왜 오늘 이 기운인지" 근거를 엘리먼트×요일오행으로 결정론 생성
+  const reason = luckyReason(date, sign);
+
   return NextResponse.json({
     sign, date,
     lucky: { color, number: num, item, direction: dir, time },
+    reason,
   });
 }

@@ -57,6 +57,12 @@ export default function LuckyPage() {
         <h1 className="mt-4 text-center text-2xl" style={{ fontFamily: "'Shippori Mincho', serif" }}>今日のラッキーアイテム</h1>
         <p className="mt-2 text-center text-xs text-[#8B8DBC]">星座（と血液型）で、今日のあなたを後押しする5つのラッキー</p>
 
+        {data?.reason && (
+          <p className="mx-auto mt-5 max-w-xl rounded-lg bg-[#26284F] px-4 py-3 text-center text-sm leading-relaxed text-[#F0EDDD]">
+            🔮 {data.reason.reasonJa}
+          </p>
+        )}
+
         <p className="mt-6 mb-2 text-xs font-medium tracking-wide text-[#C9A227]">星座</p>
         <div className="grid grid-cols-4 gap-1.5 sm:grid-cols-6">
           {SIGNS.map((s) => (

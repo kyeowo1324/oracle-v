@@ -12,6 +12,7 @@ import FortuneTellerLoader from '@/components/FortuneTellerLoader';
 import StarrySky from '@/components/StarrySky';
 import DailyLimitScreen from '@/components/DailyLimitScreen';
 import { useSound } from '@/lib/useSound';
+import { SIGN_ELEMENT, type Element } from '@/lib/compat';
 
 const SIGN_JA: Record<string, string> = {
   aries: '牡羊座', taurus: '牡牛座', gemini: '双子座', cancer: '蟹座', leo: '獅子座', virgo: '乙女座',
@@ -151,6 +152,41 @@ export default function CompatResultPage() {
             )}
           </div>
         )}
+
+        {/* 相性ランキング 흡수: 나(personA)와 궁합 좋은 별자리 TOP3 (추가 API·비용 0) */}
+        {result.personA?.zodiac && (() => {
+          const SIGNS = ['aries','taurus','gemini','cancer','leo','virgo','libra','scorpio','sagittarius','capricorn','aquarius','pisces'];
+          const me: string = result.personA.zodiac;
+          const sc = (a: string, b: string): number => {
+            const ea = SIGN_ELEMENT[a] as Element | undefined;
+            const eb = SIGN_ELEMENT[b] as Element | undefined;
+            if (!ea || !eb) return 60;
+            if (a === b) return 90;
+            if (ea === eb) return 85;
+            const good = (ea==='fire'&&eb==='air')||(ea==='air'&&eb==='fire')||(ea==='earth'&&eb==='water')||(ea==='water'&&eb==='earth');
+            if (good) return 92;
+            const tough = (ea==='fire'&&eb==='water')||(ea==='water'&&eb==='fire')||(ea==='earth'&&eb==='air')||(ea==='air'&&eb==='earth');
+            return tough ? 58 : 72;
+          };
+          const top = SIGNS.filter((s) => s !== me).map((s) => ({ s, v: sc(me, s) })).sort((x, y) => y.v - x.v).slice(0, 3);
+          return (
+            <div className="mt-8 rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/50 p-4">
+              <p className="text-[11px] tracking-widest text-[#C9A227]">✦ {SIGN_JA[me]}と相性の良い星座 TOP3</p>
+              <ol className="mt-3 space-y-1.5">
+                {top.map((t, i) => (
+                  <li key={t.s} className="flex items-center gap-3 text-sm">
+                    <span className="text-[#F5E6A8]">{i + 1}位</span>
+                    <span style={{ fontFamily: "'Shippori Mincho', serif" }}>{SIGN_JA[t.s]}</span>
+                    <span className="ml-auto text-[11px] text-[#8B8DBC]">相性度 {t.v}</span>
+                  </li>
+                ))}
+              </ol>
+              <div className="mt-4 border-t border-white/10 pt-3">
+                <Link href="/seikaku" className="text-[12px] text-[#C9A227] hover:underline underline-offset-4">二人の星座×血液型 性格をもっと見る →</Link>
+              </div>
+            </div>
+          );
+        })()}
 
         <div className="mt-8">
           {shareCards.length > 0 && (

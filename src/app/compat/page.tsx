@@ -5,11 +5,14 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import StarrySky from '@/components/StarrySky';
 import ShuffleAnimation from '@/components/ShuffleAnimation';
+import PersonaPicker from '@/components/PersonaPicker';
 import { useSound } from '@/lib/useSound';
+import { loadProfile, saveProfile } from '@/lib/profile';
+import { DEFAULT_PERSONA, type PersonaKey } from '@/lib/personas';
 
 type Relation = 'love' | 'friend' | 'work';
 type Blood = 'A' | 'B' | 'O' | 'AB';
@@ -39,8 +42,15 @@ export default function CompatPage() {
   const sound = useSound();
   const [step, setStep] = useState<Step>('relation');
   const [relation, setRelation] = useState<Relation>('love');
+  const [persona, setPersona] = useState<PersonaKey>(DEFAULT_PERSONA);
   const [a, setA] = useState<Person>({ zodiac: null, blood: null, gender: null });
   const [b, setB] = useState<Person>({ zodiac: null, blood: null, gender: null });
+
+  // 저장된 페르소나가 있으면 초기 선택으로 복원(재입력 제거)
+  useEffect(() => {
+    const p = loadProfile().persona;
+    if (p) setPersona(p);
+  }, []);
 
   const tap = () => sound.play('tap');
 
@@ -56,7 +66,7 @@ export default function CompatPage() {
       const data = await res.json();
       const cards = data?.cards ?? [];
       if (cards.length < 4) throw new Error('draw failed');
-      sessionStorage.setItem('compatInput', JSON.stringify({ relation, personA: a, personB: b, cards }));
+      sessionStorage.setItem('compatInput', JSON.stringify({ relation, personA: a, personB: b, cards, persona }));
       router.push('/result/compat');
     } catch {
       setStep('personB');
@@ -86,6 +96,10 @@ export default function CompatPage() {
             {/* STEP 관계 */}
             {step === 'relation' && (
               <div className="mt-8 flex flex-1 flex-col justify-center">
+                <p className="mb-2 text-xs font-medium tracking-widest text-[#C9A227]">占ってくれる占い師を選ぶ</p>
+                <div className="mb-6">
+                  <PersonaPicker value={persona} onChange={(k) => { setPersona(k); saveProfile({ persona: k }); }} />
+                </div>
                 <p className="mb-3 text-xs font-medium tracking-widest text-[#C9A227]">どんな関係を占う？</p>
                 <div className="space-y-3">
                   {RELATIONS.map((r) => (
