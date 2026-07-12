@@ -17,45 +17,73 @@ function createBgm(): { start: () => void; stop: () => void } | null {
   let master: GainNode | null = null;
   let nodes: OscillatorNode[] = [];
 
+  let chordTimer: ReturnType<typeof setInterval> | null = null;
+  let padGains: GainNode[] = [];
+
   const start = () => {
     try {
       const AC = (window.AudioContext || (window as any).webkitAudioContext) as typeof AudioContext;
       ctx = new AC();
       master = ctx.createGain();
       master.gain.setValueAtTime(0, ctx.currentTime);
-      master.gain.linearRampToValueAtTime(0.06, ctx.currentTime + 2.5); // 아주 낮게 페이드인
-      master.connect(ctx.destination);
+      master.gain.linearRampToValueAtTime(0.05, ctx.currentTime + 3); // 아주 낮게 페이드인
+      // 부드러운 로우패스로 전체를 감싸 "밤하늘" 질감
+      const lp = ctx.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.value = 1200;
+      lp.connect(ctx.destination);
+      master.connect(lp);
 
-      // A2, E3, A3 정도의 잔잔한 화음 + 느린 LFO로 볼륨 흔들어 "숨쉬는" 느낌
-      const freqs = [110, 164.81, 220];
-      freqs.forEach((f, i) => {
+      // 3보이스 패드 — 코드 진행에 맞춰 주파수를 부드럽게 갈아끼운다
+      const voices = [0, 1, 2].map((i) => {
         const osc = ctx!.createOscillator();
-        osc.type = 'sine';
-        osc.frequency.value = f;
+        osc.type = i === 2 ? 'triangle' : 'sine';
         const g = ctx!.createGain();
-        g.gain.value = 0.5 - i * 0.12;
+        g.gain.value = 0.5 - i * 0.1;
+        // 느린 LFO로 숨쉬는 느낌
         const lfo = ctx!.createOscillator();
-        lfo.frequency.value = 0.05 + i * 0.03; // 매우 느린 흔들림
+        lfo.frequency.value = 0.05 + i * 0.02;
         const lfoGain = ctx!.createGain();
-        lfoGain.gain.value = 0.25;
+        lfoGain.gain.value = 0.2;
         lfo.connect(lfoGain).connect(g.gain);
         osc.connect(g).connect(master!);
         osc.start();
         lfo.start();
         nodes.push(osc, lfo);
+        padGains.push(g);
+        return osc;
       });
+
+      // 코드 진행 (Am - F - C - G 계열의 저음 보이싱). 8초마다 부드럽게 전환.
+      const CHORDS = [
+        [110.0, 164.81, 220.0],  // Am
+        [87.31, 130.81, 174.61], // F
+        [130.81, 196.0, 261.63], // C
+        [98.0, 146.83, 196.0],   // G
+      ];
+      let ci = 0;
+      const applyChord = () => {
+        const c = CHORDS[ci % CHORDS.length];
+        voices.forEach((osc, i) => {
+          osc.frequency.setTargetAtTime(c[i], ctx!.currentTime, 1.5); // 1.5초 글라이드
+        });
+        ci++;
+      };
+      applyChord();
+      chordTimer = setInterval(applyChord, 8000);
     } catch { /* 오디오 불가 환경 → 무음 */ }
   };
 
   const stop = () => {
     try {
+      if (chordTimer) { clearInterval(chordTimer); chordTimer = null; }
       if (ctx && master) {
-        master.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.6);
+        master.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.8);
         const c = ctx;
-        setTimeout(() => { nodes.forEach((n) => { try { n.stop(); } catch { /* */ } }); c.close().catch(() => {}); }, 700);
+        setTimeout(() => { nodes.forEach((n) => { try { n.stop(); } catch { /* */ } }); c.close().catch(() => {}); }, 900);
       }
     } catch { /* noop */ }
-    nodes = []; ctx = null; master = null;
+    nodes = []; padGains = []; ctx = null; master = null;
   };
 
   return { start, stop };

@@ -28,7 +28,9 @@ export default function LuckyPage() {
       try {
         const q = `sign=${sign}${blood ? `&blood=${blood}` : ''}`;
         const res = await fetch(`/api/lucky?${q}`);
-        setData(await res.json());
+        const d = await res.json();
+        setData(d);
+        if (d?.lucky) sound.play('chime');
       } catch { setData({ error: true }); }
     })();
   }, [sign, blood]);

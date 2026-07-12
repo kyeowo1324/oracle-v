@@ -34,7 +34,9 @@ export default function WeeklyPage() {
       setLoading(true);
       try {
         const res = await fetch(`/api/weekly?sign=${sign}`);
-        setData(await res.json());
+        const d = await res.json();
+        setData(d);
+        if (d?.categories?.length) sound.play('reveal');
       } catch {
         setData({ error: true });
       } finally {

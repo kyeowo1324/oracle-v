@@ -91,7 +91,7 @@ export default function CompatPage() {
                   {RELATIONS.map((r) => (
                     <button
                       key={r.key}
-                      onClick={() => { tap(); setRelation(r.key); setStep('personA'); }}
+                      onClick={() => { sound.play('select'); setRelation(r.key); setStep('personA'); }}
                       className="flex w-full items-center gap-4 rounded-xl border border-[#3A3C6B] bg-[#1E2050] px-5 py-4 text-left transition-colors hover:border-[#C9A227]"
                     >
                       <span className="text-2xl">{r.icon}</span>

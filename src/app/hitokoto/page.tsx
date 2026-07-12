@@ -18,6 +18,7 @@ export default function HitokotoPage() {
   const sound = useSound();
   const [phase, setPhase] = useState<'intro' | 'shuffle' | 'result'>('intro');
   const [card, setCard] = useState<Card | null>(null);
+  const [flipped, setFlipped] = useState(false); // 결과 카드 뒤집기 연출
 
   const draw = async () => {
     setPhase('shuffle');
@@ -31,8 +32,11 @@ export default function HitokotoPage() {
       const first = data?.cards?.[0];
       if (!first) throw new Error('draw failed');
       setCard(first);
+      setFlipped(false);
       setPhase('result');
-      sound.play('reveal');
+      // 카드백 → 앞면 뒤집기: 살짝 뒤에 flip + reveal 사운드
+      setTimeout(() => { setFlipped(true); sound.play('flip'); }, 250);
+      setTimeout(() => sound.play('reveal'), 650);
     } catch {
       setPhase('intro');
     }
@@ -61,12 +65,30 @@ export default function HitokotoPage() {
         ) : card ? (
           <div className="flex flex-1 flex-col items-center">
             <p className="mt-2 text-xs tracking-widest text-[#C9A227]">今のあなたへのメッセージ</p>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={card.image_url}
-              alt={card.name}
-              className={`mt-4 h-64 rounded-xl ring-1 ring-[#C9A227]/40 ${card.orientation === 'reversed' ? 'rotate-180' : ''}`}
-            />
+            {/* 뒤집기 연출: 뒷면(카드백) → 앞면 */}
+            <div className="mt-4 h-64 w-40" style={{ perspective: '900px' }}>
+              <div
+                className="relative h-full w-full transition-transform duration-500"
+                style={{ transformStyle: 'preserve-3d', transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}
+              >
+                {/* 뒷면 */}
+                <div
+                  className="absolute inset-0 flex items-center justify-center rounded-xl border border-[#C9A227]/40 bg-gradient-to-b from-[#26284F] to-[#1A1B3A]"
+                  style={{ backfaceVisibility: 'hidden' }}
+                >
+                  <span className="text-3xl text-[#C9A227]/70">✦</span>
+                </div>
+                {/* 앞면 */}
+                <div className="absolute inset-0" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={card.image_url}
+                    alt={card.name}
+                    className={`h-full w-full rounded-xl object-cover ring-1 ring-[#C9A227]/40 ${card.orientation === 'reversed' ? 'rotate-180' : ''}`}
+                  />
+                </div>
+              </div>
+            </div>
             <h2 className="mt-4 text-xl text-[#F6F1E4]" style={{ fontFamily: "'Shippori Mincho', serif" }}>
               {card.name}<span className="ml-1 text-sm text-[#B8B4D9]">（{card.orientation === 'upright' ? '正位置' : '逆位置'}）</span>
             </h2>

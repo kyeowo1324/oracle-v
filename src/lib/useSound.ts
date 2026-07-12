@@ -11,7 +11,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-export type SoundName = 'tap' | 'shuffle' | 'reveal' | 'star';
+export type SoundName = 'tap' | 'select' | 'flip' | 'shuffle' | 'reveal' | 'star' | 'back' | 'chime';
 const LS_KEY = 'hoshidotaro:sfx:v1'; // 'on' | 'off'
 
 let sharedCtx: AudioContext | null = null;
@@ -79,6 +79,27 @@ function render(ctx: AudioContext, name: SoundName) {
     case 'star':
       tone(ctx, 1047, 0.12, 'sine', 0.12);            // C6
       tone(ctx, 1568, 0.18, 'sine', 0.1, 0.09);       // G6
+      break;
+    case 'select':
+      // 선택 확정 — tap보다 살짝 높고 단단한 두 톤
+      tone(ctx, 660, 0.07, 'triangle', 0.13);
+      tone(ctx, 880, 0.1, 'triangle', 0.11, 0.05);
+      break;
+    case 'flip':
+      // 카드 뒤집기 — 짧은 나무 두드림 느낌 (낮은 사각파 + 빠른 감쇠)
+      tone(ctx, 320, 0.06, 'square', 0.08);
+      tone(ctx, 240, 0.05, 'square', 0.06, 0.03);
+      break;
+    case 'back':
+      // 뒤로 — 하강하는 두 톤
+      tone(ctx, 500, 0.08, 'sine', 0.1);
+      tone(ctx, 360, 0.1, 'sine', 0.09, 0.05);
+      break;
+    case 'chime':
+      // 화면 진입 — 잔잔한 상승 아르페지오 3음 (매우 부드럽게)
+      tone(ctx, 523, 0.16, 'sine', 0.07);             // C5
+      tone(ctx, 659, 0.16, 'sine', 0.06, 0.08);       // E5
+      tone(ctx, 784, 0.22, 'sine', 0.055, 0.16);      // G5
       break;
   }
 }
