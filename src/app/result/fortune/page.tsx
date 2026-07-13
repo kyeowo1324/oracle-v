@@ -15,6 +15,7 @@ import StarrySky from '@/components/StarrySky';
 import { markFreeViewUsed } from '@/lib/dailyGate';
 import { buildShareUrl } from '@/lib/shareLink';
 import { recordCards, extractCardKey } from '@/lib/collection';
+import { loadProfile } from '@/lib/profile';
 import DailyLimitScreen from '@/components/DailyLimitScreen';
 
 const ZODIAC_JA: Record<string, string> = {
@@ -54,6 +55,7 @@ export default function FortuneResultPage() {
           body: JSON.stringify({
             topic: m.topic ?? 'general',
             zodiacSign: m.zodiacSign, bloodType: m.bloodType, gender: m.gender,
+            persona: loadProfile().persona,
             tarotShuffleResult: tarotFull, lang: 'ja',
           }),
         });

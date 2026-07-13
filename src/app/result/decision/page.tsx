@@ -14,6 +14,7 @@ import StarrySky from '@/components/StarrySky';
 import { markFreeViewUsed } from '@/lib/dailyGate';
 import { buildShareUrl } from '@/lib/shareLink';
 import { recordCards, extractCardKey } from '@/lib/collection';
+import { loadProfile } from '@/lib/profile';
 import DailyLimitScreen from '@/components/DailyLimitScreen';
 
 export default function DecisionResultPage() {
@@ -32,7 +33,7 @@ export default function DecisionResultPage() {
         const res = await fetch('/api/decision/result', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ question: m.question, tarotShuffleResult: tarotFull, lang: 'ja' }),
+          body: JSON.stringify({ question: m.question, persona: loadProfile().persona, tarotShuffleResult: tarotFull, lang: 'ja' }),
         });
         const raw = await res.text();
         const data = res.status === 429

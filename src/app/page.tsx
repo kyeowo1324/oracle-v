@@ -61,6 +61,7 @@ export default function HomePage() {
     <div className="relative min-h-screen overflow-hidden bg-[#14152B] text-[#F6F1E4]">
       <div className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(ellipse 80% 50% at 50% -10%, #2A2D6B 0%, #1E2050 45%, #14152B 100%)' }} />
       <StarrySky />
+      <MotionStyles />
 
       <div className="relative mx-auto flex min-h-screen max-w-md flex-col px-6 pb-10 pt-10 sm:max-w-2xl">
         {/* 히어로 */}
@@ -78,9 +79,9 @@ export default function HomePage() {
 
         {/* 메인 오미쿠지 3장 (간판 기능) */}
         <main className="relative mt-2 flex flex-col items-center justify-center gap-6 sm:flex-row sm:flex-wrap sm:items-start sm:gap-8">
-          <OmikujiCard href="/flow?mode=fortune" icon="star" label={t.cardA.label} desc={t.cardA.desc} cta={t.cardA.cta} rotate="-rotate-2" />
-          <OmikujiCard href="/compat" icon="star" label={t.cardC.label} desc={t.cardC.desc} cta={t.cardC.cta} rotate="rotate-1" />
-          <OmikujiCard href="/flow?mode=decision" icon="tanzaku" label={t.cardB.label} desc={t.cardB.desc} cta={t.cardB.cta} rotate="rotate-2" />
+          <OmikujiCard href="/flow?mode=fortune" variant="fortune" label={t.cardA.label} desc={t.cardA.desc} cta={t.cardA.cta} rotate="-rotate-2" />
+          <OmikujiCard href="/compat" variant="compat" label={t.cardC.label} desc={t.cardC.desc} cta={t.cardC.cta} rotate="rotate-1" />
+          <OmikujiCard href="/flow?mode=decision" variant="decision" label={t.cardB.label} desc={t.cardB.desc} cta={t.cardB.cta} rotate="rotate-2" />
         </main>
 
         {/* 연속 방문 스트릭 (인라인, localStorage 직접 읽기) */}
@@ -88,9 +89,9 @@ export default function HomePage() {
 
         {/* ① 毎日チェック */}
         <Section title="毎日チェック" icon="📅">
-          <Tile href="/weekly" icon="🗓" title="今週の運勢" desc="星座別・今週の3運を先取り" />
-          <Tile href="/lucky" icon="🍀" title="今日のラッキーアイテム" desc="色・数字・方位で運気アップ" />
-          <Tile href="/fortune-2026" icon="🌙" title="2026年 月別運勢" desc="今月のあなたの流れを読む" />
+          <Tile href="/weekly" icon="🗓" anim="flip" title="今週の運勢" desc="星座別・今週の3運を先取り" />
+          <Tile href="/lucky" icon="🍀" anim="sway" title="今日のラッキーアイテム" desc="色・数字・方位で運気アップ" />
+          <Tile href="/fortune-2026" icon="🌙" anim="glow" title="2026年 月別運勢" desc="今月のあなたの流れを読む" />
         </Section>
 
         {/* 광고 */}
@@ -98,8 +99,8 @@ export default function HomePage() {
 
         {/* ④ コレクション・ガイド */}
         <Section title="コレクション・ガイド" icon="📚">
-          <Tile href="/collection" icon="🗂" title="カードコレクション" desc="引いたカードの図鑑・収集率" />
-          <Tile href="/guide" icon="📖" title="占いガイド" desc="星座・タロット・開運の読み物" />
+          <Tile href="/collection" icon="🗂" anim="fan" title="カードコレクション" desc="引いたカードの図鑑・収集率" />
+          <Tile href="/guide" icon="📖" anim="flut" title="占いガイド" desc="星座・タロット・開運の読み物" />
         </Section>
 
         <AppInstallCard />
@@ -167,9 +168,9 @@ function StreakInline() {
 
 // ── 인라인 서비스 타일 (외부 ServiceTile 의존 제거) ──
 function Tile({
-  href, icon, title, desc, accent = false,
+  href, icon, title, desc, accent = false, anim,
 }: {
-  href: string; icon: string; title: string; desc: string; accent?: boolean;
+  href: string; icon: string; title: string; desc: string; accent?: boolean; anim?: string;
 }) {
   return (
     <Link
@@ -182,7 +183,7 @@ function Tile({
       }`}
     >
       <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#14152B]/60 text-lg ring-1 ring-[#C9A227]/20">
-        {icon}
+        <span className={`inline-block ${anim ? `tileicon-${anim}` : ''}`}>{icon}</span>
       </span>
       <span className="min-w-0">
         <span className="block text-[15px] font-medium text-[#F6F1E4]" style={{ fontFamily: "'Shippori Mincho', serif" }}>{title}</span>
@@ -209,9 +210,9 @@ function Section({ title, icon, children }: { title: string; icon: string; child
 
 // 메인 오미쿠지 카드
 function OmikujiCard({
-  href, icon, label, desc, cta, rotate,
+  href, variant, label, desc, cta, rotate,
 }: {
-  href: string; icon: 'star' | 'tanzaku'; label: string; desc: string; cta: string; rotate: string;
+  href: string; variant: 'fortune' | 'compat' | 'decision'; label: string; desc: string; cta: string; rotate: string;
 }) {
   return (
     <Link
@@ -220,23 +221,85 @@ function OmikujiCard({
       className={`group relative flex w-56 flex-col items-center rounded-2xl border border-[#C9A227]/30 bg-gradient-to-b from-[#26284F] to-[#1A1B3A] px-6 py-8 text-center shadow-lg transition-transform duration-300 hover:-translate-y-1.5 hover:border-[#C9A227]/60 ${rotate}`}
     >
       <span className="flex h-12 w-12 items-center justify-center">
-        {icon === 'star' ? (
-          <svg viewBox="0 0 48 48" className="h-11 w-11" fill="none" aria-hidden="true">
-            <path d="M24 6 L28 20 L42 24 L28 28 L24 42 L20 28 L6 24 L20 20 Z" fill="#C9A227" opacity="0.9">
-              <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite" />
-            </path>
-          </svg>
-        ) : (
-          <svg viewBox="0 0 48 48" className="h-11 w-11" fill="none" aria-hidden="true">
-            <rect x="18" y="8" width="12" height="30" rx="2" fill="#C9A227" opacity="0.9">
-              <animateTransform attributeName="transform" type="rotate" values="-3 24 8;3 24 8;-3 24 8" dur="3.5s" repeatCount="indefinite" />
-            </rect>
-          </svg>
-        )}
+        <OmikujiIcon variant={variant} />
       </span>
       <span className="mt-4 text-xl text-[#F6F1E4]" style={{ fontFamily: "'Shippori Mincho', serif" }}>{label}</span>
       <span className="mt-1.5 font-sans text-[11px] text-[#8B8DBC]">{desc}</span>
       <span className="mt-4 rounded-full bg-[#C9A227] px-5 py-1.5 font-sans text-[12px] font-semibold text-[#14152B]">{cta}</span>
     </Link>
+  );
+}
+
+// 서비스별 아이콘 — 각 점의 본질을 모션으로. 애니메이션은 MotionStyles의
+// keyframes로 정의하고 prefers-reduced-motion에서 자동 정지.
+function OmikujiIcon({ variant }: { variant: 'fortune' | 'compat' | 'decision' }) {
+  if (variant === 'fortune') {
+    // 今日の運勢 — 반짝이는 별(천체를 읽는 점)
+    return (
+      <svg viewBox="0 0 48 48" className="h-11 w-11" fill="none" aria-hidden="true">
+        <path className="omi-twinkle" d="M24 6 L28 20 L42 24 L28 28 L24 42 L20 28 L6 24 L20 20 Z" fill="#C9A227" style={{ transformOrigin: '24px 24px' }} />
+        <circle className="omi-spark" cx="37" cy="12" r="1.6" fill="#F5E6A8" />
+        <circle className="omi-spark2" cx="11" cy="36" r="1.2" fill="#F5E6A8" />
+      </svg>
+    );
+  }
+  if (variant === 'compat') {
+    // 相性占い — 서로를 도는 두 빛 + 심장박동(두 사람)
+    return (
+      <svg viewBox="0 0 48 48" className="h-11 w-11" fill="none" aria-hidden="true">
+        <g className="omi-beat" style={{ transformOrigin: '24px 24px' }}>
+          <g className="omi-orbit" style={{ transformOrigin: '24px 24px' }}>
+            <line x1="16" y1="24" x2="32" y2="24" stroke="#6E6FA8" strokeWidth="1.2" />
+            <circle cx="16" cy="24" r="5" fill="#C9A227" />
+            <circle cx="32" cy="24" r="5" fill="#E86AA0" />
+          </g>
+        </g>
+      </svg>
+    );
+  }
+  // する・しない — 흔들리는 진자(양자택일의 저울질), ○와 ✕ 사이
+  return (
+    <svg viewBox="0 0 48 48" className="h-11 w-11" fill="none" aria-hidden="true">
+      <circle cx="10" cy="38" r="2.2" fill="none" stroke="#6E6FA8" strokeWidth="1.3" />
+      <path d="M34 36 l5 5 M39 36 l-5 5" stroke="#6E6FA8" strokeWidth="1.3" strokeLinecap="round" />
+      <circle cx="24" cy="9" r="1.8" fill="#C9A227" />
+      <g className="omi-swing" style={{ transformOrigin: '24px 9px' }}>
+        <line x1="24" y1="9" x2="24" y2="33" stroke="#C9A227" strokeWidth="1.6" />
+        <circle cx="24" cy="35" r="4.5" fill="#C9A227" />
+      </g>
+    </svg>
+  );
+}
+
+// 홈 전용 모션 키프레임(자체 완결 — globals.css 불필요). 접근성: 모션 최소화 설정 시 정지.
+function MotionStyles() {
+  return (
+    <style dangerouslySetInnerHTML={{ __html: `
+@media (prefers-reduced-motion: no-preference) {
+  .omi-twinkle { animation: omiTwinkle 2.6s ease-in-out infinite; }
+  @keyframes omiTwinkle { 0%,100% { transform: scale(.9); opacity:.72 } 50% { transform: scale(1.08); opacity:1 } }
+  .omi-spark { animation: omiSpark 2.6s ease-in-out infinite; transform-origin:37px 12px; }
+  .omi-spark2 { animation: omiSpark 2.6s ease-in-out .9s infinite; transform-origin:11px 36px; }
+  @keyframes omiSpark { 0%,100% { opacity:0; transform:scale(.4) } 50% { opacity:1; transform:scale(1) } }
+  .omi-orbit { animation: omiOrbit 7s linear infinite; }
+  @keyframes omiOrbit { to { transform: rotate(360deg) } }
+  .omi-beat { animation: omiBeat 2.2s ease-in-out infinite; }
+  @keyframes omiBeat { 0%,100% { transform: scale(1) } 12% { transform: scale(1.12) } 24% { transform: scale(1) } }
+  .omi-swing { animation: omiSwing 2.4s ease-in-out infinite; }
+  @keyframes omiSwing { 0%,100% { transform: rotate(-17deg) } 50% { transform: rotate(17deg) } }
+
+  .tileicon-flip, .tileicon-sway, .tileicon-glow, .tileicon-fan, .tileicon-flut { transition: transform .2s ease; }
+  .group:hover .tileicon-flip { animation: tileFlip 1.2s ease-in-out; }
+  @keyframes tileFlip { 0%,100% { transform: perspective(80px) rotateX(0) } 40% { transform: perspective(80px) rotateX(-34deg) } }
+  .group:hover .tileicon-sway { animation: tileSway 1s ease-in-out; }
+  @keyframes tileSway { 0%,100% { transform: rotate(0) } 25% { transform: rotate(-12deg) } 75% { transform: rotate(12deg) } }
+  .group:hover .tileicon-glow { animation: tileGlow 1.4s ease-in-out; }
+  @keyframes tileGlow { 0%,100% { filter:none; transform:scale(1) } 50% { filter: drop-shadow(0 0 7px rgba(245,230,168,.85)); transform: scale(1.12) } }
+  .group:hover .tileicon-fan { animation: tileFan 1s ease-in-out; }
+  @keyframes tileFan { 0%,100% { transform: rotate(0) scale(1) } 50% { transform: rotate(9deg) scale(1.1) } }
+  .group:hover .tileicon-flut { animation: tileFlut 1.1s ease-in-out; }
+  @keyframes tileFlut { 0%,100% { transform: rotateY(0) } 50% { transform: rotateY(30deg) } }
+}
+` }} />
   );
 }

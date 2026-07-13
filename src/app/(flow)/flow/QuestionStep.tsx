@@ -4,6 +4,9 @@
 
 import { useState, useEffect } from 'react';
 import { useFortune } from '@/lib/fortune-context';
+import PersonaPicker from '@/components/PersonaPicker';
+import { loadProfile, saveProfile } from '@/lib/profile';
+import { DEFAULT_PERSONA, type PersonaKey } from '@/lib/personas';
 
 // 일상·인간관계에서 예/아니오로 자주 묻는 질문 20종
 const EXAMPLE_POOL = [
@@ -42,10 +45,13 @@ function pickRandom<T>(arr: T[], n: number): T[] {
 export function QuestionStep({ onNext }: { onNext: () => void }) {
   const f = useFortune();
   const [examples, setExamples] = useState<string[]>([]);
+  const [persona, setPersona] = useState<PersonaKey>(DEFAULT_PERSONA);
 
   // 진입할 때마다 랜덤 3개 (SSR 하이드레이션 불일치 방지 위해 마운트 후 설정)
   useEffect(() => {
     setExamples(pickRandom(EXAMPLE_POOL, 3));
+    const p = loadProfile().persona;
+    if (p) setPersona(p);
   }, []);
 
   const reshuffle = () => setExamples(pickRandom(EXAMPLE_POOL, 3));
@@ -59,12 +65,17 @@ export function QuestionStep({ onNext }: { onNext: () => void }) {
         「はい / いいえ」で答えられる質問を思い浮かべて（任意）
       </p>
 
+      <div className="mt-8">
+        <p className="mb-2 text-center text-xs font-medium tracking-widest text-[#C9A227]">占ってくれる占い師</p>
+        <PersonaPicker value={persona} onChange={(k) => { setPersona(k); saveProfile({ persona: k }); }} compact />
+      </div>
+
       <textarea
         value={f.question}
         onChange={(e) => f.setQuestion(e.target.value)}
         placeholder="例：この告白、うまくいく？"
         rows={3}
-        className="mt-8 w-full resize-none rounded-lg border border-[#3A3C6B] bg-[#1E2050] p-4 text-sm text-[#F6F1E4] placeholder:text-[#5D5F91] focus:border-[#C9A227] focus:outline-none"
+        className="mt-4 w-full resize-none rounded-lg border border-[#3A3C6B] bg-[#1E2050] p-4 text-sm text-[#F6F1E4] placeholder:text-[#5D5F91] focus:border-[#C9A227] focus:outline-none"
       />
 
       {/* 랜덤 예시 3개 + 다시 뽑기 */}

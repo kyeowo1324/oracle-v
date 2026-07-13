@@ -2,8 +2,11 @@
 // 오늘의 운세 첫 단계: 6주제 중 하나 선택. 선택 즉시 다음 단계로.
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useFortune, Topic } from '@/lib/fortune-context';
+import PersonaPicker from '@/components/PersonaPicker';
+import { loadProfile, saveProfile } from '@/lib/profile';
+import { DEFAULT_PERSONA, type PersonaKey } from '@/lib/personas';
 
 const TOPICS: { code: Topic; ja: string; icon: string; desc: string }[] = [
   { code: 'general', ja: '総合運', icon: '🌙', desc: '今日全体の運勢' },
@@ -19,6 +22,13 @@ export function TopicStep({ onNext }: { onNext: () => void }) {
   // 화면 표시용 로컬 선택 상태. f.topic은 context 기본값이 'general'이라
   // 그대로 쓰면 아직 아무것도 안 골랐는데 総合運이 선택된 것처럼 보이는 문제가 있었음.
   const [picked, setPicked] = useState<Topic | null>(null);
+  const [persona, setPersona] = useState<PersonaKey>(DEFAULT_PERSONA);
+
+  // 저장된 페르소나 복원(재입력 제거, SSR 하이드레이션 불일치 방지 위해 마운트 후)
+  useEffect(() => {
+    const p = loadProfile().persona;
+    if (p) setPersona(p);
+  }, []);
 
   const select = (t: Topic) => {
     setPicked(t);
@@ -33,7 +43,12 @@ export function TopicStep({ onNext }: { onNext: () => void }) {
       </h2>
       <p className="mt-2 text-center text-sm text-[#B8B4D9]">気になる運勢を選んでください</p>
 
-      <div className="mt-8 grid grid-cols-2 gap-3">
+      <div className="mt-6">
+        <p className="mb-2 text-center text-xs font-medium tracking-widest text-[#C9A227]">占ってくれる占い師</p>
+        <PersonaPicker value={persona} onChange={(k) => { setPersona(k); saveProfile({ persona: k }); }} compact />
+      </div>
+
+      <div className="mt-6 grid grid-cols-2 gap-3">
         {TOPICS.map((t) => (
           <button
             key={t.code}
