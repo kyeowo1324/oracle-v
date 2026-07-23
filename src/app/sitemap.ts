@@ -16,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '',
     '/guide',
     '/compat',
+    '/saju',
     '/seikaku',
     '/weekly',
     '/lucky',

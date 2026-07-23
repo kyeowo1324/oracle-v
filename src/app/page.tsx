@@ -89,6 +89,7 @@ export default function HomePage() {
 
         {/* ① 毎日チェック */}
         <Section title="毎日チェック" icon="📅">
+          <Tile href="/saju" icon="🀄" anim="glow" title="四柱推命" desc="生年月日から本質を読み解く" accent />
           <Tile href="/weekly" icon="🗓" anim="flip" title="今週の運勢" desc="星座別・今週の3運を先取り" />
           <Tile href="/lucky" icon="🍀" anim="sway" title="今日のラッキーアイテム" desc="色・数字・方位で運気アップ" />
           <Tile href="/fortune-2026" icon="🌙" anim="glow" title="2026年 月別運勢" desc="今月のあなたの流れを読む" />
