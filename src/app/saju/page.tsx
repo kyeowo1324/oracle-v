@@ -8,6 +8,7 @@ import StarrySky from '@/components/StarrySky';
 import PersonaPicker from '@/components/PersonaPicker';
 import { loadProfile, saveProfile } from '@/lib/profile';
 import { DEFAULT_PERSONA, type PersonaKey } from '@/lib/personas';
+import { SAJU_THEMES, type SajuTheme } from '@/lib/saju/text';
 import { useSound } from '@/lib/useSound';
 
 export default function SajuPage() {
@@ -22,6 +23,7 @@ export default function SajuPage() {
   const [unknownHour, setUnknownHour] = useState(false);
   const [gender, setGender] = useState<'male' | 'female' | null>(null);
   const [persona, setPersona] = useState<PersonaKey>(DEFAULT_PERSONA);
+  const [theme, setTheme] = useState<SajuTheme>('total');
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -49,7 +51,7 @@ export default function SajuPage() {
     sessionStorage.setItem('sajuInput', JSON.stringify({
       year: y, month: mo, day: d,
       hour: unknownHour ? null : Number(hour),
-      minute: 0, gender, persona,
+      minute: 0, gender, persona, theme,
     }));
     router.push('/result/saju');
   };
@@ -68,6 +70,26 @@ export default function SajuPage() {
           <p className="mb-2 text-center text-xs font-medium tracking-widest text-[#C9A227]">占ってくれる占い師</p>
           <PersonaPicker value={persona} onChange={(k) => { setPersona(k); saveProfile({ persona: k }); }} compact />
         </div>
+
+        {/* 관점(테마) 선택 — 같은 命式을 6가지 관점으로 볼 수 있게 */}
+        <p className="mt-8 mb-2 text-xs font-medium tracking-widest text-[#C9A227]">何を占う？</p>
+        <div className="grid grid-cols-3 gap-2">
+          {SAJU_THEMES.map((t) => {
+            const on = theme === t.key;
+            return (
+              <button key={t.key} type="button"
+                onClick={() => { sound.play('select'); setTheme(t.key); }}
+                aria-pressed={on}
+                className={`rounded-xl border px-2 py-3 text-center transition-colors ${on ? 'border-[#C9A227] bg-[#C9A227]/15' : 'border-[#3A3C6B] bg-[#1E2050] hover:border-[#C9A227]/50'}`}>
+                <span className="block text-lg" aria-hidden="true">{t.emoji}</span>
+                <span className="mt-1 block text-[12px] text-[#F6F1E4]">{t.label}</span>
+              </button>
+            );
+          })}
+        </div>
+        <p className="mt-2 text-[11px] text-[#5D5F91]">
+          ※ 同じ命式でも観点を変えると読み解きが変わります。あとから何度でも切り替えられます。
+        </p>
 
         {/* 생년월일 */}
         <p className="mt-8 mb-2 text-xs font-medium tracking-widest text-[#C9A227]">生年月日</p>

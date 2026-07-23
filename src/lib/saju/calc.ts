@@ -307,6 +307,46 @@ export function pillarText(p: Pillar): string {
   return STEMS[p.stem] + BRANCHES[p.branch];
 }
 
+// ─────────────────────────────────────────────
+// 日運(일진) — 재방문의 핵심.
+// 명식(命式)은 평생 불변이라 그것만으로는 매일 볼 이유가 없다.
+// "오늘의 간지"와 "내 일간"의 십신 관계는 매일 바뀌므로,
+// 이걸 보여주면 사주가 1회성 콘텐츠에서 데일리 콘텐츠가 된다.
+// AI 없이 결정론 계산 → 비용 $0, 매일 자동 갱신.
+// ─────────────────────────────────────────────
+
+export type DayLuck = {
+  /** 오늘의 간지 */
+  gz: string;
+  /** 내 일간 기준 오늘의 십신 */
+  god: TenGod;
+  /** 1~5 */
+  score: number;
+  /** 오늘 기운의 성격 키 */
+  moodKey: TenGod;
+};
+
+/** 십신별 일진 점수 — 길흉 단정이 아니라 "기운의 종류"로 해석 */
+const DAY_LUCK_SCORE: Record<TenGod, number> = {
+  比肩: 3, 劫財: 3, 食神: 5, 傷官: 3,
+  偏財: 4, 正財: 4, 偏官: 2, 正官: 4,
+  偏印: 3, 正印: 5,
+};
+
+/** 특정 날짜(JST)의 일진을 내 일간 기준으로 계산 */
+export function computeDayLuck(dayStem: number, y: number, m: number, d: number): DayLuck {
+  const idx = (jdn(y, m, d) + 49) % 60;
+  const s = idx % 10;
+  const b = idx % 12;
+  const god = tenGod(dayStem, s);
+  return {
+    gz: STEMS[s] + BRANCHES[b],
+    god,
+    score: DAY_LUCK_SCORE[god],
+    moodKey: god,
+  };
+}
+
 /** 대운 계산 */
 export type DaeunItem = { startAge: number; stem: number; branch: number };
 export function computeDaeun(input: SajuInput, saju: SajuResult, isMale: boolean, count = 8): {

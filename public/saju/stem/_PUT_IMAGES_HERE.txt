@@ -1,0 +1,4 @@
+여기에 일간 10종 이미지를 넣으세요 (IMAGE_GUIDE.md 참조)
+kinoe.webp / kinoto.webp / hinoe.webp / hinoto.webp / tsuchinoe.webp
+tsuchinoto.webp / kanoe.webp / kanoto.webp / mizunoe.webp / mizunoto.webp
+※ 이미지가 없어도 화면은 이모지 폴백으로 정상 동작합니다.

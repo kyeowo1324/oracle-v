@@ -54,6 +54,7 @@ export default function HomePage() {
     subtitle: '星座とタロットで、今日のあなたを占う',
     cardA: { label: '今日の運勢', desc: '星座・タロットから占う', cta: '占ってみる' },
     cardC: { label: '相性占い', desc: '二人の相性を占う', cta: '占ってみる' },
+    cardD: { label: '四柱推命', desc: '生年月日から本質を読む', cta: '命式を見る' },
     cardB: { label: 'する・しない', desc: 'Yes/No、迷いに答えを', cta: '決める' },
   };
 
@@ -80,7 +81,8 @@ export default function HomePage() {
         {/* 메인 오미쿠지 3장 (간판 기능) */}
         <main className="relative mt-2 flex flex-col items-center justify-center gap-6 sm:flex-row sm:flex-wrap sm:items-start sm:gap-8">
           <OmikujiCard href="/flow?mode=fortune" variant="fortune" label={t.cardA.label} desc={t.cardA.desc} cta={t.cardA.cta} rotate="-rotate-2" />
-          <OmikujiCard href="/compat" variant="compat" label={t.cardC.label} desc={t.cardC.desc} cta={t.cardC.cta} rotate="rotate-1" />
+          <OmikujiCard href="/saju" variant="saju" label={t.cardD.label} desc={t.cardD.desc} cta={t.cardD.cta} rotate="rotate-1" />
+          <OmikujiCard href="/compat" variant="compat" label={t.cardC.label} desc={t.cardC.desc} cta={t.cardC.cta} rotate="-rotate-1" />
           <OmikujiCard href="/flow?mode=decision" variant="decision" label={t.cardB.label} desc={t.cardB.desc} cta={t.cardB.cta} rotate="rotate-2" />
         </main>
 
@@ -89,7 +91,6 @@ export default function HomePage() {
 
         {/* ① 毎日チェック */}
         <Section title="毎日チェック" icon="📅">
-          <Tile href="/saju" icon="🀄" anim="glow" title="四柱推命" desc="生年月日から本質を読み解く" accent />
           <Tile href="/weekly" icon="🗓" anim="flip" title="今週の運勢" desc="星座別・今週の3運を先取り" />
           <Tile href="/lucky" icon="🍀" anim="sway" title="今日のラッキーアイテム" desc="色・数字・方位で運気アップ" />
           <Tile href="/fortune-2026" icon="🌙" anim="glow" title="2026年 月別運勢" desc="今月のあなたの流れを読む" />
@@ -213,13 +214,13 @@ function Section({ title, icon, children }: { title: string; icon: string; child
 function OmikujiCard({
   href, variant, label, desc, cta, rotate,
 }: {
-  href: string; variant: 'fortune' | 'compat' | 'decision'; label: string; desc: string; cta: string; rotate: string;
+  href: string; variant: 'fortune' | 'compat' | 'decision' | 'saju'; label: string; desc: string; cta: string; rotate: string;
 }) {
   return (
     <Link
       href={href}
       onClick={tap}
-      className={`group relative flex w-56 flex-col items-center rounded-2xl border border-[#C9A227]/30 bg-gradient-to-b from-[#26284F] to-[#1A1B3A] px-6 py-8 text-center shadow-lg transition-transform duration-300 hover:-translate-y-1.5 hover:border-[#C9A227]/60 ${rotate}`}
+      className={`group relative flex w-[10.5rem] flex-col items-center sm:w-52 rounded-2xl border border-[#C9A227]/30 bg-gradient-to-b from-[#26284F] to-[#1A1B3A] px-4 py-7 text-center shadow-lg sm:px-6 sm:py-8 transition-transform duration-300 hover:-translate-y-1.5 hover:border-[#C9A227]/60 ${rotate}`}
     >
       <span className="flex h-12 w-12 items-center justify-center">
         <OmikujiIcon variant={variant} />
@@ -233,7 +234,7 @@ function OmikujiCard({
 
 // 서비스별 아이콘 — 각 점의 본질을 모션으로. 애니메이션은 MotionStyles의
 // keyframes로 정의하고 prefers-reduced-motion에서 자동 정지.
-function OmikujiIcon({ variant }: { variant: 'fortune' | 'compat' | 'decision' }) {
+function OmikujiIcon({ variant }: { variant: 'fortune' | 'compat' | 'decision' | 'saju' }) {
   if (variant === 'fortune') {
     // 今日の運勢 — 반짝이는 별(천체를 읽는 점)
     return (
@@ -255,6 +256,22 @@ function OmikujiIcon({ variant }: { variant: 'fortune' | 'compat' | 'decision' }
             <circle cx="32" cy="24" r="5" fill="#E86AA0" />
           </g>
         </g>
+      </svg>
+    );
+  }
+  if (variant === 'saju') {
+    // 四柱推命 — 오행(五行) 오각형이 천천히 돌며 중심이 맥동
+    return (
+      <svg viewBox="0 0 48 48" className="h-11 w-11" fill="none" aria-hidden="true">
+        <g className="omi-spin" style={{ transformOrigin: '24px 24px' }}>
+          <polygon points="24,7 39,18 33,36 15,36 9,18" fill="none" stroke="#C9A227" strokeWidth="1.6" strokeLinejoin="round" />
+          <circle cx="24" cy="7" r="2.2" fill="#C9A227" />
+          <circle cx="39" cy="18" r="2.2" fill="#C9A227" />
+          <circle cx="33" cy="36" r="2.2" fill="#C9A227" />
+          <circle cx="15" cy="36" r="2.2" fill="#C9A227" />
+          <circle cx="9" cy="18" r="2.2" fill="#C9A227" />
+        </g>
+        <circle className="omi-core" cx="24" cy="24" r="4" fill="#F5E6A8" style={{ transformOrigin: '24px 24px' }} />
       </svg>
     );
   }
@@ -286,6 +303,10 @@ function MotionStyles() {
   @keyframes omiOrbit { to { transform: rotate(360deg) } }
   .omi-beat { animation: omiBeat 2.2s ease-in-out infinite; }
   @keyframes omiBeat { 0%,100% { transform: scale(1) } 12% { transform: scale(1.12) } 24% { transform: scale(1) } }
+  .omi-spin { animation: omiSpin 18s linear infinite; }
+  @keyframes omiSpin { to { transform: rotate(360deg) } }
+  .omi-core { animation: omiCore 3s ease-in-out infinite; }
+  @keyframes omiCore { 0%,100% { transform: scale(.85); opacity:.75 } 50% { transform: scale(1.15); opacity:1 } }
   .omi-swing { animation: omiSwing 2.4s ease-in-out infinite; }
   @keyframes omiSwing { 0%,100% { transform: rotate(-17deg) } 50% { transform: rotate(17deg) } }
 

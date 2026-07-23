@@ -68,3 +68,63 @@ export const PILLAR_JA = {
   day: { label: '日柱', meaning: 'あなた自身・配偶者' },
   hour: { label: '時柱', meaning: '晩年・子ども・未来' },
 } as const;
+
+// ─────────────────────────────────────────────
+// 테마(観点) — 재방문 설계의 핵심.
+// 명식은 불변이지만 "무엇을 묻는가"는 바꿀 수 있다.
+// 같은 사주를 6가지 관점으로 → 자연스럽게 6회 이용.
+// 고정 선택지라 자유 입력이 없다 = 프롬프트 인젝션 위험 원천 차단.
+// ─────────────────────────────────────────────
+
+export type SajuTheme = 'total' | 'love' | 'work' | 'money' | 'health' | 'social';
+
+export const SAJU_THEMES: { key: SajuTheme; label: string; emoji: string; hint: string; focus: string }[] = [
+  { key: 'total', label: '総合運', emoji: '🀄', hint: '生まれ持った本質を総合的に', focus: '性格の本質、全体の流れ、人生のテーマ' },
+  { key: 'love', label: '恋愛運', emoji: '💗', hint: '恋のかたちと相手の傾向', focus: '恋愛傾向、惹かれる相手、縁の育て方' },
+  { key: 'work', label: '仕事運', emoji: '💼', hint: '向いている働き方と強み', focus: '適性、働き方、力を発揮できる環境' },
+  { key: 'money', label: '金運', emoji: '💰', hint: 'お金との付き合い方', focus: '金銭感覚、貯め方と使い方、豊かさの育て方' },
+  { key: 'health', label: '健康運', emoji: '🌿', hint: '体質と整え方のヒント', focus: '体質傾向、疲れやすい部分、養生のコツ' },
+  { key: 'social', label: '人間関係', emoji: '🤝', hint: '人との距離のとり方', focus: '対人スタイル、相性の良い関係、距離感' },
+];
+
+export function resolveTheme(k: unknown): SajuTheme {
+  const found = SAJU_THEMES.find((t) => t.key === k);
+  return found ? found.key : 'total';
+}
+
+/** 십신별 오늘의 기운(일진 표시용). 길흉 단정이 아니라 "기운의 種類" */
+export const DAY_LUCK_JA: Record<TenGod, { mood: string; advice: string }> = {
+  比肩: { mood: '自分のペースを守る日', advice: '人に合わせすぎず、自分の判断で進めて大丈夫な一日。' },
+  劫財: { mood: '人と動く日', advice: '外に出ると流れが生まれます。ただ出費は少し意識して。' },
+  食神: { mood: 'のびのび過ごせる日', advice: '好きなことや美味しいものに素直に。力が抜けるほど巡ります。' },
+  傷官: { mood: '感性が冴える日', advice: 'アイデアが湧く一方、言葉が鋭くなりがち。表現に回すと吉。' },
+  偏財: { mood: 'ご縁とチャンスの日', advice: '人との接点が広がりやすい日。誘いには乗ってみて。' },
+  正財: { mood: '積み上げが効く日', advice: '地道な作業や整理が実を結びます。派手さより着実さを。' },
+  偏官: { mood: '負荷がかかりやすい日', advice: '無理は禁物。ひとつに絞って、休む時間も確保して。' },
+  正官: { mood: 'きちんとが活きる日', advice: '約束や手続きごとに向く日。丁寧さがそのまま信頼に。' },
+  偏印: { mood: '内に向かう日', advice: '調べもの、学び、ひとり時間が充実。急がなくて大丈夫。' },
+  正印: { mood: '守られている日', advice: '目上や周囲の助けを受け取りやすい日。頼るのも実力です。' },
+};
+
+// ─────────────────────────────────────────────
+// 이미지 에셋 매핑 (사용자가 제작해 넣을 예정)
+// 파일이 없으면 자동으로 이모지 폴백 → 이미지 없이도 화면이 깨지지 않는다.
+// ─────────────────────────────────────────────
+
+/** 일간 10종 상징 이미지 경로. /public/saju/stem/ 아래 배치 */
+export const DAY_STEM_IMAGE: string[] = [
+  '/saju/stem/kinoe.webp',   // 甲 大樹
+  '/saju/stem/kinoto.webp',  // 乙 草花
+  '/saju/stem/hinoe.webp',   // 丙 太陽
+  '/saju/stem/hinoto.webp',  // 丁 灯火
+  '/saju/stem/tsuchinoe.webp', // 戊 山
+  '/saju/stem/tsuchinoto.webp',// 己 田畑
+  '/saju/stem/kanoe.webp',   // 庚 鋼
+  '/saju/stem/kanoto.webp',  // 辛 宝石
+  '/saju/stem/mizunoe.webp', // 壬 大海
+  '/saju/stem/mizunoto.webp',// 癸 雨露
+];
+
+/** 일간 폴백 이모지(이미지 준비 전) */
+export const DAY_STEM_EMOJI = ['🌳', '🌿', '☀️', '🕯️', '⛰️', '🌾', '⚔️', '💎', '🌊', '💧'];
+
