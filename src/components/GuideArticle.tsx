@@ -56,7 +56,7 @@ export default function GuideArticle({
     星座: { href: '/compat', label: '星座で相性を占う →' },
     血液型: { href: '/seikaku', label: '星座×血液型で性格を見る →' },
     夢占い: { href: '/flow?mode=fortune', label: '今日の運勢を占う →' },
-    習慣: { href: '/lucky', label: '今日のラッキーアイテムを見る →' },
+    習慣: { href: '/kaiun', label: '開運日カレンダーを見る →' },
     基礎: { href: '/flow?mode=fortune', label: '今日の運勢を占う →' },
   };
   // 실제 글은 category를 "タロット / 入門"처럼 대분류+소분류로 넘긴다.

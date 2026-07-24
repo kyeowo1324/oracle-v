@@ -93,6 +93,7 @@ export default function HomePage() {
         <Section title="毎日チェック" icon="📅">
           <Tile href="/weekly" icon="🗓" anim="flip" title="今週の運勢" desc="星座別・今週の3運を先取り" />
           <Tile href="/lucky" icon="🍀" anim="sway" title="今日のラッキーアイテム" desc="色・数字・方位で運気アップ" />
+          <Tile href="/kaiun" icon="📅" anim="flip" title="開運日カレンダー" desc="一粒万倍日・天赦日はいつ？" accent />
           <Tile href="/fortune-2026" icon="🌙" anim="glow" title="2026年 月別運勢" desc="今月のあなたの流れを読む" />
         </Section>
 

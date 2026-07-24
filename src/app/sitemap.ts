@@ -20,6 +20,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/seikaku',
     '/weekly',
     '/lucky',
+    '/kaiun',
     '/aisho-ranking',
     '/fortune-2026',
     '/collection',

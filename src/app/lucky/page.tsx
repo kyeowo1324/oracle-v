@@ -97,6 +97,7 @@ export default function LuckyPage() {
 
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <Link href="/flow?mode=fortune" className="rounded-full bg-[#C9A227] px-5 py-2 text-[13px] font-semibold text-[#14152B]">今日の運勢 →</Link>
+          <Link href="/kaiun" className="rounded-full border border-[#3A3C6B] px-4 py-2 text-[13px] text-[#B8B4D9]">開運日カレンダー</Link>
           <Link href="/weekly" className="rounded-full border border-[#3A3C6B] px-5 py-2 text-[13px] text-[#B8B4D9]">今週の運勢 →</Link>
         </div>
 
