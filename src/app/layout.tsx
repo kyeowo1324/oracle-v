@@ -88,6 +88,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="flex min-h-screen flex-col bg-[#14152B] text-slate-100 antialiased">
         <SoundControl />
         <div className="flex-1">{children}</div>
+        <div className="flex justify-center w-full mt-4 mb-2">
+          <Script 
+            src="https://adm.shinobi.jp/s/1a006271daee325da114c4fe296d8187"
+            strategy="lazyOnload"
+          />
+        </div>
 {/* ✅ 수동 배치형 닌자 애드맥스 광고 삽입 위치 (본문 하단) */}
         <div className="flex justify-center w-full my-6">
           <Script 
