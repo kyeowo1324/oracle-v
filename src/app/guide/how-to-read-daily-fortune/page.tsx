@@ -34,6 +34,15 @@ export default function DailyFortunePage() {
         <strong>総合・恋愛・金運・仕事</strong>の4つに分けて示します。
         この記事では、それぞれをどう受け止め、日常にどう活かすかを整理します。
       </p>
+
+      <div className="my-6 rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/60 p-4">
+        <p className="mb-2 text-[13px] font-medium text-[#F5E6A8]">こんな方に向けた記事です</p>
+        <ul className="ml-4 list-disc space-y-1 text-[13px] leading-relaxed text-[#B8B4D9]">
+          <li>毎日の運勢をチェックしているけれど、忘れてしまう方</li>
+          <li>「今日は最悪」と出て落ち込んでしまった方</li>
+          <li>運勢を実際の行動につなげたい方</li>
+        </ul>
+      </div>
       <p>
         大前提として、運勢は<strong>「良い・悪い」で一喜一憂するもの</strong>ではありません。
         その日の過ごし方のヒント、行動のあと押しとして使うのが、占いと上手に付き合うコツです。
@@ -69,6 +78,39 @@ export default function DailyFortunePage() {
         あとで見返すと当たり外れよりも「自分が何度も同じところでつまずいている」ことに気づく、
         という感想がしばしば語られます。運勢は予報というより、振り返りの手がかりとして働くようです。
       </p>
+
+      <h2>運勢を行動に変える「1行メモ」の書き方</h2>
+      <p>
+        せっかく読んだ運勢を忘れないためのコツは、たった1行だけメモを残すことです。ポイントは、運勢の文章をそのまま写さないこと。「自分は今日どうするか」に変換して書きます。
+      </p>
+      <div className="my-4 overflow-x-auto">
+        <table className="w-full text-[13px]">
+          <thead className="text-[#F5E6A8]"><tr><th className="px-3 py-2 text-left">運勢に書かれていたこと</th><th className="px-3 py-2 text-left">メモに書くこと</th></tr></thead>
+          <tbody className="text-[#B8B4D9]"><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">人間関係に恵まれる日</td><td className="px-3 py-2">今日は自分から挨拶する</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">焦りは禁物</td><td className="px-3 py-2">返信は5分置いてから送る</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">金運が高まる</td><td className="px-3 py-2">今日は家計簿をつける</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">体調に注意</td><td className="px-3 py-2">22時にはスマホを置く</td></tr></tbody>
+        </table>
+      </div>
+      <p className="mt-2 text-[12px] text-[#8B8DBC]">※ 夜に見返すと、当たったかどうかより「自分が何度も同じことでつまずいている」ことに気づけます。</p>
+
+
+      <h2>よくある質問</h2>
+      <h3>Q. 朝と夜、どちらに読むのがいいですか？</h3>
+      <p>
+        朝がおすすめです。夜に読むと「今日はもう終わった」と答え合わせになりがちですが、朝はまだ何も決まっていないぶん、素直に受け取れます。所要時間は3分もあれば十分です。
+      </p>
+      <h3>Q. サイトによって結果が違うのはなぜ？</h3>
+      <p>
+        使っている占術や、重視する星の配置が違うためです。どれかが間違っているというより、同じ景色を別の窓から見ているようなもの。気に入った一つを決めて、そこを続けて見るほうが自分の傾向がつかめます。
+      </p>
+      <h3>Q. 悪い日は外出しないほうがいい？</h3>
+      <p>
+        そこまで身構える必要はありません。運勢が低い日は「いつもより丁寧に」という合図くらいに受け取って、確認の回数を1回増やす程度で十分です。行動を止めてしまうと、かえって後悔が残ります。
+      </p>
+
+      <h2>ホシドタロでの読み方</h2>
+      <p>
+        当サービスの「今日の運勢」では、星座・タロット・血液型を組み合わせて結果を出しています。そのうえで最後に必ず「今日からできる一歩」を添えるようにしました。読んで終わりにならないよう、行動に変えられる形でお渡しすることを大事にしています。占い師を切り替えると、同じ結果でも伝え方が変わるので、気分に合うほうを選んでみてください。
+      </p>
+
 
       <h2>まとめ</h2>
       <p>

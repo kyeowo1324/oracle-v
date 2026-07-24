@@ -32,6 +32,15 @@ export default function LuckyColorPage() {
         なんとなく眺めるだけではもったいない、日常への取り入れ方を知ると、
         占いがぐっと生活に活きてきます。
       </p>
+
+      <div className="my-6 rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/60 p-4">
+        <p className="mb-2 text-[13px] font-medium text-[#F5E6A8]">こんな方に向けた記事です</p>
+        <ul className="ml-4 list-disc space-y-1 text-[13px] leading-relaxed text-[#B8B4D9]">
+          <li>ラッキーカラーを知ったけれど使い道がわからない方</li>
+          <li>毎日その色の服を用意するのが大変な方</li>
+          <li>無理なく続けられる取り入れ方を探している方</li>
+        </ul>
+      </div>
       <p>
         風水では、2026年は<strong>丙午（ひのえうま）</strong>という「火」のエネルギーが強い年とされ、
         華やかで行動的な色が好まれます。以下は今年よく挙げられる代表的なラッキーカラーです。
@@ -69,6 +78,39 @@ export default function LuckyColorPage() {
         ただ、その色が視界に入るたびに「今日はこれを頑張ろう」と決めたことを思い出せる——
         そう語る人は少なくありません。おまじないは、思い出すための仕掛けとして働いているのかもしれません。
       </p>
+
+      <h2>色別・無理なく取り入れるアイデア</h2>
+      <p>
+        ラッキーカラーが苦手な色でも困らないように、身につけない形での取り入れ方をまとめました。毎日目に入るけれど、買い替えなくていいものを選ぶのがコツです。
+      </p>
+      <div className="my-4 overflow-x-auto">
+        <table className="w-full text-[13px]">
+          <thead className="text-[#F5E6A8]"><tr><th className="px-3 py-2 text-left">色</th><th className="px-3 py-2 text-left">取り入れ方の例</th></tr></thead>
+          <tbody className="text-[#B8B4D9]"><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">赤</td><td className="px-3 py-2">ペンのインク、付箋、スマホケースの縁</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">青</td><td className="px-3 py-2">待ち受け画面、マグカップ、ノートの表紙</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">緑</td><td className="px-3 py-2">机の上の観葉植物、エコバッグ</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">白</td><td className="px-3 py-2">ハンカチ、イヤホン、メモ帳</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">黄</td><td className="px-3 py-2">ふせん、キーホルダー、靴下</td></tr></tbody>
+        </table>
+      </div>
+      <p className="mt-2 text-[12px] text-[#8B8DBC]">※ 服で揃えようとすると「その色の服がない日」に止まってしまいます。小物のほうが続きます。</p>
+
+
+      <h2>よくある質問</h2>
+      <h3>Q. 服で取り入れないと意味がない？</h3>
+      <p>
+        そんなことはありません。むしろ服から始めると、その色の服がない日に止まってしまいます。ペン、手帳の付箋、スマホの待ち受け、ハンカチなど、「毎日目に入るけれど買い替えなくていいもの」のほうが続きます。
+      </p>
+      <h3>Q. ラッキーナンバーはどう使うの？</h3>
+      <p>
+        待ち合わせの時刻を「その数字の分」にする、暗証番号の一部に入れる、買い物の個数を合わせる、といった軽い使い方で十分です。数字合わせを目的にすると疲れてしまうので、目についたら思い出す程度がちょうどいいでしょう。
+      </p>
+      <h3>Q. ラッキーカラーが苦手な色だったら？</h3>
+      <p>
+        無理に着る必要はありません。小物や、視界のすみに置くものに使えば十分です。色そのものに力があるというより、「今日はこれを頑張ろう」と決めたことを思い出すきっかけとして働いている面が大きいからです。
+      </p>
+
+      <h2>ホシドタロでの出し方</h2>
+      <p>
+        当サービスの「今日のラッキーアイテム」では、色・数字・方位・時間帯をお伝えしています。あわせて「なぜ今日その色なのか」という理由も一言添えるようにしました。理由がわかると、ただの思いつきではなく自分に向けられた言葉として受け取りやすくなります。毎日変わるので、朝のひと目にどうぞ。
+      </p>
+
 
       <h2>まとめ</h2>
       <p>

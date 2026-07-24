@@ -23,6 +23,15 @@ export default function GyakuiNoYomikataPage() {
         4つの読み方パターンを紹介します。
       </p>
 
+      <div className="my-6 rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/60 p-4">
+        <p className="mb-2 text-[13px] font-medium text-[#F5E6A8]">こんな方に向けた記事です</p>
+        <ul className="ml-4 list-disc space-y-1 text-[13px] leading-relaxed text-[#B8B4D9]">
+          <li>タロットで逆位置が出て不安になった方</li>
+          <li>逆位置の意味がうまく読めない初心者の方</li>
+          <li>逆位置ばかり出て困っている方</li>
+        </ul>
+      </div>
+
       <h2>パターン1：意味が「弱まる・遅れる」</h2>
       <p>
         もっとも基本的な読み方です。たとえば「太陽」の正位置は成功や喜びですが、
@@ -88,6 +97,39 @@ export default function GyakuiNoYomikataPage() {
         採用しています。逆位置が出た日は「今日は少し立ち止まる日かも」くらいの
         気持ちで、気軽に受け止めてみてください。
       </p>
+
+      <h2>実際の場面で読んでみる</h2>
+      <p>
+        逆位置は言葉の説明だけだと掴みにくいので、具体的な相談の場面に当てはめてみます。同じカードでも、質問によって読み方が変わることがわかります。
+      </p>
+      <div className="my-4 overflow-x-auto">
+        <table className="w-full text-[13px]">
+          <thead className="text-[#F5E6A8]"><tr><th className="px-3 py-2 text-left">質問</th><th className="px-3 py-2 text-left">出たカード（逆位置）</th><th className="px-3 py-2 text-left">読み方の例</th></tr></thead>
+          <tbody className="text-[#B8B4D9]"><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">転職すべきか</td><td className="px-3 py-2">戦車</td><td className="px-3 py-2">転職がだめなのではなく、準備が足りない</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">相手の気持ち</td><td className="px-3 py-2">恋人</td><td className="px-3 py-2">気持ちはあるが、まだ表に出せていない</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">金運</td><td className="px-3 py-2">女帝</td><td className="px-3 py-2">入ってくるが、出ていくほうも増えやすい</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">健康</td><td className="px-3 py-2">太陽</td><td className="px-3 py-2">元気はあるが、少し無理をしている</td></tr></tbody>
+        </table>
+      </div>
+      <p className="mt-2 text-[12px] text-[#8B8DBC]">※ 逆位置は「ダメ」ではなく「向きが違う・度が過ぎる・まだ途中」と読むと、ほぼ外しません。</p>
+
+
+      <h2>よくある質問</h2>
+      <h3>Q. 逆位置ばかり出るのはなぜ？</h3>
+      <p>
+        昔からよく言われるのが、同じ質問を繰り返しているときや、質問する側の気持ちが揺れているときほど逆位置が出やすい、という見方です。一度カードを置いて、日を改めるだけで結果が変わることもよくあります。
+      </p>
+      <h3>Q. 逆位置は読まなくてもいいですか？</h3>
+      <p>
+        読まない占い手も実際にいます。正位置だけで読むほうが解釈がぶれない、という考え方です。初心者のうちは正位置だけで進めても、まったく問題ありません。慣れてから逆位置を足すほうが、混乱が少なくて済みます。
+      </p>
+      <h3>Q. 逆位置が出たら行動をやめるべき？</h3>
+      <p>
+        止めるサインではなく「向きを確認して」というサインだと考えてください。たとえば転職で「戦車」の逆位置なら、転職そのものがだめなのではなく、準備がまだ整っていないだけ、と読めます。見るべきは「何が足りないか」です。
+      </p>
+
+      <h2>ホシドタロでの逆位置</h2>
+      <p>
+        当サービスの「する・しない」では、逆位置も採用しています。ただし逆位置が出ても「やめておけ」とは表示しません。「いまはその向きではない」という形でお伝えするようにしています。占い師を星読みじいさんに切り替えると、同じ結果でもより率直な言い方になります。同じカードでどう変わるか、読み比べてみるのも面白いはずです。
+      </p>
+
     </GuideArticle>
   );
 }

@@ -45,6 +45,15 @@ export default function Zodiac2026TrendsPage() {
         ここでは2026年下半期（7月〜12月）を、エレメントごとの大まかな傾向として整理しました。
       </p>
 
+      <div className="my-6 rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/60 p-4">
+        <p className="mb-2 text-[13px] font-medium text-[#F5E6A8]">こんな方に向けた記事です</p>
+        <ul className="ml-4 list-disc space-y-1 text-[13px] leading-relaxed text-[#B8B4D9]">
+          <li>2026年後半の流れをつかんでおきたい方</li>
+          <li>自分の星座の傾向を知りたい方</li>
+          <li>年運の使い方がわからない方</li>
+        </ul>
+      </div>
+
       <h2>4エレメントの下半期の傾向</h2>
       <ul className="space-y-2 !mt-2">
         {ELEMENTS.map((e) => (
@@ -80,6 +89,39 @@ export default function Zodiac2026TrendsPage() {
         傘を持つかどうかを決めるための天気予報のように、
         年運はそのくらいの距離感がちょうどよいのだと思います。
       </p>
+
+      <h2>エレメント別・下半期の過ごし方メモ</h2>
+      <p>
+        一年の傾向は覚えようとすると縛られます。キーワードを一つだけ持っておく、くらいがちょうどいい距離です。手帳の最初のページに書き写しておくと、迷ったときに立ち返れます。
+      </p>
+      <div className="my-4 overflow-x-auto">
+        <table className="w-full text-[13px]">
+          <thead className="text-[#F5E6A8]"><tr><th className="px-3 py-2 text-left">エレメント</th><th className="px-3 py-2 text-left">下半期のキーワード</th><th className="px-3 py-2 text-left">意識したいこと</th></tr></thead>
+          <tbody className="text-[#B8B4D9]"><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">火</td><td className="px-3 py-2">広げるより、選ぶ</td><td className="px-3 py-2">手を出す数を減らして一つに集中</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">地</td><td className="px-3 py-2">守りから、育てる</td><td className="px-3 py-2">積み上げたものを人に見せる機会を作る</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">風</td><td className="px-3 py-2">つなぐより、深める</td><td className="px-3 py-2">広く浅い縁より、長く付き合いたい相手を大事に</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">水</td><td className="px-3 py-2">受け止めて、手放す</td><td className="px-3 py-2">抱え込んだものを一度整理する</td></tr></tbody>
+        </table>
+      </div>
+      <p className="mt-2 text-[12px] text-[#8B8DBC]">※ 良い傾向・悪い傾向というより、「今どの季節にいるか」として読むのがおすすめです。</p>
+
+
+      <h2>よくある質問</h2>
+      <h3>Q. 年運はどう使えばいいですか？</h3>
+      <p>
+        キーワードを1つか2つだけ書き留めておく、という使い方がおすすめです。細かく覚えようとすると、その通りになったかどうかに意識が向いてしまい、かえって行動が縛られます。迷ったときに立ち返る目印くらいがちょうどいい距離です。
+      </p>
+      <h3>Q. 悪い傾向と書かれていたら？</h3>
+      <p>
+        年運は「一年ずっとそう」という意味ではありません。波のどのあたりにいるかを示すもので、下がる時期は整える時期でもあります。種をまく年と、刈り取る年が違うのと同じです。
+      </p>
+      <h3>Q. 自分の星座以外も見ていい？</h3>
+      <p>
+        ぜひ見てください。家族や同僚の傾向を知っておくと、「今この人はこういう時期なんだな」と受け止めやすくなります。相手を変えようとせずに済むぶん、関係が楽になります。
+      </p>
+
+      <h2>もっと細かく見たい方へ</h2>
+      <p>
+        年単位の流れよりもう一段細かく知りたい方は、当サービスの「四柱推命」をお試しください。生年月日から10年ごとの流れ（大運）を出せるので、いま自分がどのあたりにいるかがわかります。さらに、その日ごとの運（日運）も毎日変わるので、年・10年・1日という三つの物差しで見比べられます。
+      </p>
+
 
       <h2>まとめ</h2>
       <p>

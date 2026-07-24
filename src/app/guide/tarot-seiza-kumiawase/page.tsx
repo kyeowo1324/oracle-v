@@ -38,6 +38,15 @@ export default function TarotSeizaKumiawasePage() {
         浮かび上がります。
       </p>
 
+      <div className="my-6 rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/60 p-4">
+        <p className="mb-2 text-[13px] font-medium text-[#F5E6A8]">こんな方に向けた記事です</p>
+        <ul className="ml-4 list-disc space-y-1 text-[13px] leading-relaxed text-[#B8B4D9]">
+          <li>タロットと星座を組み合わせて読みたい方</li>
+          <li>大アルカナと12星座の対応を知りたい方</li>
+          <li>占いをもう一段深く楽しみたい方</li>
+        </ul>
+      </div>
+
       <h2>大アルカナと12星座の対応</h2>
       <p>
         黄金の夜明け団に由来する伝統的な対応では、大アルカナ22枚のうち
@@ -102,6 +111,39 @@ export default function TarotSeizaKumiawasePage() {
         星座が「あなたはこういう性質」と伝え、タロットが「いまはこういう場面」と伝える。
         重なったときに、その言葉は一段深く届きます。
       </p>
+
+      <h2>対応表（大アルカナ×12星座）</h2>
+      <p>
+        大アルカナのうち12枚は、12星座と対応づけられています。全部を覚える必要はありません。まずは自分の星座に対応する1枚だけ知っておくと、それが出たときに気づけるようになります。
+      </p>
+      <div className="my-4 overflow-x-auto">
+        <table className="w-full text-[13px]">
+          <thead className="text-[#F5E6A8]"><tr><th className="px-3 py-2 text-left">星座</th><th className="px-3 py-2 text-left">カード</th><th className="px-3 py-2 text-left">星座</th><th className="px-3 py-2 text-left">カード</th></tr></thead>
+          <tbody className="text-[#B8B4D9]"><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">牡羊座</td><td className="px-3 py-2">皇帝</td><td className="px-3 py-2">天秤座</td><td className="px-3 py-2">正義</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">牡牛座</td><td className="px-3 py-2">法王</td><td className="px-3 py-2">蠍座</td><td className="px-3 py-2">死神</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">双子座</td><td className="px-3 py-2">恋人</td><td className="px-3 py-2">射手座</td><td className="px-3 py-2">節制</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">蟹座</td><td className="px-3 py-2">戦車</td><td className="px-3 py-2">山羊座</td><td className="px-3 py-2">悪魔</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">獅子座</td><td className="px-3 py-2">力</td><td className="px-3 py-2">水瓶座</td><td className="px-3 py-2">星</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">乙女座</td><td className="px-3 py-2">隠者</td><td className="px-3 py-2">魚座</td><td className="px-3 py-2">月</td></tr></tbody>
+        </table>
+      </div>
+      <p className="mt-2 text-[12px] text-[#8B8DBC]">※ 流派によって対応が異なる場合があります。ここでは広く使われている対応を載せています。</p>
+
+
+      <h2>よくある質問</h2>
+      <h3>Q. 対応表は覚えないとだめですか？</h3>
+      <p>
+        覚えなくても大丈夫です。自分の星座に対応する1枚だけ知っておけば、それが出たときに「お、来た」と気づけます。全部を暗記するより、その1枚を入り口にするほうが続きます。
+      </p>
+      <h3>Q. 星座とタロットで結果が食い違ったら？</h3>
+      <p>
+        食い違いこそ読みどころです。星座は「あなたはこういう性質」、タロットは「いまはこういう場面」を語ります。性質と場面がずれているときは、無理をしている時期かもしれません。
+      </p>
+      <h3>Q. 組み合わせると当たりやすくなる？</h3>
+      <p>
+        当たる確率が上がるというより、同じことを別の言い方で確認できる、という感覚に近いです。二つの占いが同じ方向を指したときは、その言葉が一段深く届きます。
+      </p>
+
+      <h2>ホシドタロはこの考え方でできています</h2>
+      <p>
+        当サービスの「今日の運勢」は、まさに星座とタロットを重ねて読む仕組みです。星座から生まれ持った傾向を、タロットからその日の場面を読み取り、最後に一つの結論としてまとめています。血液型を加えるとさらに絞り込まれるので、余力があれば入れてみてください。
+      </p>
+
 
       <h2>まとめ</h2>
       <p>

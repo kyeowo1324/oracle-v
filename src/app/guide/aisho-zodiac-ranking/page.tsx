@@ -31,6 +31,15 @@ export default function AishoZodiacRankingPage() {
         「傾向」ですが、相手を理解するヒントとして楽しんでください。
       </p>
 
+      <div className="my-6 rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/60 p-4">
+        <p className="mb-2 text-[13px] font-medium text-[#F5E6A8]">こんな方に向けた記事です</p>
+        <ul className="ml-4 list-disc space-y-1 text-[13px] leading-relaxed text-[#B8B4D9]">
+          <li>自分と相性のいい星座を知りたい方</li>
+          <li>ランキング下位の相手と関わっている方</li>
+          <li>恋愛・友情・仕事で相性の違いを知りたい方</li>
+        </ul>
+      </div>
+
       <h2>相性の基本ルール — エレメントで見る</h2>
       <p>
         12星座は4つのエレメントに3つずつ分かれます。
@@ -92,6 +101,39 @@ export default function AishoZodiacRankingPage() {
         ランキングは「合う相手を探す表」というより、
         「この人とはここが違う」と早めに知るための表として使うのがおすすめです。
       </p>
+
+      <h2>シーン別・相性の見方が変わる理由</h2>
+      <p>
+        同じ組み合わせでも、恋愛と仕事では評価が逆転することがあります。これは求めるものが違うためです。恋愛では「似ていること」が安心につながりますが、仕事では「違うこと」が穴を埋め合う強みになります。
+      </p>
+      <div className="my-4 overflow-x-auto">
+        <table className="w-full text-[13px]">
+          <thead className="text-[#F5E6A8]"><tr><th className="px-3 py-2 text-left">シーン</th><th className="px-3 py-2 text-left">相性が良いとされる関係</th><th className="px-3 py-2 text-left">理由</th></tr></thead>
+          <tbody className="text-[#B8B4D9]"><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">恋愛</td><td className="px-3 py-2">同じエレメント</td><td className="px-3 py-2">感覚が近く、説明が要らない</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">友情</td><td className="px-3 py-2">火と風 / 地と水</td><td className="px-3 py-2">テンポが合い、飽きにくい</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">仕事</td><td className="px-3 py-2">違うエレメント</td><td className="px-3 py-2">得意分野が重ならず、補い合える</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">家族</td><td className="px-3 py-2">地を含む組み合わせ</td><td className="px-3 py-2">生活の土台を作りやすい</td></tr></tbody>
+        </table>
+      </div>
+      <p className="mt-2 text-[12px] text-[#8B8DBC]">※ ランキング下位でも、役割が分かれていればうまくいくことは珍しくありません。</p>
+
+
+      <h2>よくある質問</h2>
+      <h3>Q. ランキングは絶対ですか？</h3>
+      <p>
+        絶対ではありません。エレメント（火・地・風・水）の関係から見た大まかな傾向にすぎません。実際の関係は、会った時期、置かれた立場、お互いの成熟度でいくらでも変わります。
+      </p>
+      <h3>Q. 恋愛と仕事で相性は違いますか？</h3>
+      <p>
+        違います。恋愛では似ている相手が安心につながりますが、仕事では違うタイプのほうが穴を埋め合えることが多いものです。「合わない」と感じる相手が、仕事では最高の相棒になることもあります。
+      </p>
+      <h3>Q. 下位の相手とうまくやるコツは？</h3>
+      <p>
+        相手に期待する内容を変えることです。早く決めてほしい相手なのか、じっくり考えたい相手なのか。そこを最初に見極めておくと、待つべき場面で急かさずに済みます。
+      </p>
+
+      <h2>ホシドタロで確かめる</h2>
+      <p>
+        当サービスの「相性占い」では、二人の情報を入れると相性度が出るだけでなく、「どこが噛み合い、どこがずれやすいか」を具体的にお伝えします。結果画面の下には、あなたと相性の良い星座トップ3も表示されるので、ランキングを見たあとの答え合わせにも使えます。
+      </p>
+
 
       <h2>まとめ</h2>
       <p>

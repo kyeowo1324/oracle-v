@@ -24,6 +24,15 @@ export default function RenaiTarotSpreadPage() {
         あわせてどうぞ。
       </p>
 
+      <div className="my-6 rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/60 p-4">
+        <p className="mb-2 text-[13px] font-medium text-[#F5E6A8]">こんな方に向けた記事です</p>
+        <ul className="ml-4 list-disc space-y-1 text-[13px] leading-relaxed text-[#B8B4D9]">
+          <li>好きな人の気持ちを占いたい方</li>
+          <li>連絡するか迷っている方</li>
+          <li>恋愛の質問の立て方がわからない方</li>
+        </ul>
+      </div>
+
       <h2>まず「いい質問」を作る — 3つのコツ</h2>
       <p>
         <strong>① 主語を自分にする。</strong>
@@ -97,6 +106,39 @@ export default function RenaiTarotSpreadPage() {
         恋愛タロットは相手の心を当てる道具というより、
         自分の気持ちを認めるための道具に近いのだと思います。
       </p>
+
+      <h2>質問の立て方でここまで変わる</h2>
+      <p>
+        恋愛タロットで結果がぼやける原因のほとんどは、質問の立て方にあります。Yes / No で終わる質問より、自分の行動につながる質問に変えると、読める情報がぐっと増えます。
+      </p>
+      <div className="my-4 overflow-x-auto">
+        <table className="w-full text-[13px]">
+          <thead className="text-[#F5E6A8]"><tr><th className="px-3 py-2 text-left">ぼやける質問</th><th className="px-3 py-2 text-left">読みやすい質問</th></tr></thead>
+          <tbody className="text-[#B8B4D9]"><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">私のこと好きですか？</td><td className="px-3 py-2">いま距離を縮めるには何が要りますか？</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">付き合えますか？</td><td className="px-3 py-2">この関係で私が変えられることは？</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">連絡は来ますか？</td><td className="px-3 py-2">連絡を待つ間、私にできることは？</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">この恋は叶いますか？</td><td className="px-3 py-2">この恋から私が得られるものは？</td></tr></tbody>
+        </table>
+      </div>
+      <p className="mt-2 text-[12px] text-[#8B8DBC]">※ 相手を動かす質問より、自分が動ける質問のほうが、結果を活かしやすくなります。</p>
+
+
+      <h2>よくある質問</h2>
+      <h3>Q. 相手の気持ちは本当にわかりますか？</h3>
+      <p>
+        タロットが読み取れるのは、あくまで「今の関係の空気」です。相手の頭の中をそのまま映すものではありません。それでも、自分がどう受け取っているかを整理する助けにはなります。
+      </p>
+      <h3>Q. どんな質問がいいですか？</h3>
+      <p>
+        「好かれていますか？」より「いま距離を縮めるには何が要りますか？」のように、自分の行動に結びつく形にすると読みやすくなります。Yes/Noで終わる質問より、次の一手が見える質問のほうが役立ちます。
+      </p>
+      <h3>Q. 何度も引いてしまうのですが…</h3>
+      <p>
+        納得できるまで引き直すのは、実はとてもよくあることです。ただ、引くほど混乱するのもまた事実。引き直したくなったら、質問そのものがずれていないか見直してみてください。本当に知りたいのは相手の気持ちではなく、「期待し続けていいのか」だった、というケースは少なくありません。
+      </p>
+
+      <h2>ホシドタロで占うなら</h2>
+      <p>
+        恋愛の迷いには「する・しない」がおすすめです。質問を書いてカードを1枚引くだけなので、迷った瞬間にすぐ使えます。占い師を「恋バナ向き」の相手に切り替えると、共感寄りの言葉で返ってきます。厳しめの意見がほしいときは、星読みじいさんを選んでみてください。
+      </p>
+
 
       <h2>まとめ</h2>
       <p>

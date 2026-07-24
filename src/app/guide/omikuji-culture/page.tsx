@@ -25,6 +25,15 @@ export default function OmikujiCulturePage() {
         日本人が古くから占いとどう付き合ってきたかを振り返ります。
       </p>
 
+      <div className="my-6 rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/60 p-4">
+        <p className="mb-2 text-[13px] font-medium text-[#F5E6A8]">こんな方に向けた記事です</p>
+        <ul className="ml-4 list-disc space-y-1 text-[13px] leading-relaxed text-[#B8B4D9]">
+          <li>おみくじで凶を引いて気になっている方</li>
+          <li>結ぶか持ち帰るか迷ったことがある方</li>
+          <li>おみくじの由来を知りたい方</li>
+        </ul>
+      </div>
+
       <h2>おみくじの起源</h2>
       <p>
         おみくじの原型は、平安時代に政治的な重要事項を決める際に、くじを引いて
@@ -77,6 +86,39 @@ export default function OmikujiCulturePage() {
         として受け止めてきました。当サイトの占いも、結果そのものよりも
         「今日一日をどう過ごすか」を考えるヒントとして楽しんでいただけたら幸いです。
       </p>
+
+      <h2>おみくじの「本文」こそが本体です</h2>
+      <p>
+        おみくじで多くの人が見るのは大吉・凶といった結果の部分ですが、実は本体はその下に書かれている本文のほうです。待人、失物、旅立、商売、学問、健康といった項目に、具体的な心がけが書かれています。
+      </p>
+      <div className="my-4 overflow-x-auto">
+        <table className="w-full text-[13px]">
+          <thead className="text-[#F5E6A8]"><tr><th className="px-3 py-2 text-left">項目</th><th className="px-3 py-2 text-left">読み方</th></tr></thead>
+          <tbody className="text-[#B8B4D9]"><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">待人（まちびと）</td><td className="px-3 py-2">待っている人や機会が来るかどうか</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">失物（うせもの）</td><td className="px-3 py-2">なくしたものが見つかるか、どこにあるか</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">旅立（たびだち）</td><td className="px-3 py-2">移動や引っ越しに向く時期かどうか</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">商売</td><td className="px-3 py-2">お金や仕事のやりとりについて</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">学問</td><td className="px-3 py-2">勉強や試験の見通し</td></tr></tbody>
+        </table>
+      </div>
+      <p className="mt-2 text-[12px] text-[#8B8DBC]">※ 大吉でも「油断するな」と書かれていることは珍しくありません。結果より本文を読むのがおすすめです。</p>
+
+
+      <h2>よくある質問</h2>
+      <h3>Q. 凶が出たら結んで帰るべき？</h3>
+      <p>
+        どちらでも構いません。結ぶのは「境内に置いていく」という考え方、持ち帰るのは「折に触れて読み返す」という考え方です。凶は宣告ではなく注意書きなので、持ち帰ってお守り代わりにする人も少なくありません。
+      </p>
+      <h3>Q. 引き直してもいいですか？</h3>
+      <p>
+        作法として禁じられているわけではありませんが、納得のいく結果が出るまで引き続けると、そもそも何を知りたかったのかがぼやけてしまいます。一度引いたら、そこに書かれている内容を読むほうに時間を使うのがおすすめです。
+      </p>
+      <h3>Q. 大吉が出たら何もしなくていい？</h3>
+      <p>
+        大吉は「このまま進んで大丈夫」という意味であって、「何もしなくても良いことが起きる」という意味ではありません。おみくじの本文には、たいてい具体的な心がけが書かれています。そちらが本体だと考えてください。
+      </p>
+
+      <h2>ホシドタロのおみくじ観</h2>
+      <p>
+        当サービスのトップ画面は、おみくじを引く感覚に近づけてつくっています。ただし「凶」にあたる強い言葉は使いません。日本のおみくじが本来そうであるように、気をつける点を伝えたうえで、必ず次の一歩を添えるようにしています。引いたあとに気持ちが重くならないこと。そこをいちばん大事にしています。
+      </p>
+
     </GuideArticle>
   );
 }

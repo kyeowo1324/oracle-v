@@ -40,6 +40,15 @@ export default function AstrologyBasicsPage() {
         その人の性格の傾向や運勢の流れを読み解く占いです。日本でも雑誌やテレビ、
         ニュースアプリの「今日の運勢」でおなじみで、もっとも親しまれている占いのひとつです。
       </p>
+
+      <div className="my-6 rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/60 p-4">
+        <p className="mb-2 text-[13px] font-medium text-[#F5E6A8]">こんな方に向けた記事です</p>
+        <ul className="ml-4 list-disc space-y-1 text-[13px] leading-relaxed text-[#B8B4D9]">
+          <li>星座占いの仕組みを知りたい方</li>
+          <li>自分の星座の説明がしっくりこない方</li>
+          <li>12星座の基本を一度整理したい方</li>
+        </ul>
+      </div>
       <p>
         まず押さえたいのは、星座は<strong>生年月日から自動的に決まる</strong>という点です。
         誕生日が下の期間のどこに入るかで、あなたの星座（太陽星座）が決まります。
@@ -80,6 +89,39 @@ export default function AstrologyBasicsPage() {
         生まれた環境や経験でつくられたその人固有の輪郭だと考えられます。
         星座は自分を当てはめる型ではなく、自分との違いを見つけるための物差しに近いのです。
       </p>
+
+      <h2>4つのエレメントで12星座を整理する</h2>
+      <p>
+        12星座を一つずつ覚えるのは大変ですが、4つのエレメント（元素）にまとめると一気に見通しがよくなります。相性を考えるときも、このグループ分けが土台になります。
+      </p>
+      <div className="my-4 overflow-x-auto">
+        <table className="w-full text-[13px]">
+          <thead className="text-[#F5E6A8]"><tr><th className="px-3 py-2 text-left">エレメント</th><th className="px-3 py-2 text-left">星座</th><th className="px-3 py-2 text-left">共通する傾向</th></tr></thead>
+          <tbody className="text-[#B8B4D9]"><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">火</td><td className="px-3 py-2">牡羊・獅子・射手</td><td className="px-3 py-2">勢いがあり、まず動く</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">地</td><td className="px-3 py-2">牡牛・乙女・山羊</td><td className="px-3 py-2">現実的で、積み上げる</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">風</td><td className="px-3 py-2">双子・天秤・水瓶</td><td className="px-3 py-2">情報が好きで、つなぐ</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">水</td><td className="px-3 py-2">蟹・蠍・魚</td><td className="px-3 py-2">感情が細やかで、寄り添う</td></tr></tbody>
+        </table>
+      </div>
+      <p className="mt-2 text-[12px] text-[#8B8DBC]">※ 同じエレメント同士は話が早く、火と風、地と水は相性が良いとされます。</p>
+
+
+      <h2>よくある質問</h2>
+      <h3>Q. 星座占いは何を根拠にしているの？</h3>
+      <p>
+        生まれた瞬間に太陽がどの位置にあったかを12に分けたものが、いわゆる「星座」です。雑誌やアプリで見る12星座占いは、この太陽の位置だけを使っています。本格的な西洋占星術では、月や惑星の位置も加えて読みます。
+      </p>
+      <h3>Q. 説明が半分しか当たらないのはなぜ？</h3>
+      <p>
+        80億人を12に分けているので、半分ずれるのはむしろ自然です。当たらない部分は、生まれた環境や経験でつくられたその人だけの輪郭だと考えてください。星座は自分を当てはめる型ではなく、自分との違いを見つける物差しに近いものです。
+      </p>
+      <h3>Q. 星座の境目の日に生まれた場合は？</h3>
+      <p>
+        生まれた年によって切り替わりの時刻が変わるため、境目の日（各星座の初日・最終日あたり）に生まれた方は、生まれた時刻まで入れて調べると確実です。前後どちらの性質も感じる、という方も多くいます。
+      </p>
+
+      <h2>ホシドタロでの使い方</h2>
+      <p>
+        当サービスでは、星座を単独で使うのではなく、タロットや血液型と組み合わせています。星座だけだと12通りにしかならず、どうしても大ざっぱになってしまうからです。もっと細かく見たい方は「四柱推命」もご用意しています。こちらは生年月日から命式を出すので、同じ星座でも人によって結果が変わります。
+      </p>
+
 
       <h2>まとめ</h2>
       <p>

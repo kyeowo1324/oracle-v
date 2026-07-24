@@ -40,6 +40,15 @@ export default function YumeUranaiNyumonPage() {
         呼んだように、夢は自分でも気づいていない本音を映すことがあります。
       </p>
 
+      <div className="my-6 rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/60 p-4">
+        <p className="mb-2 text-[13px] font-medium text-[#F5E6A8]">こんな方に向けた記事です</p>
+        <ul className="ml-4 list-disc space-y-1 text-[13px] leading-relaxed text-[#B8B4D9]">
+          <li>よく見る夢の意味を知りたい方</li>
+          <li>同じ夢を繰り返し見ている方</li>
+          <li>夢を記録してみたい方</li>
+        </ul>
+      </div>
+
       <h2>夢占いの基本的な考え方</h2>
       <p>
         大切なのは、夢辞典の意味を鵜呑みにするのではなく、
@@ -93,6 +102,39 @@ export default function YumeUranaiNyumonPage() {
         自分が気づかないふりをしていたものを、夢のほうが先に扱っていたのでしょう。
         だからこそ夢は、予言ではなく便りとして読むのがちょうどよいのだと思います。
       </p>
+
+      <h2>よく見る夢と、注目したいポイント</h2>
+      <p>
+        夢占いは「シンボルの意味」を調べるものだと思われがちですが、実際に役立つのは「そのとき何を感じたか」のほうです。同じ夢でも、感じ方によって読み方が変わります。
+      </p>
+      <div className="my-4 overflow-x-auto">
+        <table className="w-full text-[13px]">
+          <thead className="text-[#F5E6A8]"><tr><th className="px-3 py-2 text-left">よく見る夢</th><th className="px-3 py-2 text-left">一般的な読み方</th><th className="px-3 py-2 text-left">注目したいこと</th></tr></thead>
+          <tbody className="text-[#B8B4D9]"><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">追いかけられる</td><td className="px-3 py-2">避けている用事がある</td><td className="px-3 py-2">誰に追われていたか</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">歯が抜ける</td><td className="px-3 py-2">変化や不安の表れ</td><td className="px-3 py-2">痛かったか、平気だったか</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">落ちる</td><td className="px-3 py-2">足場のゆらぎ</td><td className="px-3 py-2">落ちた先はどこだったか</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">試験に間に合わない</td><td className="px-3 py-2">準備不足の感覚</td><td className="px-3 py-2">本当に困っていたか</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">空を飛ぶ</td><td className="px-3 py-2">解放感、自由への願い</td><td className="px-3 py-2">怖かったか、心地よかったか</td></tr></tbody>
+        </table>
+      </div>
+      <p className="mt-2 text-[12px] text-[#8B8DBC]">※ 枕元にメモを置き、目覚めた直後に単語だけ書き留めると記録しやすくなります。</p>
+
+
+      <h2>よくある質問</h2>
+      <h3>Q. 夢は本当に未来を教えてくれる？</h3>
+      <p>
+        予言として受け取るより、「自分が気づかないふりをしていたこと」を夢のほうが先に扱っている、と考えるほうが自然です。実際、繰り返し見ていた夢が、現実で何かが動いた時期に止まった、という話は非常に多く聞かれます。
+      </p>
+      <h3>Q. 怖い夢を見たときは？</h3>
+      <p>
+        怖い夢ほど、強い感情の整理をしている最中だと言われます。内容そのものより「何が怖かったか」に注目すると、いま気になっていることが見えてきます。追いかけられる夢なら、避けている用事があるかもしれません。
+      </p>
+      <h3>Q. 夢を覚えていられません。</h3>
+      <p>
+        枕元にメモを置いて、目が覚めた直後に単語だけ書くのがおすすめです。文章にしようとすると、書いている間に忘れてしまいます。「水・階段・知らない人」くらいの断片で十分です。
+      </p>
+
+      <h2>夢とタロットを重ねる</h2>
+      <p>
+        夢で気になるものが出てきた日は、当サービスでタロットを1枚引いてみてください。夢が示したテーマと、カードが示す場面が重なることがあります。「する・しない」なら質問を書いて引けるので、夢で見た内容をそのまま質問にしてみるのも面白い使い方です。
+      </p>
+
 
       <h2>まとめ</h2>
       <p>

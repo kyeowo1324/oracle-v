@@ -32,6 +32,15 @@ export default function TarotLovePage() {
         言葉にしづらい気持ちを、カードは象徴で映し出してくれます。
       </p>
 
+      <div className="my-6 rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/60 p-4">
+        <p className="mb-2 text-[13px] font-medium text-[#F5E6A8]">こんな方に向けた記事です</p>
+        <ul className="ml-4 list-disc space-y-1 text-[13px] leading-relaxed text-[#B8B4D9]">
+          <li>タロットで恋愛を占ってみたい方</li>
+          <li>結果に一喜一憂してしまう方</li>
+          <li>占いとの向き合い方を整えたい方</li>
+        </ul>
+      </div>
+
       <h2>恋愛でよく登場するカード</h2>
       <ul className="space-y-2 !mt-2">
         {LOVE_CARDS.map(([name, mean, desc]) => (
@@ -64,6 +73,56 @@ export default function TarotLovePage() {
         「この先も期待し続けていいのかどうか」だった、というケースは少なくありません。
         引く前に「本当は何を知りたいのか」を一度書き出すだけで、結果の受け取り方は大きく変わります。
       </p>
+
+      <h2>結果に振り回されないための3つの約束</h2>
+      <p>
+        恋愛の占いは、どうしても感情が動きます。引く前にこの3つを決めておくと、結果に飲み込まれにくくなります。
+      </p>
+      <div className="my-4 overflow-x-auto">
+        <table className="w-full text-[13px]">
+          <thead className="text-[#F5E6A8]"><tr><th className="px-3 py-2 text-left">約束</th><th className="px-3 py-2 text-left">理由</th></tr></thead>
+          <tbody className="text-[#B8B4D9]"><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">1日1回までにする</td><td className="px-3 py-2">引くほど混乱し、判断が鈍ります</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">引く前に「受け止める」と決める</td><td className="px-3 py-2">都合のいい解釈を防げます</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">結果を相手に伝えない</td><td className="px-3 py-2">占いで相手を縛ることになりかねません</td></tr></tbody>
+        </table>
+      </div>
+      <p className="mt-2 text-[12px] text-[#8B8DBC]">※ 特に3つ目は大切です。占いは自分の整理のために使い、相手を動かす道具にはしないほうが安全です。</p>
+
+      <h2>恋愛で出やすいカードと、その読み方</h2>
+      <p>
+        恋愛を占っていると、特定のカードが繰り返し出ることがあります。よく出るカードほど誤解されやすいので、代表的なものを整理しておきます。
+      </p>
+      <div className="my-4 overflow-x-auto">
+        <table className="w-full text-[13px]">
+          <thead className="text-[#F5E6A8]"><tr><th className="px-3 py-2 text-left">カード</th><th className="px-3 py-2 text-left">誤解されやすい読み方</th><th className="px-3 py-2 text-left">実際に近い読み方</th></tr></thead>
+          <tbody className="text-[#B8B4D9]"><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">恋人</td><td className="px-3 py-2">両想いで確定</td><td className="px-3 py-2">選択を迫られている場面</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">塔</td><td className="px-3 py-2">関係が壊れる</td><td className="px-3 py-2">前提が崩れて、本質が見えてくる</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">死神</td><td className="px-3 py-2">終わり、別れ</td><td className="px-3 py-2">形を変える時期、区切り</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">月</td><td className="px-3 py-2">不安、嘘</td><td className="px-3 py-2">まだ見えていない部分がある</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">星</td><td className="px-3 py-2">希望が叶う</td><td className="px-3 py-2">長い目で見れば良い方向</td></tr></tbody>
+        </table>
+      </div>
+      <p className="mt-2 text-[12px] text-[#8B8DBC]">※ 強そうな絵柄のカードほど、実際の意味は穏やかなことが多いものです。</p>
+      <h2></h2>
+      <p>
+        大切なのは、1枚のカードで関係の是非を決めないことです。カードが示すのは「今の空気」であって、二人の結末ではありません。気になるカードが出たときは、そのカードが何を促しているかに目を向けてみてください。
+      </p>
+
+
+
+      <h2>よくある質問</h2>
+      <h3>Q. 悪いカードが出たら諦めるべき？</h3>
+      <p>
+        カード1枚で関係が決まることはありません。「今のやり方では届きにくい」という意味であって、「この人とは無理」という意味ではないからです。変えられるのは相手ではなく、自分の関わり方のほうです。
+      </p>
+      <h3>Q. 同じカードが何度も出るのはなぜ？</h3>
+      <p>
+        まだそのテーマを通り過ぎていない、という見方をします。同じカードが続くときは、答えを探すより、そのカードが指している課題に一度向き合ったほうが早いことが多いです。
+      </p>
+      <h3>Q. 友人の恋愛を占ってもいい？</h3>
+      <p>
+        本人の同意があればかまいませんが、結果をそのまま伝えるのは避けたほうが無難です。占いは伝え方しだいで人を縛ってしまうことがあります。「こういう見方もあるみたい」くらいの温度で渡すのがおすすめです。
+      </p>
+
+      <h2>ホシドタロが気をつけていること</h2>
+      <p>
+        当サービスの鑑定文では、恋愛について断定的な予言をしません。「必ず結ばれます」「この人はやめたほうがいい」といった書き方は避けています。関係は生きものなので、外から決めつけられるものではないと考えているからです。そのかわり、今できることを一つ具体的にお伝えするようにしています。
+      </p>
+
 
       <h2>まとめ</h2>
       <p>

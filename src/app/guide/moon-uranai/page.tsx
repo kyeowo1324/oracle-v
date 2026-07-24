@@ -23,6 +23,15 @@ export default function MoonUranaiPage() {
         つけやすくなります。
       </p>
 
+      <div className="my-6 rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/60 p-4">
+        <p className="mb-2 text-[13px] font-medium text-[#F5E6A8]">こんな方に向けた記事です</p>
+        <ul className="ml-4 list-disc space-y-1 text-[13px] leading-relaxed text-[#B8B4D9]">
+          <li>月の満ち欠けと運勢の関係を知りたい方</li>
+          <li>新月の願い事を試してみたい方</li>
+          <li>暦を生活に取り入れてみたい方</li>
+        </ul>
+      </div>
+
       <h2>新月 — 「始まり」と「種まき」の日</h2>
       <p>
         新月は月がいったんリセットされ、新しいサイクルが始まる日。
@@ -83,6 +92,39 @@ export default function MoonUranaiPage() {
         月のリズムは、願いを叶える仕組みというより、
         定期的に自分を点検するための目印として働いているのかもしれません。
       </p>
+
+      <h2>新月と満月、それぞれの過ごし方</h2>
+      <p>
+        月のリズムは「増やす」と「減らす」の往復として見るとわかりやすくなります。新月で始めて、満月で整理する。この2つを覚えておけば十分です。
+      </p>
+      <div className="my-4 overflow-x-auto">
+        <table className="w-full text-[13px]">
+          <thead className="text-[#F5E6A8]"><tr><th className="px-3 py-2 text-left">タイミング</th><th className="px-3 py-2 text-left">向いていること</th><th className="px-3 py-2 text-left">避けたいこと</th></tr></thead>
+          <tbody className="text-[#B8B4D9]"><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">新月</td><td className="px-3 py-2">始める、願いを書く、種をまく</td><td className="px-3 py-2">完成させようと焦ること</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">上弦</td><td className="px-3 py-2">育てる、続ける</td><td className="px-3 py-2">方向転換</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">満月</td><td className="px-3 py-2">手放す、整理する、感謝する</td><td className="px-3 py-2">新しく増やすこと</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">下弦</td><td className="px-3 py-2">見直す、休む</td><td className="px-3 py-2">無理な追い込み</td></tr></tbody>
+        </table>
+      </div>
+      <p className="mt-2 text-[12px] text-[#8B8DBC]">※ 願い事は新月から48時間以内が良いとされますが、厳密さより続けることのほうが大事です。</p>
+
+
+      <h2>よくある質問</h2>
+      <h3>Q. 新月の願い事はいつ書けばいい？</h3>
+      <p>
+        新月になった時刻から48時間以内が良いとされます。ただし厳密さより続けることのほうが大事なので、「気づいた日に書く」くらいで問題ありません。
+      </p>
+      <h3>Q. 何個くらい書けばいいですか？</h3>
+      <p>
+        2〜10個が目安とよく言われますが、多いほど良いわけではありません。書き終えたあとに読み返して、しっくりくるものだけ残す形でも構いません。
+      </p>
+      <h3>Q. 満月は何をする日？</h3>
+      <p>
+        手放す日とされています。要らないものを捨てる、やめたいことを書き出すなど、減らす方向の行動が向いていると言われます。新月で始めて満月で整理する、という往復で考えるとわかりやすいでしょう。
+      </p>
+
+      <h2>暦をもっと使うなら</h2>
+      <p>
+        月のリズムに興味を持たれた方には、当サービスの「開運日カレンダー」もおすすめです。一粒万倍日や天赦日など、日本に古くから伝わる吉日をまとめてあります。新月・満月と同じように、何かを始める日を決めるときの目安として使えます。毎月自動で更新されるので、月初にひと目通しておくと便利です。
+      </p>
+
 
       <h2>まとめ</h2>
       <p>

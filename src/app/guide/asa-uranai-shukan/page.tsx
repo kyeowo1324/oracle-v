@@ -23,6 +23,15 @@ export default function AsaUranaiShukanPage() {
         朝占いのメリットと、占いに振り回されないための付き合い方を紹介します。
       </p>
 
+      <div className="my-6 rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/60 p-4">
+        <p className="mb-2 text-[13px] font-medium text-[#F5E6A8]">こんな方に向けた記事です</p>
+        <ul className="ml-4 list-disc space-y-1 text-[13px] leading-relaxed text-[#B8B4D9]">
+          <li>朝の時間を整えたい方</li>
+          <li>占いを習慣にしたいけれど続かない方</li>
+          <li>短い時間でできることを探している方</li>
+        </ul>
+      </div>
+
       <h2>朝に占いを見る3つのメリット</h2>
       <p>
         <strong>① 1日の「テーマ」ができる。</strong>
@@ -82,6 +91,39 @@ export default function AsaUranaiShukanPage() {
         一日のはじめに一度立ち止まる時間ができた、という感想が多く聞かれます。
         3分で終わる小ささだからこそ、忙しい日でも飛ばさずに済むのだと思います。
       </p>
+
+      <h2>3分でできる朝のルーティン例</h2>
+      <p>
+        朝の占い習慣が続かない理由は、たいてい「新しく時間を作ろうとするから」です。すでにある習慣にくっつけると、驚くほど続きます。
+      </p>
+      <div className="my-4 overflow-x-auto">
+        <table className="w-full text-[13px]">
+          <thead className="text-[#F5E6A8]"><tr><th className="px-3 py-2 text-left">時間</th><th className="px-3 py-2 text-left">やること</th></tr></thead>
+          <tbody className="text-[#B8B4D9]"><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">0:00〜0:30</td><td className="px-3 py-2">運勢を開いて、結果をざっと読む</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">0:30〜1:30</td><td className="px-3 py-2">気になった一言を選ぶ</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">1:30〜2:00</td><td className="px-3 py-2">その一言を今日の行動に言い換える</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">2:00〜3:00</td><td className="px-3 py-2">メモに1行だけ残す</td></tr></tbody>
+        </table>
+      </div>
+      <p className="mt-2 text-[12px] text-[#8B8DBC]">※ 歯みがきのあと、コーヒーを淹れたあとなど、必ずやることの直後に置くのがコツです。</p>
+
+
+      <h2>よくある質問</h2>
+      <h3>Q. 朝のどのタイミングがいいですか？</h3>
+      <p>
+        「必ずやること」の直後がおすすめです。歯みがきのあと、コーヒーを淹れたあとなど、すでにある習慣にくっつけると忘れにくくなります。新しく時間をつくろうとすると、たいてい続きません。
+      </p>
+      <h3>Q. 3分も取れない日は？</h3>
+      <p>
+        30秒でも構いません。結果を眺めて、キーワードを一つ覚えるだけで十分です。「今日は聞き役」くらいの短い言葉が一つあれば、それが一日の目印になります。
+      </p>
+      <h3>Q. 結果が悪い朝はどうすれば？</h3>
+      <p>
+        読む前と後で、できることは変わりません。悪い結果は「いつもより丁寧に」という合図として受け取り、確認の回数を1回増やす程度にとどめてください。朝から気持ちを重くしてしまっては、本末転倒です。
+      </p>
+
+      <h2>ホシドタロの朝の使い方</h2>
+      <p>
+        当サービスは登録不要で、開いてすぐ結果が出るようにつくっています。朝の数十秒で終わらせたい方は「今日のラッキーアイテム」だけでも十分です。連続で訪れると記録が残るので、続いていること自体が小さな励みになります。
+      </p>
+
 
       <h2>まとめ</h2>
       <p>

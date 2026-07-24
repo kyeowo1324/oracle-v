@@ -42,6 +42,15 @@ export default function BloodTypePage() {
         血液型性格とは<strong>「血液型ごとに考え方や行動に一定の傾向が見られる」</strong>という考え方で、
         人となりを知る一つの目安として親しまれてきました。
       </p>
+
+      <div className="my-6 rounded-xl border border-[#3A3C6B] bg-[#1A1B3A]/60 p-4">
+        <p className="mb-2 text-[13px] font-medium text-[#F5E6A8]">こんな方に向けた記事です</p>
+        <ul className="ml-4 list-disc space-y-1 text-[13px] leading-relaxed text-[#B8B4D9]">
+          <li>血液型占いの傾向を知りたい方</li>
+          <li>「らしくない」と言われたことがある方</li>
+          <li>血液型の話題を人間関係に活かしたい方</li>
+        </ul>
+      </div>
       <p>
         はじめに大切な前提を。血液型と性格の関連には<strong>医学的・心理学的な科学的根拠は証明されていません</strong>。
         あくまでコミュニケーションのきっかけ、エンターテインメントの一つとして楽しむのがおすすめです。
@@ -90,6 +99,39 @@ export default function BloodTypePage() {
         <strong>「A型だからこう」と決めつける</strong>のではなく、相手を知るきっかけ、自分を見つめ直すヒントとして、
         軽やかに楽しむのが血液型占いの上手な使い方です。
       </p>
+
+      <h2>「当てはまらない」ときに見るポイント</h2>
+      <p>
+        血液型の説明がしっくりこないとき、多くの場合は「場面によって出る顔が違う」ことが原因です。職場での自分と、家での自分は別人のようだ——という声はとてもよく聞かれます。
+      </p>
+      <div className="my-4 overflow-x-auto">
+        <table className="w-full text-[13px]">
+          <thead className="text-[#F5E6A8]"><tr><th className="px-3 py-2 text-left">場面</th><th className="px-3 py-2 text-left">よく出る顔</th></tr></thead>
+          <tbody className="text-[#B8B4D9]"><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">初対面</td><td className="px-3 py-2">本来の性格より、慎重な顔が出やすい</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">気の合う友人といるとき</td><td className="px-3 py-2">いちばん素の顔に近い</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">責任のある立場</td><td className="px-3 py-2">本来と逆の顔を演じることがある</td></tr><tr className="border-t border-[#3A3C6B]"><td className="px-3 py-2">疲れているとき</td><td className="px-3 py-2">素の傾向が強く出る</td></tr></tbody>
+        </table>
+      </div>
+      <p className="mt-2 text-[12px] text-[#8B8DBC]">※ 血液型の説明が当たるかどうかは、「どの場面の自分と比べたか」で変わります。</p>
+
+
+      <h2>よくある質問</h2>
+      <h3>Q. 血液型で性格は本当に決まるの？</h3>
+      <p>
+        科学的に証明されたものではありません。あくまで文化として親しまれてきた分類です。4つに分ける以上、当てはまらない人が出るのは当たり前で、「らしくない」と言われる人のほうが多いくらいです。
+      </p>
+      <h3>Q. それでも占う意味はありますか？</h3>
+      <p>
+        相手を知ろうとするきっかけとしては役に立ちます。大事なのは「〇型だから」で終わらせないことです。そこから一歩踏み込んで、その人自身の話を聞けたときがいちばん面白いところです。
+      </p>
+      <h3>Q. 相手の血液型を聞くのは失礼？</h3>
+      <p>
+        国や相手によっては、血液型で人を判断することを不快に感じる方もいます。初対面でいきなり聞くより、話の流れで出たときに軽く触れる程度がおすすめです。
+      </p>
+
+      <h2>ホシドタロでの扱い方</h2>
+      <p>
+        当サービスでは、血液型を単独では使いません。星座と組み合わせた48パターンの「性格診断」として、また相性占いの一要素として使っています。4分類だけでは大ざっぱすぎるからです。あくまで人物像に厚みを足すための一要素、という位置づけで扱っています。
+      </p>
+
     </GuideArticle>
   );
 }
