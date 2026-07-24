@@ -112,15 +112,6 @@ export async function POST(req: Request) {
     const personaKey = resolvePersona(body?.persona).key;
     const dateStr = getJstDateString();
 
-    // S-2: 일일 AI 호출 상한 (기록 겸 차단)
-    const rl = await enforceDailyAiLimit(supabaseAdmin, dateStr);
-    if (!rl.ok) {
-      return NextResponse.json(
-        { error: 'rate_limited', message: '本日の利用上限に達しました。また明日お試しください。' },
-        { status: 429 }
-      );
-    }
-
     // 1) 별자리: 선택 주제 + general(컨텍스트용), 각각 날짜 variant로 선택
     let topicText = '', generalText = '';
     let lucky: { color?: string; number?: number; item?: string } = {};
@@ -219,6 +210,15 @@ export async function POST(req: Request) {
       } catch { /* 캐시 미스 or 테이블 미생성 = 정상, 아래에서 생성 */ }
     }
     if (hasAnyInput && !cacheHit) {
+      // S-2: 일일 AI 호출 상한 — 실제로 AI를 부르는 이 지점에서만 소모한다.
+      // (캐시 적중은 비용이 0이므로 사용자의 하루 상한을 깎지 않는다)
+      const rl = await enforceDailyAiLimit(supabaseAdmin, dateStr);
+      if (!rl.ok) {
+        return NextResponse.json(
+          { error: 'rate_limited', message: '本日の利用上限に達しました。また明日お試しください。' },
+          { status: 429 }
+        );
+      }
       try {
         const genderJa = gender ? GENDER_JA[gender] : null;
         const context = [

@@ -74,13 +74,6 @@ export async function POST(req: Request) {
   const dateStr = getJstDateString();
 
   // AI 호출 상한
-  const rl = await enforceDailyAiLimit(supabaseAdmin, dateStr);
-  if (!rl.ok) {
-    return NextResponse.json(
-      { error: 'rate_limited', message: '本日の利用上限に達しました。また明日お試しください。' },
-      { status: 429 }
-    );
-  }
 
   // 점수는 서버가 결정론으로 계산
   const compat = computeCompat({
@@ -128,6 +121,15 @@ export async function POST(req: Request) {
   } catch { /* 미스 → 생성 */ }
 
   if (!reading) {
+    // AI 호출 상한 — 실제로 AI를 부르는 이 지점에서만 소모한다.
+    // (캐시 적중은 비용이 0이므로 사용자의 하루 상한을 깎지 않는다)
+    const rl = await enforceDailyAiLimit(supabaseAdmin, dateStr);
+    if (!rl.ok) {
+      return NextResponse.json(
+        { error: 'rate_limited', message: '本日の利用上限に達しました。また明日お試しください。' },
+        { status: 429 }
+      );
+    }
     try {
       const context = [
         `関係性: ${RELATION_JA[relation]}`,

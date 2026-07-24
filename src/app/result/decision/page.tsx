@@ -16,6 +16,7 @@ import { buildShareUrl } from '@/lib/shareLink';
 import { recordCards, extractCardKey } from '@/lib/collection';
 import { loadProfile } from '@/lib/profile';
 import DailyLimitScreen from '@/components/DailyLimitScreen';
+import ResultGuideLinks from '@/components/ResultGuideLinks';
 
 export default function DecisionResultPage() {
   const router = useRouter();
@@ -160,6 +161,7 @@ export default function DecisionResultPage() {
               aiText={shareAiText}
             />
           )}
+          <ResultGuideLinks kind="decision" className="mt-6 mb-6" />
           <ShareButtons text={shareText} url={shareUrl} />
         </div>
 

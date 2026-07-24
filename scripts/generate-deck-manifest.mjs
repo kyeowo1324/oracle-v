@@ -56,3 +56,32 @@ writeFileSync(OUT, JSON.stringify({ generatedAt: new Date().toISOString(), decks
 
 const summary = Object.entries(decks).map(([k, v]) => `${k}(${v.count}枚)`).join(', ') || '(레어 덱 없음)';
 console.log(`[deck-manifest] 생성 완료 → ${path.relative(ROOT, OUT)} : ${summary}`);
+
+// ── 四柱推命 日主(일간) 이미지 스캔 ──────────────────────────
+// public/saju/stem/ 에 kinoe.webp 같은 파일이 있으면 매니페스트에 기록한다.
+// 있으면 이미지, 없으면 이모지 폴백. 코드 수정 없이 파일만 넣으면 자동 반영된다.
+// (런타임에 fs로 public/을 읽을 수 없으므로 빌드 시점에 스캔해 JSON으로 남긴다)
+const STEM_DIR = path.join(ROOT, 'public', 'saju', 'stem');
+const STEM_OUT = path.join(ROOT, 'src', 'data', 'saju-stem-manifest.json');
+const STEM_KEYS = [
+  'kinoe', 'kinoto', 'hinoe', 'hinoto', 'tsuchinoe',
+  'tsuchinoto', 'kanoe', 'kanoto', 'mizunoe', 'mizunoto',
+];
+
+/** @type {Record<string, string>} */
+const stems = {};
+if (existsSync(STEM_DIR)) {
+  const present = readdirSync(STEM_DIR);
+  for (const key of STEM_KEYS) {
+    for (const f of present) {
+      const ext = path.extname(f).toLowerCase();
+      const base = path.basename(f, path.extname(f)).toLowerCase();
+      if (EXTS.has(ext) && base === key) { stems[key] = `/saju/stem/${f}`; break; }
+    }
+  }
+}
+mkdirSync(path.dirname(STEM_OUT), { recursive: true });
+writeFileSync(STEM_OUT, JSON.stringify({ generatedAt: new Date().toISOString(), stems }, null, 2) + '\n');
+const stemCount = Object.keys(stems).length;
+console.log(`[saju-stem-manifest] 생성 완료 → ${path.relative(ROOT, STEM_OUT)} : ${stemCount}/10枚` +
+  (stemCount === 0 ? ' (이미지 없음 → 이모지 폴백으로 동작)' : ''));

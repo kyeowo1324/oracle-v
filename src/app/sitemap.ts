@@ -4,7 +4,7 @@
 // ── S패치: SITE_URL을 @/lib/site 단일 출처로 통일 (S-4) ──
 
 import type { MetadataRoute } from 'next';
-import { GUIDE_ARTICLES } from './guide/page';
+import { GUIDE_ARTICLES } from '@/data/guides';
 import { MONTHLY_2026 } from '@/data/monthly-2026';
 import { filterReleased } from '@/lib/monthlyRelease';
 import { SITE_URL } from '@/lib/site';

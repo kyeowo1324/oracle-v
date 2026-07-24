@@ -17,6 +17,7 @@ import { buildShareUrl } from '@/lib/shareLink';
 import { recordCards, extractCardKey } from '@/lib/collection';
 import { loadProfile } from '@/lib/profile';
 import DailyLimitScreen from '@/components/DailyLimitScreen';
+import ResultGuideLinks from '@/components/ResultGuideLinks';
 
 const ZODIAC_JA: Record<string, string> = {
   aries: '牡羊座', taurus: '牡牛座', gemini: '双子座', cancer: '蟹座', leo: '獅子座', virgo: '乙女座',
@@ -254,6 +255,7 @@ export default function FortuneResultPage() {
               summary={result.summary}
             />
           )}
+          <ResultGuideLinks kind="fortune" className="mt-6 mb-6" />
           <ShareButtons text={shareText} url={shareUrl} />
         </div>
 

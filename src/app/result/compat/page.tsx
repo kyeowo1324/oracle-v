@@ -13,6 +13,7 @@ import StarrySky from '@/components/StarrySky';
 import DailyLimitScreen from '@/components/DailyLimitScreen';
 import { useSound } from '@/lib/useSound';
 import { SIGN_ELEMENT, type Element } from '@/lib/compat';
+import ResultGuideLinks from '@/components/ResultGuideLinks';
 
 const SIGN_JA: Record<string, string> = {
   aries: '牡羊座', taurus: '牡牛座', gemini: '双子座', cancer: '蟹座', leo: '獅子座', virgo: '乙女座',
@@ -192,6 +193,7 @@ export default function CompatResultPage() {
           {shareCards.length > 0 && (
             <ShareResultImage type="fortune" cards={shareCards.slice(0, 3)} conclusion={`${result.relationJa}相性 星${result.stars}つ`} summary={result.reading} />
           )}
+          <ResultGuideLinks kind="compat" className="mt-6" />
           <div className="mt-4"><ShareButtons text={shareText} /></div>
         </div>
 

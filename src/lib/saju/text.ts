@@ -3,6 +3,7 @@
 // 긴 해석문은 Supabase(saju_interpretations)에서 가져오고, 여기는 라벨·요약 담당.
 
 import type { Element, TenGod } from './calc';
+import stemManifest from '@/data/saju-stem-manifest.json';
 
 export const ELEMENT_JA: Record<Element, string> = {
   木: '木（もく）', 火: '火（か）', 土: '土（ど）', 金: '金（ごん）', 水: '水（すい）',
@@ -111,19 +112,28 @@ export const DAY_LUCK_JA: Record<TenGod, { mood: string; advice: string }> = {
 // 파일이 없으면 자동으로 이모지 폴백 → 이미지 없이도 화면이 깨지지 않는다.
 // ─────────────────────────────────────────────
 
-/** 일간 10종 상징 이미지 경로. /public/saju/stem/ 아래 배치 */
-export const DAY_STEM_IMAGE: string[] = [
-  '/saju/stem/kinoe.webp',   // 甲 大樹
-  '/saju/stem/kinoto.webp',  // 乙 草花
-  '/saju/stem/hinoe.webp',   // 丙 太陽
-  '/saju/stem/hinoto.webp',  // 丁 灯火
-  '/saju/stem/tsuchinoe.webp', // 戊 山
-  '/saju/stem/tsuchinoto.webp',// 己 田畑
-  '/saju/stem/kanoe.webp',   // 庚 鋼
-  '/saju/stem/kanoto.webp',  // 辛 宝石
-  '/saju/stem/mizunoe.webp', // 壬 大海
-  '/saju/stem/mizunoto.webp',// 癸 雨露
-];
+// 일간 10종 이미지는 "있으면 쓰고 없으면 이모지"로 동작한다.
+// 어떤 파일이 실제로 존재하는지는 빌드 시 scripts/generate-deck-manifest.mjs 가
+// public/saju/stem/ 을 스캔해 saju-stem-manifest.json 에 기록한다.
+//   → 이미지가 없으면 아예 <img>를 그리지 않으므로 404 요청도 발생하지 않는다.
+//   → 나중에 파일만 넣고 배포하면 자동으로 이미지가 나타난다. 코드 수정 불필요.
+const STEM_MANIFEST: Record<string, string> =
+  ((stemManifest as unknown as { stems?: Record<string, string> })?.stems) ?? {};
+
+/** 일간 인덱스 → 파일 키 (파일명과 1:1) */
+export const DAY_STEM_FILE_KEY = [
+  'kinoe', 'kinoto', 'hinoe', 'hinoto', 'tsuchinoe',
+  'tsuchinoto', 'kanoe', 'kanoto', 'mizunoe', 'mizunoto',
+] as const;
+
+/**
+ * 일간 상징 이미지 URL. 파일이 없으면 null → 화면은 이모지로 표시된다.
+ * (이미지 유무와 무관하게 서비스는 항상 정상 동작한다)
+ */
+export function dayStemImage(stemIndex: number): string | null {
+  const key = DAY_STEM_FILE_KEY[stemIndex];
+  return key ? (STEM_MANIFEST[key] ?? null) : null;
+}
 
 /** 일간 폴백 이모지(이미지 준비 전) */
 export const DAY_STEM_EMOJI = ['🌳', '🌿', '☀️', '🕯️', '⛰️', '🌾', '⚔️', '💎', '🌊', '💧'];

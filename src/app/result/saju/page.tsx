@@ -13,6 +13,7 @@ import FortuneTellerLoader from '@/components/FortuneTellerLoader';
 import DailyLimitScreen from '@/components/DailyLimitScreen';
 import { SAJU_THEMES, type SajuTheme } from '@/lib/saju/text';
 import { useSound } from '@/lib/useSound';
+import ResultGuideLinks from '@/components/ResultGuideLinks';
 
 type Res = any;
 const ELEMENTS = ['木', '火', '土', '金', '水'] as const;
@@ -24,22 +25,34 @@ export default function SajuResultPage() {
   const [limited, setLimited] = useState(false);
   const [failed, setFailed] = useState(false);
   const [switching, setSwitching] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
 
-  const load = useCallback(async (rawInput: string) => {
+  /** isSwitch=true면 이미 결과가 화면에 있는 상태 → 실패해도 기존 결과를 지운다 */
+  const load = useCallback(async (rawInput: string, isSwitch = false) => {
     try {
       const res = await fetch('/api/saju/result', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: rawInput,
       });
-      if (res.status === 429) { setLimited(true); return; }
+      if (res.status === 429) {
+        // 관점 전환 중이라면 지금 보고 있는 결과를 없애지 않는다.
+        if (isSwitch) setNotice('本日の鑑定回数の上限に達しました。すでに読んだ観点はそのままご覧いただけます。');
+        else setLimited(true);
+        return;
+      }
       const raw = await res.text();
       const json = raw ? JSON.parse(raw) : null;
-      if (!json || json.error) { setFailed(true); return; }
+      if (!json || json.error) {
+        if (isSwitch) setNotice('うまく読み解けませんでした。少し時間をおいてお試しください。');
+        else setFailed(true);
+        return;
+      }
       setData(json);
     } catch (e) {
       console.error('saju fetch failed:', e);
-      setFailed(true);
+      if (isSwitch) setNotice('通信に失敗しました。少し時間をおいてお試しください。');
+      else setFailed(true);
     } finally {
       setSwitching(false);
     }
@@ -58,9 +71,10 @@ export default function SajuResultPage() {
     sound.play('select');
     const next = { ...JSON.parse(raw), theme: t };
     sessionStorage.setItem('sajuInput', JSON.stringify(next));
+    setNotice(null);
     setSwitching(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    load(JSON.stringify(next));
+    load(JSON.stringify(next), true);
   };
 
   if (limited) return <DailyLimitScreen />;
@@ -192,6 +206,11 @@ export default function SajuResultPage() {
             })}
           </div>
           {switching && <p className="mt-2 text-center text-[11px] text-[#C9A227]">読み解いています…</p>}
+          {notice && !switching && (
+            <p className="mt-3 rounded-lg bg-[#14152B]/70 px-3 py-2 text-center text-[11px] leading-relaxed text-[#F5E6A8]">
+              {notice}
+            </p>
+          )}
         </div>
 
         {/* ───── 십신 ───── */}
@@ -245,6 +264,8 @@ export default function SajuResultPage() {
           <p>※ 入力された生年月日はサーバーに保存していません。</p>
         </div>
 
+        <ResultGuideLinks kind="saju" className="mt-6" />
+
         <div className="mt-6"><ShareButtons text="四柱推命で自分の命式を見てみた" /></div>
 
         <div className="mt-6 flex flex-wrap justify-center gap-2">
@@ -258,8 +279,13 @@ export default function SajuResultPage() {
   );
 }
 
-/** 일간 상징 이미지. 파일이 없으면 이모지로 자동 폴백(이미지 미준비 상태에서도 안전) */
-function StemVisual({ src, emoji, char }: { src?: string; emoji?: string; char: string }) {
+/**
+ * 일간 상징 이미지.
+ * 서버가 넘겨준 src는 "빌드 시 실제로 존재가 확인된 파일"뿐이라 404가 나지 않는다.
+ * src가 null이면(=이미지 미배치) 처음부터 이모지를 그린다.
+ * 만약의 로딩 실패에도 이모지로 되돌아가므로 화면이 비는 일은 없다.
+ */
+function StemVisual({ src, emoji, char }: { src?: string | null; emoji?: string; char: string }) {
   const [broken, setBroken] = useState(false);
   if (src && !broken) {
     // eslint-disable-next-line @next/next/no-img-element
