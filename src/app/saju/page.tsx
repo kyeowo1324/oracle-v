@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import StarrySky from '@/components/StarrySky';
 import PersonaPicker from '@/components/PersonaPicker';
 import { loadProfile, saveProfile } from '@/lib/profile';
-import { DEFAULT_PERSONA, type PersonaKey } from '@/lib/personas';
+import { DEFAULT_PERSONA, toPersonaKey, type PersonaKey } from '@/lib/personas';
 import { SAJU_THEMES, type SajuTheme } from '@/lib/saju/text';
 import { useSound } from '@/lib/useSound';
 
@@ -28,7 +28,7 @@ export default function SajuPage() {
 
   useEffect(() => {
     const pf = loadProfile();
-    if (pf.persona) setPersona(pf.persona);
+    if (pf.persona) setPersona(toPersonaKey(pf.persona));
     if (pf.birthday) {
       const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(pf.birthday);
       if (m) { setYear(m[1]); setMonth(String(Number(m[2]))); setDay(String(Number(m[3]))); }

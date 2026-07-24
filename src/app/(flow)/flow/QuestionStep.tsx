@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { useFortune } from '@/lib/fortune-context';
 import PersonaPicker from '@/components/PersonaPicker';
 import { loadProfile, saveProfile } from '@/lib/profile';
-import { DEFAULT_PERSONA, type PersonaKey } from '@/lib/personas';
+import { DEFAULT_PERSONA, toPersonaKey, type PersonaKey } from '@/lib/personas';
 
 // 일상·인간관계에서 예/아니오로 자주 묻는 질문 20종
 const EXAMPLE_POOL = [
@@ -50,8 +50,10 @@ export function QuestionStep({ onNext }: { onNext: () => void }) {
   // 진입할 때마다 랜덤 3개 (SSR 하이드레이션 불일치 방지 위해 마운트 후 설정)
   useEffect(() => {
     setExamples(pickRandom(EXAMPLE_POOL, 3));
+    // 예전에 저장된 캐릭터가 지금은 없을 수도 있다(예: 삭제된 サクラ).
+    // toPersonaKey가 알 수 없는 값을 기본 캐릭터로 되돌려 준다.
     const p = loadProfile().persona;
-    if (p) setPersona(p);
+    if (p) setPersona(toPersonaKey(p));
   }, []);
 
   const reshuffle = () => setExamples(pickRandom(EXAMPLE_POOL, 3));

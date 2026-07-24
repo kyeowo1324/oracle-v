@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { useFortune, Topic } from '@/lib/fortune-context';
 import PersonaPicker from '@/components/PersonaPicker';
 import { loadProfile, saveProfile } from '@/lib/profile';
-import { DEFAULT_PERSONA, type PersonaKey } from '@/lib/personas';
+import { DEFAULT_PERSONA, toPersonaKey, type PersonaKey } from '@/lib/personas';
 
 const TOPICS: { code: Topic; ja: string; icon: string; desc: string }[] = [
   { code: 'general', ja: '総合運', icon: '🌙', desc: '今日全体の運勢' },
@@ -26,8 +26,10 @@ export function TopicStep({ onNext }: { onNext: () => void }) {
 
   // 저장된 페르소나 복원(재입력 제거, SSR 하이드레이션 불일치 방지 위해 마운트 후)
   useEffect(() => {
+    // 예전에 저장된 캐릭터가 지금은 없을 수도 있다(예: 삭제된 サクラ).
+    // toPersonaKey가 알 수 없는 값을 기본 캐릭터로 되돌려 준다.
     const p = loadProfile().persona;
-    if (p) setPersona(p);
+    if (p) setPersona(toPersonaKey(p));
   }, []);
 
   const select = (t: Topic) => {

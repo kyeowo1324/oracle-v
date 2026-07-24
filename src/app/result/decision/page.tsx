@@ -15,6 +15,7 @@ import { markFreeViewUsed } from '@/lib/dailyGate';
 import { buildShareUrl } from '@/lib/shareLink';
 import { recordCards, extractCardKey } from '@/lib/collection';
 import { loadProfile } from '@/lib/profile';
+import { toPersonaKey } from '@/lib/personas';
 import DailyLimitScreen from '@/components/DailyLimitScreen';
 import ResultGuideLinks from '@/components/ResultGuideLinks';
 
@@ -34,7 +35,7 @@ export default function DecisionResultPage() {
         const res = await fetch('/api/decision/result', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ question: m.question, persona: loadProfile().persona, tarotShuffleResult: tarotFull, lang: 'ja' }),
+          body: JSON.stringify({ question: m.question, persona: toPersonaKey(loadProfile().persona), tarotShuffleResult: tarotFull, lang: 'ja' }),
         });
         const raw = await res.text();
         const data = res.status === 429

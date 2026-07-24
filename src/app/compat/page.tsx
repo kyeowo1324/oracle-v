@@ -12,7 +12,7 @@ import ShuffleAnimation from '@/components/ShuffleAnimation';
 import PersonaPicker from '@/components/PersonaPicker';
 import { useSound } from '@/lib/useSound';
 import { loadProfile, saveProfile } from '@/lib/profile';
-import { DEFAULT_PERSONA, type PersonaKey } from '@/lib/personas';
+import { DEFAULT_PERSONA, toPersonaKey, type PersonaKey } from '@/lib/personas';
 
 type Relation = 'love' | 'friend' | 'work';
 type Blood = 'A' | 'B' | 'O' | 'AB';
@@ -48,8 +48,10 @@ export default function CompatPage() {
 
   // 저장된 페르소나가 있으면 초기 선택으로 복원(재입력 제거)
   useEffect(() => {
+    // 예전에 저장된 캐릭터가 지금은 없을 수도 있다(예: 삭제된 サクラ).
+    // toPersonaKey가 알 수 없는 값을 기본 캐릭터로 되돌려 준다.
     const p = loadProfile().persona;
-    if (p) setPersona(p);
+    if (p) setPersona(toPersonaKey(p));
   }, []);
 
   const tap = () => sound.play('tap');
