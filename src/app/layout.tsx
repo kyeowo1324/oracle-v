@@ -16,6 +16,7 @@ import { Analytics } from '@vercel/analytics/next';
 import { SITE_URL } from '@/lib/site';
 import './globals.css';
 import SoundControl from '@/components/SoundControl';
+import Script from 'next/script';
 
 // 見出し用の明朝 + 本文用のゴシック。CSS変数として全ページで利用可能に。
 const shippori = Shippori_Mincho({
@@ -87,6 +88,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="flex min-h-screen flex-col bg-[#14152B] text-slate-100 antialiased">
         <SoundControl />
         <div className="flex-1">{children}</div>
+{/* ✅ 수동 배치형 닌자 애드맥스 광고 삽입 위치 (본문 하단) */}
+        <div className="flex justify-center w-full my-6">
+          <Script 
+            src="https://adm.shinobi.jp/s/818e12891c2828177d5815e4e695b503"
+            strategy="lazyOnload"
+          />
+        </div>
+
         <InstallPrompt />
         <SiteFooter />
         <AdSenseScript />
@@ -95,7 +104,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <script async src="https://adm.shinobi.jp/st/auto.js" data-admax-id="bd5de8fe5a012b9977254ded0466654f"></script>
       </body>
     </html>
   );
