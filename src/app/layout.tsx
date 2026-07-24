@@ -95,6 +95,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <script async src="https://adm.shinobi.jp/st/auto.js" data-admax-id="bd5de8fe5a012b9977254ded0466654f"></script>
       </body>
     </html>
   );
